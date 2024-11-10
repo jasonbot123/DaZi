@@ -35,7 +35,6 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
 
     public DBUserDataAccessObject(UserFactory userFactory) {
         this.userFactory = userFactory;
-        // No need to do anything to reinitialize a user list! The data is the cloud that may be miles away.
     }
 
     @Override
@@ -69,7 +68,6 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
 
     @Override
     public void setCurrentUsername(String name) {
-        // this isn't implemented for the lab
     }
 
     @Override
@@ -97,7 +95,6 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         final OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
 
-        // POST METHOD
         final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
         final JSONObject requestBody = new JSONObject();
         requestBody.put(USERNAME, user.getName());
@@ -130,7 +127,6 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
         final OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
 
-        // POST METHOD
         final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
         final JSONObject requestBody = new JSONObject();
         requestBody.put(USERNAME, user.getName());
