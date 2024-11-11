@@ -9,6 +9,7 @@ import entity.Section;
 
 public class CreatePostPage extends JFrame {
 
+    // TODO: make them all final
     private CreateAPost createAPost;
     private JTextField titleField;
     private JTextArea contentArea;
@@ -41,7 +42,7 @@ public class CreatePostPage extends JFrame {
         JPanel postPanel = new JPanel(new BorderLayout(10, 10));
 
         // title
-        this.titleField = new JTextField("Enter your title", 10);
+        this.titleField = new JTextField("Enter your title", 5);
         postPanel.add(new JLabel("Title:"), BorderLayout.NORTH);
         postPanel.add(this.titleField, BorderLayout.CENTER);
 
