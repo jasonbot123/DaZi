@@ -24,7 +24,7 @@ public class HomePage extends JFrame {
         setTitle("DaZi - Home Page");
 
         // adjust the window size according to your computer
-        // setSize(800, 600);
+        //setSize(800, 600);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = (int) (screenSize.width * 0.8);
         int height = (int) (screenSize.height * 0.8);
@@ -78,9 +78,9 @@ public class HomePage extends JFrame {
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20); // rounded corners
             }
         };
-        searchPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10)); // textfield size
+        searchPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // textfield size
 
-        JTextField searchField = new JTextField("What's on your mind today?", 60);
+        JTextField searchField = new JTextField("What's on your mind today?", 40);
         searchField.setBorder(BorderFactory.createEmptyBorder());
         searchField.setOpaque(false);
 
