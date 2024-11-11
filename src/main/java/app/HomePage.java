@@ -10,7 +10,7 @@ public class HomePage extends JFrame {
         setTitle("DaZi - Home Page");
 
         // adjust the window size according to your computer
-        setSize(800, 600);
+        // setSize(800, 600);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = (int) (screenSize.width * 0.8);
         int height = (int) (screenSize.height * 0.8);
@@ -32,28 +32,76 @@ public class HomePage extends JFrame {
 
     }
 
-    // top panel: icon, search bar, icons
+    // top panel: logo, search bar, icons
     private JPanel createSearchBar() {
         JPanel topBar = new JPanel(new BorderLayout());
 
         // top-right corner, icon button
-        // TODO: Replace with the actual icon path
-        JButton cornerIconButton = new JButton(new ImageIcon("path/to/corner_icon.png"));
+
+        // resize the logo
+        ImageIcon originalLogoIcon = new ImageIcon(getClass().getResource("/images/logo.png"));
+        Image scaledImage = originalLogoIcon.getImage().getScaledInstance(300, 150, Image.SCALE_SMOOTH);
+        ImageIcon scaledLogoIcon = new ImageIcon(scaledImage);
+        // Create the button with the resized logo
+        JButton cornerIconButton = new JButton(scaledLogoIcon);
         cornerIconButton.setToolTipText("Corner Icon");
         topBar.add(cornerIconButton, BorderLayout.WEST);
+        topBar.setBorder(BorderFactory.createEmptyBorder(50, 0, 20, 0)); // adjust the margin
 
         // Panel for search field and search button
-        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        JPanel searchPanelWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
+        searchPanelWrapper.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
 
-        JTextField searchField = new JTextField("Hinted search text", 20);
-        JButton searchButton = new JButton("Search");
+        JPanel searchPanel = new JPanel(new BorderLayout(5, 0)) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g; // cast to Graphics2D
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(new Color(240, 240, 255)); // TODO: colour can change
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20); // rounded corners
+            }
+        };
+        searchPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10)); // textfield size
 
-        searchPanel.add(searchField);
-        searchPanel.add(searchButton);
-        topBar.add(searchPanel, BorderLayout.CENTER);
+        JTextField searchField = new JTextField("What's on your mind today?", 60);
+        searchField.setBorder(BorderFactory.createEmptyBorder());
+        searchField.setOpaque(false);
 
-        // icon panel: Profile, Notifications, Logout, top right corner
-        topBar.add(createIconPanel(), BorderLayout.EAST);
+        // search icon
+        int searchIconSize = 20;
+        ImageIcon originalSearchIcon = new ImageIcon(getClass().getResource("/images/search_icon.png"));
+        Image scaledSearchImage = originalSearchIcon.getImage().getScaledInstance(searchIconSize, searchIconSize, Image.SCALE_SMOOTH);
+        JLabel searchIcon = new JLabel(new ImageIcon(scaledSearchImage));
+
+        searchPanel.add(searchField, BorderLayout.CENTER);
+        searchPanel.add(searchIcon, BorderLayout.EAST);
+
+        searchPanelWrapper.add(searchPanel);
+        topBar.add(searchPanelWrapper, BorderLayout.CENTER);
+
+        // Top-right icons
+        int iconSize = 20;
+        JPanel iconPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+
+        JButton createPostButton = new JButton(new ImageIcon(new ImageIcon(getClass().getResource("/images/createPost_icon.png")).getImage().getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH)));
+        JButton profileButton = new JButton(new ImageIcon(new ImageIcon(getClass().getResource("/images/profile_icon.png")).getImage().getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH)));
+        JButton notificationsButton = new JButton(new ImageIcon(new ImageIcon(getClass().getResource("/images/notify_icon.png")).getImage().getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH)));
+        JButton logoutButton = new JButton(new ImageIcon(new ImageIcon(getClass().getResource("/images/logout_icon.png")).getImage().getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH)));
+
+
+        //JButton createPostButton = new JButton(new ImageIcon(getClass().getResource("/images/createPost_icon.png")) );
+        //JButton profileButton = new JButton(new ImageIcon(getClass().getResource("/images/profile_icon.png")));
+        //JButton notificationsButton = new JButton(new ImageIcon(getClass().getResource("/images/notify_icon.png")));
+        //JButton logoutButton = new JButton(new ImageIcon(getClass().getResource("/images/logout_icon.png")));
+
+        iconPanel.add(createPostButton);
+        iconPanel.add(profileButton);
+        iconPanel.add(notificationsButton);
+        iconPanel.add(logoutButton);
+        iconPanel.setOpaque(false);
+
+        topBar.add(iconPanel, BorderLayout.EAST);
 
         return topBar;
     }
@@ -64,7 +112,7 @@ public class HomePage extends JFrame {
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
         sidebar.setPreferredSize(new Dimension(200, getHeight()));
 
-        JLabel sidebarTitle = new JLabel("Categories"); // TODO: name this sth else
+        JLabel sidebarTitle = new JLabel("Section"); // TODO: name this sth else
         sidebarTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         sidebar.add(sidebarTitle);
 
