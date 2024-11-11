@@ -1,12 +1,26 @@
-package app;
+package view;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class HomePage extends JFrame {
-    public HomePage() {
+import entity.Post;
+import use_case.post.ManagePost;
+import java.util.ArrayList;
+import java.util.List;
 
-        // Setup of home page
+public class HomePage extends JFrame {
+
+    private ManagePost managePost;
+    private JPanel postPanelArea;
+
+    public HomePage() {
+        this.managePost = new ManagePost();
+        fullWindowUI();
+
+    }
+
+    // Setup of home page
+    private void fullWindowUI() {
         setTitle("DaZi - Home Page");
 
         // adjust the window size according to your computer
@@ -21,16 +35,18 @@ public class HomePage extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        initComponents();
-    }
-
-    // adding components: navigation and posts
-    private void initComponents() {
         add(createSearchBar(), BorderLayout.NORTH);
         add(createSidebar(), BorderLayout.WEST);
         add(createPostArea(), BorderLayout.CENTER);
 
     }
+
+
+
+    public ManagePost getManagePost() {
+        return this.managePost;
+    }
+
 
     // top panel: logo, search bar, icons
     private JPanel createSearchBar() {
@@ -71,7 +87,8 @@ public class HomePage extends JFrame {
         // search icon
         int searchIconSize = 20;
         ImageIcon originalSearchIcon = new ImageIcon(getClass().getResource("/images/search_icon.png"));
-        Image scaledSearchImage = originalSearchIcon.getImage().getScaledInstance(searchIconSize, searchIconSize, Image.SCALE_SMOOTH);
+        Image scaledSearchImage = originalSearchIcon.getImage()
+                .getScaledInstance(searchIconSize, searchIconSize, Image.SCALE_SMOOTH);
         JLabel searchIcon = new JLabel(new ImageIcon(scaledSearchImage));
 
         searchPanel.add(searchField, BorderLayout.CENTER);
@@ -89,11 +106,12 @@ public class HomePage extends JFrame {
         JButton notificationsButton = new JButton(new ImageIcon(new ImageIcon(getClass().getResource("/images/notify_icon.png")).getImage().getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH)));
         JButton logoutButton = new JButton(new ImageIcon(new ImageIcon(getClass().getResource("/images/logout_icon.png")).getImage().getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH)));
 
-
-        //JButton createPostButton = new JButton(new ImageIcon(getClass().getResource("/images/createPost_icon.png")) );
-        //JButton profileButton = new JButton(new ImageIcon(getClass().getResource("/images/profile_icon.png")));
-        //JButton notificationsButton = new JButton(new ImageIcon(getClass().getResource("/images/notify_icon.png")));
-        //JButton logoutButton = new JButton(new ImageIcon(getClass().getResource("/images/logout_icon.png")));
+        // TODO: action listener for all icon buttons
+        // for creating posts
+        createPostButton.addActionListener(e -> {
+            CreatePostPage createPostPage = new CreatePostPage(this, this.managePost);
+            createPostPage.setVisible(true);
+        });
 
         iconPanel.add(createPostButton);
         iconPanel.add(profileButton);
@@ -124,7 +142,6 @@ public class HomePage extends JFrame {
         for (String section : sections) {
             JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
 
-            // TODO: add icon, empty label to leave space for an icon later now
             JLabel iconLabel = new JLabel();
             iconLabel.setPreferredSize(new Dimension(20, 20)); //space for icon
 
@@ -141,6 +158,7 @@ public class HomePage extends JFrame {
     }
 
     // top right corner, logout notification, profile, create post
+    // TODO: I put these into the seachbar method, consider refactor it to here
     private JPanel createIconPanel() {
         JPanel iconPanel = new JPanel();
         iconPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -169,41 +187,72 @@ public class HomePage extends JFrame {
 
     // posts panel
     private JScrollPane createPostArea() {
-        JPanel postPanelArea = new JPanel();
+        postPanelArea = new JPanel();
         postPanelArea.setLayout(new BoxLayout(postPanelArea, BoxLayout.Y_AXIS));
-
-        // TODO: delete for loop and replace with actual posts
-        for (int i = 0; i < 10; i++) {
-            JPanel postPanel = new JPanel();
-            postPanel.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(Color.GRAY),
-                    BorderFactory.createEmptyBorder(10, 10, 10, 10)
-            ));
-            postPanel.setLayout(new BorderLayout());
-
-            JLabel titleLabel = new JLabel("Post Title Example " + (i + 1));
-
-            // Increase the height of the description area by setting preferred size
-            JTextArea descriptionArea = new JTextArea("Sample post description for post " + (i + 1));
-            descriptionArea.setLineWrap(true);
-            descriptionArea.setWrapStyleWord(true);
-            descriptionArea.setEditable(false);
-            descriptionArea.setPreferredSize(new Dimension(descriptionArea.getWidth(), 60));
-
-            postPanel.add(titleLabel, BorderLayout.NORTH);
-            postPanel.add(descriptionArea, BorderLayout.CENTER);
-
-            postPanelArea.add(postPanel);
-
-            // Add space between posts
-            postPanelArea.add(Box.createVerticalStrut(10)); // 10 pixels of vertical space between posts
-        }
 
         JScrollPane scrollPane = new JScrollPane(postPanelArea);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
+        refreshPosts();
         return scrollPane;
     }
+
+    public void refreshPosts() {
+        postPanelArea.removeAll(); // clear existing posts
+
+        List<Post> posts = this.managePost.getPosts();
+        // to display most recent first
+        for (int i = posts.size() - 1; i >= 0; i--) {
+            Post post = posts.get(i);
+            JPanel postPanel = createPostPanel(post);
+            postPanelArea.add(postPanel);
+            postPanelArea.add(Box.createVerticalStrut(15));
+        }
+
+        postPanelArea.revalidate();
+        postPanelArea.repaint();
+    }
+
+    // TODO: change it to a scorl panel
+    // TODO: adjust the space between post info and title and content
+    private JPanel createPostPanel(Post post) {
+        JPanel postPanel = new JPanel();
+        postPanel.setLayout(new BorderLayout());
+        postPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.GRAY),
+                BorderFactory.createEmptyBorder(2, 8, 2, 8)
+        ));
+
+        // display section, time, username, user pic
+        JLabel sectionLabel = new JLabel(post.getSection().toString());
+        JLabel timestampLabel = new JLabel(post.getTimestamp().toString()); // TODO: dont include decimal for time
+        JLabel usernameLabel = new JLabel(post.getUsername());
+
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5,0));
+        topPanel.add(sectionLabel);
+        topPanel.add(new JLabel(" | ")); // TODO: change this into sth else if needed
+        topPanel.add(timestampLabel);
+        topPanel.add(new JLabel(" | "));
+        topPanel.add(usernameLabel);
+
+        // display title and content
+        JLabel titleLabel = new JLabel("<html><b>" + post.getTitle() + "</b></html>");
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(3, 0, 2, 0));
+
+        JTextArea contentArea = new JTextArea(post.getTruncatedContent(50)); // display 50 chars max
+        contentArea.setLineWrap(true);
+        contentArea.setWrapStyleWord(true);
+        contentArea.setEditable(false);
+        contentArea.setOpaque(false); // Match background
+        contentArea.setBorder(BorderFactory.createEmptyBorder(2, 0, 2, 0));
+
+        postPanel.add(topPanel, BorderLayout.NORTH);
+        postPanel.add(titleLabel, BorderLayout.CENTER);
+        postPanel.add(contentArea, BorderLayout.SOUTH);
+
+        return postPanel;
+    }
+
 
     public static void main(String[] args) {
         // create an instance of the Runnable interface
