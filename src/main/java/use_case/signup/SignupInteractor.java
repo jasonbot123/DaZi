@@ -11,6 +11,7 @@ public class SignupInteractor implements SignupInputBoundary {
     private final SignupOutputBoundary userPresenter;
     private final UserFactory userFactory;
 
+
     public SignupInteractor(SignupUserDataAccessInterface signupDataAccessInterface,
                             SignupOutputBoundary signupOutputBoundary,
                             UserFactory userFactory) {
