@@ -9,7 +9,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-//aaaaaa
+
 public class MongoDBConnection {
 
     private static final String CONNECTION_STRING = "mongodb+srv://jason:HTtsVlF5Ebp14sXo@cluster0.u46mh.mongodb.net/myDatabase?retryWrites=true&w=majority";
