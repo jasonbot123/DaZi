@@ -1,7 +1,9 @@
 package app;
 
 import data_access.MongoDBConnection;
+import data_access.MongoPostDataAccessObject;
 import data_access.MongoUserDataAccessObject;
+import service.PostService;
 import service.UserService;
 
 import javax.swing.JFrame;
@@ -20,6 +22,25 @@ public class Main {
         MongoUserDataAccessObject userDao = new MongoUserDataAccessObject(connection.getDatabase("UserDataBase"));
         UserService userService = new UserService(userDao);
 
+        // Test post1
+        MongoPostDataAccessObject postDao = new MongoPostDataAccessObject(connection.getDatabase("PostDataBase"));
+        PostService postService = new PostService(postDao);
+
+        String title = "My First Post";
+        String content = "test post 123";
+        String sectionName = "GAMING";
+        String username = "celine";
+
+        postService.addPost(title, content, sectionName, username);
+
+        postService.getPostByTitle(title);
+
+        String newContent = "updated content of my first post.";
+        boolean updateSuccess = postService.updatePostContent(title, newContent);
+        System.out.println("Content Update Success: " + updateSuccess);
+
+
+        /*
         // test1
         userService.signUp("Jason", "test@email.com", "pass123");
 
@@ -56,6 +77,8 @@ public class Main {
         // verify user no longer exists
         boolean userExistsAfterDeletion = userDao.userExists(username);
         System.out.println("User Exists After Deletion: " + userExistsAfterDeletion);
+
+         */
     }
 }
 

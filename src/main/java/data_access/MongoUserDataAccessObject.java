@@ -23,7 +23,7 @@ public class MongoUserDataAccessObject {
         Document user = new Document("username", username)
                 .append("email", email)
                 .append("password", password);
-        userCollection.insertOne(user);  // Inserts the document into the users collection
+        userCollection.insertOne(user);
     }
 
     // get user
