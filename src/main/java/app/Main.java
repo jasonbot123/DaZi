@@ -26,19 +26,22 @@ public class Main {
         MongoPostDataAccessObject postDao = new MongoPostDataAccessObject(connection.getDatabase("PostDataBase"));
         PostService postService = new PostService(postDao);
 
-        String title = "My First Post";
-        String content = "test post 123";
+        String title = "Post";
+        String content = "test ";
         String sectionName = "GAMING";
-        String username = "celine";
+        String username = "1";
 
         postService.addPost(title, content, sectionName, username);
 
-        postService.getPostByTitle(title);
+
+        /*postService.getPostByTitle(title);
 
         String newContent = "updated content of my first post.";
         boolean updateSuccess = postService.updatePostContent(title, newContent);
         System.out.println("Content Update Success: " + updateSuccess);
 
+
+         */
 
         /*
         // test1
