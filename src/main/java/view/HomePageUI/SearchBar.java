@@ -6,14 +6,16 @@ import java.awt.*;
 public class SearchBar extends JPanel {
 
     public SearchBar() {
-        setLayout(new FlowLayout(FlowLayout.LEFT));
+        setLayout(new BorderLayout());
+        setBackground(Color.WHITE);
 
         JTextField searchField = new JTextField("Hinted search text", 30);
-        JButton searchButton = new JButton("🔍"); // Placeholder icon
-        add(searchField);
-        add(searchButton);
+        searchField.setFont(new Font("SansSerif", Font.PLAIN, 16));
 
-        // Add a panel for icons on the right if needed
-        add(new TopRightIconsPanel(), BorderLayout.EAST);
+        JButton searchButton = new JButton("🔍");
+        searchButton.setFont(new Font("SansSerif", Font.BOLD, 18));
+
+        add(searchField, BorderLayout.CENTER);
+        add(searchButton, BorderLayout.EAST);
     }
 }
