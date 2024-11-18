@@ -45,7 +45,7 @@ public class Main {
 
         /*
         // test1
-        userService.signUp("celine123456", "test@email.com", "pass123");
+        userService.signUp("Jason", "test@email.com", "pass123");
 
         // test2
         String username = "celine";
