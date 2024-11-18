@@ -26,24 +26,26 @@ public class Main {
         MongoPostDataAccessObject postDao = new MongoPostDataAccessObject(connection.getDatabase("PostDataBase"));
         PostService postService = new PostService(postDao);
 
+        /*
         String title = "Post";
         String content = "test ";
         String sectionName = "GAMING";
-        String username = "1";
+        String username = "12";
 
         postService.addPost(title, content, sectionName, username);
 
+         */
 
-        /*postService.getPostByTitle(title);
+    }
+}
+
+    /*
+        postService.getPostByTitle(title);
 
         String newContent = "updated content of my first post.";
         boolean updateSuccess = postService.updatePostContent(title, newContent);
         System.out.println("Content Update Success: " + updateSuccess);
 
-
-         */
-
-        /*
         // test1
         userService.signUp("Jason", "test@email.com", "pass123");
 
@@ -82,8 +84,6 @@ public class Main {
         System.out.println("User Exists After Deletion: " + userExistsAfterDeletion);
 
          */
-    }
-}
 
     /*
     public static void main(String[] args) {

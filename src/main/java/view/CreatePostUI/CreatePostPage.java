@@ -2,8 +2,7 @@ package view.CreatePostUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
 
 import com.mongodb.client.MongoDatabase;
 import data_access.MongoDBConnection;
@@ -14,10 +13,14 @@ import view.HomePageUI.HomePage1;
 
 public class CreatePostPage extends JFrame {
 
-    public CreatePostPage() {
+    private HomePage1 homePage1;
+
+    public CreatePostPage(HomePage1 homePage1) {
+        this.homePage1 = homePage1;
+
         setTitle("Create a Post");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 400);
+        setSize(600, 400); //TODO: change the size
         setLocationRelativeTo(null);
 
         setLayout(new BorderLayout());
@@ -47,32 +50,39 @@ public class CreatePostPage extends JFrame {
 
         add(formPanel, BorderLayout.CENTER);
 
-        // Post Button
+        // TODO: action listener for all buttons: delete, save as draft
+
+        // post button + action listener
         JButton postButton = new JButton("Post");
         postButton.addActionListener(e -> {
             String title = titleField.getText().trim();
             String content = contentArea.getText().trim();
-            String sectionString = (String) sectionComboBox.getSelectedItem(); // Get selected section as String
+            String sectionString = (String) sectionComboBox.getSelectedItem();
 
             if (!title.isEmpty() && !content.isEmpty() && sectionString != null) {
                 try {
                     Section section = Section.valueOf(sectionString.toUpperCase());
 
                     // create the Post
-                    Post newPost = new Post(title, content, section, "currentUsername"); //TODO: chnage to actual username
+                    Post newPost = new Post(title, content, section, "currentUsername", LocalDateTime.now());
 
                     // save to MongoDB
                     MongoDatabase database = MongoDBConnection.getDatabase("PostDataBase");
                     MongoPostDataAccessObject dao = new MongoPostDataAccessObject(database);
                     dao.addPost(newPost);
 
-                    // redirect back to HomePage1
+                    // add the new post to HomePage1 and redirect to homepage
+                    homePage1.getPostsPanel().addPost(newPost);
                     dispose();
-                    SwingUtilities.invokeLater(HomePage1::new);
 
                 } catch (IllegalArgumentException ex) {
-                    JOptionPane.showMessageDialog(this, "Invalid section selected!", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Invalid section.", "Error", JOptionPane.ERROR_MESSAGE);
+
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Failed to save the post.", "Error", JOptionPane.ERROR_MESSAGE);
+                    ex.printStackTrace();
                 }
+
             } else {
                 JOptionPane.showMessageDialog(this, "Please fill in all fields!", "Error", JOptionPane.ERROR_MESSAGE);
             }

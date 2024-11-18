@@ -1,48 +1,76 @@
 package view.HomePageUI;
 
+import com.mongodb.client.MongoDatabase;
+import data_access.MongoDBConnection;
+import data_access.MongoPostDataAccessObject;
+import entity.Post;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class HomePage1 extends JFrame {
+    private PostsPanel postsPanel;
+
     public HomePage1() {
-        // Set up the main frame
         setTitle("Home Page");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setLocationRelativeTo(null); // Center on the screen
+        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Left Panel (Logo + Sidebar)
-        JPanel leftPanel = new JPanel();
-        leftPanel.setLayout(new BorderLayout());
-        leftPanel.setBackground(new Color(0, 51, 102)); // Sidebar color
+        // left panel, colouring
+        JPanel leftPanel = new JPanel(new BorderLayout());
+        leftPanel.setBackground(new Color(0, 51, 102));
 
-        // Add LogoPanel to the top
+        // logo
         JPanel logoPanel = new LogoPanel();
         logoPanel.setBackground(new Color(0, 51, 102));
         leftPanel.add(logoPanel, BorderLayout.NORTH);
 
-        // Add SideBar to the center
         JPanel sideBar = new SideBar();
         leftPanel.add(sideBar, BorderLayout.CENTER);
 
-        // Add Left Panel to the West of the main frame
         add(leftPanel, BorderLayout.WEST);
 
-        // Top Panel (Search Bar and Icons)
+        // search bar
         JPanel topPanel = new JPanel(new BorderLayout());
-        JPanel searchBar = new SearchBar(); // Adjusted for alignment and size
+        JPanel searchBar = new SearchBar();
         topPanel.add(searchBar, BorderLayout.CENTER);
-        JPanel topRightIcons = new TopRightIconsPanel(); // Adjusted alignment
+
+        // upper right, icon buttons
+        JPanel topRightIcons = new TopRightIconsPanel(this);
         topPanel.add(topRightIcons, BorderLayout.EAST);
+
         add(topPanel, BorderLayout.NORTH);
 
-        // Center Panel (Posts)
-        JPanel centerPanel = new PostsPanel(); // Redesigned to match the draft
-        add(centerPanel, BorderLayout.CENTER);
+        // posts
+        postsPanel = new PostsPanel();
+        add(postsPanel, BorderLayout.CENTER);
+        loadPostsFromDatabase();
 
-        // Make frame visible
         setVisible(true);
+    }
+
+    // to load posts from MongoDB
+    private void loadPostsFromDatabase() {
+        try {
+            MongoDatabase database = MongoDBConnection.getDatabase("PostDataBase");
+            MongoPostDataAccessObject dao = new MongoPostDataAccessObject(database);
+            List<Post> posts = dao.getAllPosts();
+
+            for (Post post : posts) {
+                postsPanel.addPost(post);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Failed to load posts from the database.", "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+
+
+    public PostsPanel getPostsPanel() {
+        return postsPanel;
     }
 
     public static void main(String[] args) {

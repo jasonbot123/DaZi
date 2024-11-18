@@ -10,6 +10,6 @@ public class LogoPanel extends JPanel {
         Image scaledLogo = originalLogo.getImage().getScaledInstance(150, 100, Image.SCALE_SMOOTH); // Adjust dimensions
         JLabel logoLabel = new JLabel(new ImageIcon(scaledLogo));
         add(logoLabel);
-        setPreferredSize(new Dimension(200, 120)); // Adjust the panel's size if needed
+        setPreferredSize(new Dimension(200, 120)); // TODO: adjust size?
     }
 }

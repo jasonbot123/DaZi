@@ -8,16 +8,16 @@ public class SideBar extends JPanel {
 
     public SideBar() {
         setLayout(new BorderLayout());
-        setBackground(new Color(0, 51, 102)); // Sidebar background color
+        setBackground(new Color(0, 51, 102)); // TODO: change sidebar background color
 
         //add(new LogoPanel(), BorderLayout.NORTH);
 
-        // Create the menu section
+        // menu section
         JPanel menuPanel = new JPanel();
         menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
         menuPanel.setBackground(new Color(0, 51, 102));
 
-        // Add emojis and buttons
+        // emojis and buttons
         String[] emojis = {
                 "📜", "💬", "📚", "🎮", "🍽️", "🤝", "🌀"
         };
@@ -34,10 +34,9 @@ public class SideBar extends JPanel {
         for (int i = 0; i < buttonLabels.size(); i++) {
             JButton button = createStyledButton(emojis[i] + "  " + buttonLabels.get(i));
             menuPanel.add(button);
-            menuPanel.add(Box.createRigidArea(new Dimension(0, 15))); // Add vertical spacing
+            menuPanel.add(Box.createRigidArea(new Dimension(0, 15))); // TODO: add more vertical spacing
         }
 
-        // Add the menu panel to the center of the sidebar
         add(menuPanel, BorderLayout.CENTER);
     }
 
@@ -46,10 +45,10 @@ public class SideBar extends JPanel {
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setFocusPainted(false);
         button.setBorderPainted(false);
-        button.setBackground(new Color(0, 51, 102)); // Match sidebar color
+        button.setBackground(new Color(0, 51, 102));
         button.setForeground(Color.WHITE);
         button.setFont(new Font("SansSerif", Font.BOLD, 16));
-        button.setHorizontalAlignment(SwingConstants.LEFT); // Align text and emoji to the left
+        button.setHorizontalAlignment(SwingConstants.LEFT);
         return button;
     }
 }
