@@ -1,8 +1,5 @@
 package entity;
 
-import use_case.post.CreateAPost;
-import use_case.post.ManagePost;
-
 import java.time.LocalDateTime;
 
 public class Post {
@@ -12,10 +9,11 @@ public class Post {
     private LocalDateTime timestamp;
     private String username;
 
-    public Post(String title, String content, Section section, String username) {
+    public Post(String title, String content, Section section, String username, LocalDateTime timestamp) {
         this.title = title;
         this.content = content;
         this.section = section;
+        this.timestamp = timestamp;
         this.timestamp = LocalDateTime.now();
         this.username = username;
     }
@@ -54,7 +52,7 @@ public class Post {
         this.username = username;
     }
 
-    // for displaying limited content on the homepage
+    // TODO: for displaying limited content on the homepage, not implemented to Homepage
     public String getTruncatedContent(int maxLength) {
         return content.length() > maxLength ? content.substring(0, maxLength) + "..." : content;
     }
