@@ -31,7 +31,7 @@ public class Main {
         String content = "test ";
         String sectionName = "GAMING";
         String username = "12";
-
+gi
         postService.addPost(title, content, sectionName, username);
 
          */
