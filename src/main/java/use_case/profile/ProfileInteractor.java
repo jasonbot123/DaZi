@@ -1,6 +1,7 @@
 package use_case.profile;
 
 import org.bson.Document;
+import service.ProfileService;
 
 public class ProfileInteractor implements ProfileInputBoundary {
     private final ProfileUserDataAccessInterface dataAccess;
