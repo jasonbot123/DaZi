@@ -26,18 +26,18 @@ public class CommentPage extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
-        // 显示原帖子内容
+        //  Display the original post content
         JPanel postPanel = createPostPanel();
         add(postPanel, BorderLayout.NORTH);
 
-        // 评论列表区域
+        // Comment list area
         commentsPanel = new JPanel();
         commentsPanel.setLayout(new BoxLayout(commentsPanel, BoxLayout.Y_AXIS));
         JScrollPane scrollPane = new JScrollPane(commentsPanel);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Comments"));
         add(scrollPane, BorderLayout.CENTER);
 
-        // 添加评论的区域
+        // Add comment input area
         JPanel addCommentPanel = createCommentInputPanel();
         add(addCommentPanel, BorderLayout.SOUTH);
 
