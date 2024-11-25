@@ -1,12 +1,17 @@
 package data_access;
 
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import entity.Post;
+import entity.Section;
 import org.bson.Document;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.mongodb.client.model.Filters.eq;
 
 
@@ -42,4 +47,23 @@ public class MongoPostDataAccessObject {
         return postCollection.updateOne(eq("title", title), new Document("$set", new Document("content", newContent))).getMatchedCount() > 0;
     }
 
+    // get all posts in the database, for displaying the posts on HomePage1
+    public List<Post> getAllPosts() {
+        List<Post> posts = new ArrayList<>();
+        try (MongoCursor<Document> cursor = postCollection.find().iterator()) {
+            while (cursor.hasNext()) {
+                Document doc = cursor.next();
+                String title = doc.getString("title");
+                String content = doc.getString("content");
+                String section = doc.getString("section");
+                String username = doc.getString("username");
+                LocalDateTime timestamp = LocalDateTime.ofInstant(doc.getDate("timestamp").toInstant(), ZoneOffset.UTC);
+
+                posts.add(new Post(title, content, Section.valueOf(section), username, timestamp));
+            }
+        }
+        return posts;
+    }
 }
+
+

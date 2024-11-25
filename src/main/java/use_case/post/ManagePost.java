@@ -1,5 +1,6 @@
 package use_case.post;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import entity.Post;
@@ -13,7 +14,7 @@ public class ManagePost {
     }
 
     public void addPost(String title, String content, Section section, String username) { //TODO: username
-        Post post = new Post(title, content, section, username);
+        Post post = new Post(title, content, section, username, LocalDateTime.now());
         this.posts.add(post);
     }
 
