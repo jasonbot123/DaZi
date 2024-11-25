@@ -11,9 +11,11 @@ import java.util.List;
 
 public class HomePage1 extends JFrame {
     private PostsPanel postsPanel;
+    private String currentUsername;
 
-    public HomePage1() {
-        setTitle("Home Page");
+    public HomePage1(String username) {
+        this.currentUsername = username;
+        setTitle("Home Page - " + username);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
@@ -45,7 +47,7 @@ public class HomePage1 extends JFrame {
         add(topPanel, BorderLayout.NORTH);
 
         // posts
-        postsPanel = new PostsPanel();
+        postsPanel = new PostsPanel(currentUsername);
         add(postsPanel, BorderLayout.CENTER);
         loadPostsFromDatabase();
 
@@ -74,6 +76,6 @@ public class HomePage1 extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(HomePage1::new);
+        SwingUtilities.invokeLater(() -> new HomePage1("testUser"));
     }
 }

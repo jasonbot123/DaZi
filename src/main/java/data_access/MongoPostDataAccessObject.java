@@ -26,9 +26,10 @@ public class MongoPostDataAccessObject {
     public void addPost(Post post) {
         Document postDoc = new Document("title", post.getTitle())
                 .append("content", post.getContent())
-                .append("section", post.getSection().toString()) // Store section as a string
+                .append("section", post.getSection().toString())
                 .append("timestamp", post.getTimestamp().toInstant(ZoneOffset.UTC))
-                .append("username", post.getUsername());
+                .append("username", post.getUsername())
+                .append("likes", post.getLikes());
         postCollection.insertOne(postDoc);
     }
 
@@ -58,11 +59,19 @@ public class MongoPostDataAccessObject {
                 String section = doc.getString("section");
                 String username = doc.getString("username");
                 LocalDateTime timestamp = LocalDateTime.ofInstant(doc.getDate("timestamp").toInstant(), ZoneOffset.UTC);
-
-                posts.add(new Post(title, content, Section.valueOf(section), username, timestamp));
+                Post post = new Post(title, content, Section.valueOf(section), username, timestamp);
+                post.setLikes(doc.getInteger("likes", 0));
+                posts.add(post);
             }
         }
         return posts;
+    }
+
+    public void updateLikes(String title, int likes) {
+        postCollection.updateOne(
+                eq("title", title),
+                new Document("$set", new Document("likes", likes))
+        );
     }
 }
 

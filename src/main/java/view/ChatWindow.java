@@ -75,8 +75,8 @@ public class ChatWindow extends JFrame {
     public static void main(String[] args) {
         // Mock ChatService
         ChatService chatService = new ChatService(new MongoChatDataAccessObject(MongoDBConnection.getDatabase("ChatDB")));
-        String username = "jason";
-        String receiver = "celine";
+        String username = "janos";
+        String receiver = "jason";
         SwingUtilities.invokeLater(() -> {
             ChatWindow chatWindow = new ChatWindow(username, receiver, chatService);
             chatWindow.setVisible(true);
