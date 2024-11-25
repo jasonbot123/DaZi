@@ -4,7 +4,7 @@ import use_case.profile.ProfileOutputBoundary;
 import use_case.profile.ProfileOutputData;
 
 public class ProfilePresenter implements ProfileOutputBoundary {
-    private ProfileViewModel viewModel;
+    private final ProfileViewModel viewModel;
 
     public ProfilePresenter(ProfileViewModel viewModel) {
         this.viewModel = viewModel;
@@ -18,6 +18,6 @@ public class ProfilePresenter implements ProfileOutputBoundary {
         viewModel.setProgram(outputData.getProgram());
         viewModel.setBio(outputData.getBio());
         viewModel.setCollege(outputData.getCollege());
-        viewModel.setPosts(outputData.getPosts());
+//        viewModel.setPosts(outputData.getPosts());
     }
 }

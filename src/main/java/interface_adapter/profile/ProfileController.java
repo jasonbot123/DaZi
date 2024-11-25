@@ -9,8 +9,8 @@ public class ProfileController {
         this.interactor = interactor;
     }
 
-    public void loadProfile(String userId) {
-        ProfileInputData inputData = new ProfileInputData(userId);
+    public void loadProfile(String username) {
+        ProfileInputData inputData = new ProfileInputData(username);
         interactor.loadProfile(inputData);
     }
 
