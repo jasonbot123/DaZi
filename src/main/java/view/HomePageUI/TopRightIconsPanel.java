@@ -1,6 +1,7 @@
 package view.HomePageUI;
 
 import view.CreatePostUI.CreatePostPage;
+import view.CreateChatUI.CreateChatPage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +13,7 @@ public class TopRightIconsPanel extends JPanel {
     public TopRightIconsPanel(HomePage1 parentFrame) {
         setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-        String[] icons = {"📩", "➕", "👤", "🔔", "🚪"}; // placeholder for icons
+        String[] icons = {"📩", "➕", "👤", "🔔", "🚪", "💬"}; // placeholder for icons
 
         for (String icon : icons) {
             JButton iconButton = new JButton(icon);
@@ -25,6 +26,9 @@ public class TopRightIconsPanel extends JPanel {
                 iconButton.addActionListener(e -> new CreatePostPage(parentFrame));
             }
 
+            if ("💬".equals(icon)) {
+                iconButton.addActionListener(e -> new CreateChatPage(parentFrame));
+            }
         }
     }
 }

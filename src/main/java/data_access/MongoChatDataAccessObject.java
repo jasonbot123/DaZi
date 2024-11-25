@@ -2,6 +2,7 @@ package data_access;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Sorts;
+import com.mongodb.client.model.Filters;
 import org.bson.Document;
 
 import java.time.LocalDateTime;
@@ -46,6 +47,20 @@ public class MongoChatDataAccessObject {
             messages.add(message);
         }
         return messages;
+    }
+
+    public List<String> getChatContacts(String username) {
+        List<String> contacts = new ArrayList<>();
+        messagesCollection.find(Filters.or(
+                Filters.eq("sender", username),
+                Filters.eq("receiver", username)
+        )).forEach(doc -> {
+            String contact = doc.getString("sender").equals(username) ? doc.getString("receiver") : doc.getString("sender");
+            if (!contacts.contains(contact)) {
+                contacts.add(contact);
+            }
+        });
+        return contacts;
     }
 
 }

@@ -28,7 +28,7 @@ public class ChatWindow extends JFrame {
         // Set up the frame
         setTitle("Chat Window - User: " + username);
         setSize(400, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setLocationRelativeTo(null);
 
         // Chat area where messages are displayed
@@ -76,7 +76,7 @@ public class ChatWindow extends JFrame {
         // Mock ChatService
         ChatService chatService = new ChatService(new MongoChatDataAccessObject(MongoDBConnection.getDatabase("ChatDB")));
         String username = "jason";
-        String receiver = "celine";
+        String receiver = "janos";
         SwingUtilities.invokeLater(() -> {
             ChatWindow chatWindow = new ChatWindow(username, receiver, chatService);
             chatWindow.setVisible(true);
