@@ -8,6 +8,7 @@ public class Post {
     private Section section;
     private LocalDateTime timestamp;
     private String username;
+    private int likes;
 
     public Post(String title, String content, Section section, String username, LocalDateTime timestamp) {
         this.title = title;
@@ -16,6 +17,7 @@ public class Post {
         this.timestamp = timestamp;
         this.timestamp = LocalDateTime.now();
         this.username = username;
+        this.likes = 0;
     }
 
     // Getters
@@ -34,6 +36,9 @@ public class Post {
     public String getUsername() {
         return username;
     }
+    public int getLikes() {
+        return likes;
+    }
 
     // Setters
     public void setTitle(String title) {
@@ -50,6 +55,9 @@ public class Post {
     }
     public void setUsername(String username) {
         this.username = username;
+    }
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 
     // TODO: for displaying limited content on the homepage, not implemented to Homepage
