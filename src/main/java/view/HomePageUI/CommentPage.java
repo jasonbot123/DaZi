@@ -26,18 +26,15 @@ public class CommentPage extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
-        //  Display the original post content
         JPanel postPanel = createPostPanel();
         add(postPanel, BorderLayout.NORTH);
 
-        // Comment list area
         commentsPanel = new JPanel();
         commentsPanel.setLayout(new BoxLayout(commentsPanel, BoxLayout.Y_AXIS));
         JScrollPane scrollPane = new JScrollPane(commentsPanel);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Comments"));
         add(scrollPane, BorderLayout.CENTER);
 
-        // Add comment input area
         JPanel addCommentPanel = createCommentInputPanel();
         add(addCommentPanel, BorderLayout.SOUTH);
 
@@ -78,9 +75,9 @@ public class CommentPage extends JFrame {
             String content = commentInput.getText().trim();
             if (!content.isEmpty()) {
                 Comment newComment = new Comment(
-                        post.getTitle(),
+                        post.getId(),
                         content,
-                        "currentUser", // 这里应该使用实际的登录用户名
+                        "currentUser",
                         LocalDateTime.now()
                 );
                 commentDAO.addComment(newComment);
@@ -97,7 +94,7 @@ public class CommentPage extends JFrame {
 
     private void refreshComments() {
         commentsPanel.removeAll();
-        List<Comment> comments = commentDAO.getCommentsForPost(post.getTitle());
+        List<Comment> comments = commentDAO.getCommentsForPost(post.getId());
 
         for (Comment comment : comments) {
             JPanel commentPanel = createCommentPanel(comment);

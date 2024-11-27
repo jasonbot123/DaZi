@@ -1,8 +1,10 @@
 package entity;
 
+import org.bson.types.ObjectId;
 import java.time.LocalDateTime;
 
 public class Post {
+    private ObjectId id;
     private String title;
     private String content;
     private Section section;
@@ -11,16 +13,19 @@ public class Post {
     private int likes;
 
     public Post(String title, String content, Section section, String username, LocalDateTime timestamp) {
+        this.id = new ObjectId();
         this.title = title;
         this.content = content;
         this.section = section;
         this.timestamp = timestamp;
-        this.timestamp = LocalDateTime.now();
         this.username = username;
         this.likes = 0;
     }
 
     // Getters
+    public ObjectId getId() {
+        return id;
+    }
     public String getTitle() {
         return title;
     }
@@ -41,6 +46,9 @@ public class Post {
     }
 
     // Setters
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
     public void setTitle(String title) {
         this.title = title;
     }
