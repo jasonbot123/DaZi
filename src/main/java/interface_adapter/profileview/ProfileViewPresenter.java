@@ -1,17 +1,18 @@
-package interface_adapter.profile;
 
-import use_case.profile.ProfileOutputBoundary;
-import use_case.profile.ProfileOutputData;
+package interface_adapter.profileview;
 
-public class ProfilePresenter implements ProfileOutputBoundary {
+import use_case.profileview.ProfileViewOutputBoundary;
+import use_case.profileview.ProfileViewOutputData;
+
+public class ProfileViewPresenter implements ProfileViewOutputBoundary {
     private final ProfileViewModel viewModel;
 
-    public ProfilePresenter(ProfileViewModel viewModel) {
+    public ProfileViewPresenter(ProfileViewModel viewModel) {
         this.viewModel = viewModel;
     }
 
     @Override
-    public void presentProfile(ProfileOutputData outputData) {
+    public void presentProfile(ProfileViewOutputData outputData) {
         viewModel.setUsername(outputData.getUsername());
         viewModel.setEmail(outputData.getEmail());
         viewModel.setYearOfStudy(outputData.getYearOfStudy());
@@ -21,3 +22,4 @@ public class ProfilePresenter implements ProfileOutputBoundary {
 //        viewModel.setPosts(outputData.getPosts());
     }
 }
+

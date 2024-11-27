@@ -3,23 +3,20 @@ package data_access;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
-import use_case.profile.ProfileUserDataAccessInterface;
-import use_case.profile.ProfileInputData;
-
-import java.util.ArrayList;
-import java.util.List;
+import use_case.profileview.ProfileViewDataAccessInterface;
+import use_case.profileview.ProfileViewInputData;
 
 import static com.mongodb.client.model.Filters.eq;
 
-public class MongoUserProfileDataAccessObject implements ProfileUserDataAccessInterface {
+public class MongoUserProfileViewDataAccessObject implements ProfileViewDataAccessInterface {
     private final MongoCollection<Document> profilesCollection;
 
-    public MongoUserProfileDataAccessObject(MongoDatabase database) {
-        this.profilesCollection = database.getCollection("profiles");
+    public MongoUserProfileViewDataAccessObject(MongoDatabase database) {
+        this.profilesCollection = database.getCollection("users");
     }
 
     @Override
-    public ProfileInputData fetchProfile(String username) {
+    public ProfileViewInputData fetchProfile(String username) {
         // Fetch the profile document from MongoDB
         Document profileDoc = profilesCollection.find(eq("username", username)).first();
         if (profileDoc == null) {
@@ -29,19 +26,19 @@ public class MongoUserProfileDataAccessObject implements ProfileUserDataAccessIn
         return documentToProfileInputData(profileDoc);
     }
 
-    @Override
-    public void saveProfile(ProfileInputData profile) {
-        // Convert ProfileInputData to Document
-        Document profileDoc = profileInputDataToDocument(profile);
+//    @Override
+//    public void saveProfile(ProfileSaveInputData profile) {
+//        // Convert ProfileInputData to Document
+//        Document profileDoc = profileInputDataToDocument(profile);
+//
+//        // Update the profile in MongoDB or insert if not existing
+//        profilesCollection.replaceOne(eq("username", profile.getUsername()), profileDoc, new com.mongodb.client.model.ReplaceOptions().upsert(true));
+//    }
 
-        // Update the profile in MongoDB or insert if not existing
-        profilesCollection.replaceOne(eq("username", profile.getUsername()), profileDoc, new com.mongodb.client.model.ReplaceOptions().upsert(true));
-    }
-
-    private ProfileInputData documentToProfileInputData(Document doc) {
-        ProfileInputData profile = new ProfileInputData(doc.getString("username"));
+    private ProfileViewInputData documentToProfileInputData(Document doc) {
+        ProfileViewInputData profile = new ProfileViewInputData(doc.getString("username"));
         profile.setEmail(doc.getString("email"));
-        profile.setYearOfStudy(doc.getString("yearOfStudy"));
+        profile.setYearOfStudy(doc.getString("yearofstudy"));
         profile.setProgram(doc.getString("program"));
         profile.setBio(doc.getString("bio"));
         profile.setCollege(doc.getString("college"));
@@ -49,7 +46,7 @@ public class MongoUserProfileDataAccessObject implements ProfileUserDataAccessIn
         return profile;
     }
 
-    private Document profileInputDataToDocument(ProfileInputData profile) {
+    private Document profileInputDataToDocument(ProfileViewInputData profile) {
         Document doc = new Document("username", profile.getUsername())
                 .append("email", profile.getEmail())
                 .append("yearOfStudy", profile.getYearOfStudy())

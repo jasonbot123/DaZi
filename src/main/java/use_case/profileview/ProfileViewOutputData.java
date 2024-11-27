@@ -1,8 +1,6 @@
-package use_case.profile;
+package use_case.profileview;
 
-import java.util.List;
-
-public class ProfileOutputData {
+public class ProfileViewOutputData {
     private String username;
     private String email;
     private String yearOfStudy;
@@ -12,7 +10,7 @@ public class ProfileOutputData {
 //    private List<String> posts;
 
     // Constructor
-    public ProfileOutputData(ProfileInputData doc) {
+    public ProfileViewOutputData(ProfileViewInputData doc) {
         this.username = doc.getUsername();
         this.email = doc.getEmail();
         this.yearOfStudy = doc.getYearOfStudy();
@@ -70,12 +68,4 @@ public class ProfileOutputData {
     public void setCollege(String college) {
         this.college = college;
     }
-
-//    public List<String> getPosts() {
-//        return posts;
-//    }
-//
-//    public void setPosts(List<String> posts) {
-//        this.posts = posts;
-//    }
 }

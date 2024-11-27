@@ -1,17 +1,17 @@
-package interface_adapter.profile;
+package use_case.profileview;
 
-import java.util.List;
-
-public class ProfileViewModel {
+public class ProfileViewInputData {
     private String username;
     private String email;
     private String yearOfStudy;
     private String program;
     private String bio;
     private String college;
-    private List<String> posts;
+//    private List<String> posts;
 
-    // Getters and Setters
+    public ProfileViewInputData(String username) {
+        this.username = username;
+    }
 
     public String getUsername() {
         return username;
@@ -61,11 +61,4 @@ public class ProfileViewModel {
         this.college = college;
     }
 
-    public List<String> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(List<String> posts) {
-        this.posts = posts;
-    }
 }
