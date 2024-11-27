@@ -49,33 +49,22 @@ public class HomePage1 extends JFrame {
         // posts
         postsPanel = new PostsPanel(currentUsername);
         add(postsPanel, BorderLayout.CENTER);
-        loadPostsFromDatabase();
 
         setVisible(true);
     }
-
-    // to load posts from MongoDB
-    private void loadPostsFromDatabase() {
-        try {
-            MongoDatabase database = MongoDBConnection.getDatabase("PostDataBase");
-            MongoPostDataAccessObject dao = new MongoPostDataAccessObject(database);
-            List<Post> posts = dao.getAllPosts();
-
-            for (Post post : posts) {
-                postsPanel.addPost(post);
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Failed to load posts from the database.", "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        }
-    }
-
 
     public PostsPanel getPostsPanel() {
         return postsPanel;
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new HomePage1("testUser"));
+        SwingUtilities.invokeLater(() -> {
+
+            MongoDatabase database = MongoDBConnection.getDatabase("PostDataBase");
+            MongoPostDataAccessObject dao = new MongoPostDataAccessObject(database);
+            dao.createIndexes();
+
+            new HomePage1("testUser");
+        });
     }
 }
