@@ -11,6 +11,7 @@ import org.bson.types.ObjectId;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -25,19 +26,41 @@ public class MongoPostDataAccessObject {
 
     //  add a new post
     public void addPost(Post post) {
-        Document postDoc = new Document("_id", post.getId())
-                .append("title", post.getTitle())
-                .append("content", post.getContent())
-                .append("section", post.getSection().toString())
-                .append("timestamp", post.getTimestamp().toInstant(ZoneOffset.UTC))
-                .append("username", post.getUsername())
-                .append("likes", post.getLikes());
-        postCollection.insertOne(postDoc);
+        try {
+            Document doc = new Document()
+                    .append("title", post.getTitle())
+                    .append("content", post.getContent())
+                    .append("section", post.getSection().toString()) // Log this value
+                    .append("username", post.getUsername())
+                    .append("timestamp", Date.from(post.getTimestamp().toInstant(ZoneOffset.UTC)))
+                    .append("likes", post.getLikes());
+
+            // System.out.println("Saving post with section: " + post.getSection());
+            postCollection.insertOne(doc);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // get a post by title
     public Document getPostByTitle(String title) {
         return postCollection.find(eq("title", title)).first();
+    }
+
+    // get a post by section, for section page
+    public List<Post> getPostsBySection(String section, int page, int pageSize) {
+        List<Post> posts = new ArrayList<>();
+        try {
+            // System.out.println("Querying posts for section: " + section);
+            for (Document doc : postCollection.find(eq("section", section))
+                    .skip(page * pageSize)
+                    .limit(pageSize)) {
+                posts.add(Post.fromDocument(doc));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return posts;
     }
 
     // delete a post by title

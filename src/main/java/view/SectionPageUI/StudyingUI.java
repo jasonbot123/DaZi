@@ -1,31 +1,33 @@
-package view.HomePageUI;
+package view.SectionPageUI;
 
-import com.mongodb.client.MongoDatabase;
-import data_access.MongoDBConnection;
 import data_access.MongoPostDataAccessObject;
-import entity.Post;
+import view.HomePageUI.HomePage1;
+import view.HomePageUI.PostsPanel;
+import view.HomePageUI.LogoPanel;
+import view.HomePageUI.SideBar;
+import view.HomePageUI.SearchBar;
+import view.HomePageUI.TopRightIconsPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
-public class HomePage1 extends JFrame {
+public class StudyingUI extends JFrame {
     private PostsPanel postsPanel;
     private String currentUsername;
 
-    public HomePage1(String username) {
+    public StudyingUI(String username) {
         this.currentUsername = username;
-        setTitle("Home Page - " + username);
+
+        setTitle("Studying Section - " + username);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // left panel, colouring
+        // Left Panel (Logo + Sidebar)
         JPanel leftPanel = new JPanel(new BorderLayout());
         leftPanel.setBackground(new Color(0, 51, 102));
 
-        // logo
         JPanel logoPanel = new LogoPanel();
         logoPanel.setBackground(new Color(0, 51, 102));
         leftPanel.add(logoPanel, BorderLayout.NORTH);
@@ -35,36 +37,29 @@ public class HomePage1 extends JFrame {
 
         add(leftPanel, BorderLayout.WEST);
 
-        // search bar
+        // Top Panel (Search Bar and Icons)
         JPanel topPanel = new JPanel(new BorderLayout());
         JPanel searchBar = new SearchBar();
         topPanel.add(searchBar, BorderLayout.CENTER);
 
-        // upper right, icon buttons
         JPanel topRightIcons = new TopRightIconsPanel(this);
         topPanel.add(topRightIcons, BorderLayout.EAST);
 
         add(topPanel, BorderLayout.NORTH);
 
-        // posts
-        postsPanel = new PostsPanel(currentUsername, null);
+        // Center Panel
+        postsPanel = new PostsPanel(currentUsername, "STUDYING");
+        postsPanel.loadPostsBySection("STUDYING");
         add(postsPanel, BorderLayout.CENTER);
 
         setVisible(true);
     }
 
-    public PostsPanel getPostsPanel() {
-        return postsPanel;
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new StudyingUI("testUser"));
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-
-            MongoDatabase database = MongoDBConnection.getDatabase("PostDataBase");
-            MongoPostDataAccessObject dao = new MongoPostDataAccessObject(database);
-            dao.createIndexes();
-
-            new HomePage1("testUser");
-        });
+    public PostsPanel getPostsPanel() {
+        return postsPanel;
     }
 }

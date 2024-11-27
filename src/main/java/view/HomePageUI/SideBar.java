@@ -1,12 +1,14 @@
 package view.HomePageUI;
 
+import view.SectionPageUI.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
 public class SideBar extends JPanel {
 
-    public SideBar() {
+    public SideBar(String currentUsername) {
         setLayout(new BorderLayout());
         setBackground(new Color(0, 51, 102)); // TODO: change sidebar background color
 
@@ -32,9 +34,23 @@ public class SideBar extends JPanel {
         );
 
         for (int i = 0; i < buttonLabels.size(); i++) {
-            JButton button = createStyledButton(emojis[i] + "  " + buttonLabels.get(i));
+            String label = buttonLabels.get(i);
+            JButton button = createStyledButton(emojis[i] + "  " + label);
             menuPanel.add(button);
-            menuPanel.add(Box.createRigidArea(new Dimension(0, 15))); // TODO: add more vertical spacing
+            menuPanel.add(Box.createRigidArea(new Dimension(0, 15))); // Add vertical spacing
+
+            // Add functionality to the buttons
+            button.addActionListener(e -> {
+                switch (label) {
+                    case "Latest Post" -> new HomePage1(currentUsername); // redirect to HomePage
+                    case "Your Post" -> JOptionPane.showMessageDialog(this, "TODO"); // TODO
+                    case "Studying" -> new StudyingUI(currentUsername);
+                    case "Gaming" -> new GamingUI(currentUsername);
+                    case "Dining" -> new DiningUI(currentUsername);
+                    case "Hanging Out" -> new HangingOutUI(currentUsername);
+                    case "Others" -> new OthersUI(currentUsername);
+                }
+            });
         }
 
         add(menuPanel, BorderLayout.CENTER);

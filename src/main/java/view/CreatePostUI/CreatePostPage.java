@@ -10,19 +10,19 @@ import data_access.MongoPostDataAccessObject;
 import entity.Post;
 import entity.Section;
 import view.HomePageUI.HomePage1;
+import view.SectionPageUI.*;
 
 public class CreatePostPage extends JFrame {
 
-    private HomePage1 homePage1;
+    private JFrame parentFrame; // Generalized parent frame
 
-    public CreatePostPage(HomePage1 homePage1) {
-        this.homePage1 = homePage1;
+    public CreatePostPage(JFrame parentFrame) {
+        this.parentFrame = parentFrame;
 
         setTitle("Create a Post");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 400); //TODO: change the size
+        setSize(600, 400);
         setLocationRelativeTo(null);
-
         setLayout(new BorderLayout());
 
         // Form Panel
@@ -50,9 +50,7 @@ public class CreatePostPage extends JFrame {
 
         add(formPanel, BorderLayout.CENTER);
 
-        // TODO: action listener for all buttons: delete, save as draft
-
-        // post button + action listener
+        // Post button + action listener
         JButton postButton = new JButton("Post");
         postButton.addActionListener(e -> {
             String title = titleField.getText().trim();
@@ -63,16 +61,28 @@ public class CreatePostPage extends JFrame {
                 try {
                     Section section = Section.valueOf(sectionString.toUpperCase());
 
-                    // create the Post
                     Post newPost = new Post(title, content, section, "currentUsername", LocalDateTime.now());
 
-                    // save to MongoDB
+                    // Save to MongoDB
                     MongoDatabase database = MongoDBConnection.getDatabase("PostDataBase");
                     MongoPostDataAccessObject dao = new MongoPostDataAccessObject(database);
                     dao.addPost(newPost);
 
-                    // add the new post to HomePage1 and redirect to homepage
-                    homePage1.getPostsPanel().addPost(newPost);
+                    // Add the new post to the appropriate page
+                    if (parentFrame instanceof HomePage1 homePage) {
+                        homePage.getPostsPanel().addPost(newPost);
+                    } else if (parentFrame instanceof StudyingUI studyingUI) {
+                        studyingUI.getPostsPanel().addPost(newPost);
+                    } else if (parentFrame instanceof GamingUI gamingUI) {
+                        gamingUI.getPostsPanel().addPost(newPost);
+                    } else if (parentFrame instanceof DiningUI diningUI) {
+                        diningUI.getPostsPanel().addPost(newPost);
+                    } else if (parentFrame instanceof HangingOutUI hangingOutUI) {
+                        hangingOutUI.getPostsPanel().addPost(newPost);
+                    } else if (parentFrame instanceof OthersUI othersUI) {
+                        othersUI.getPostsPanel().addPost(newPost);
+                    }
+
                     dispose();
 
                 } catch (IllegalArgumentException ex) {

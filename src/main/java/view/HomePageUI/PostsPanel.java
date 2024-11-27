@@ -19,9 +19,12 @@ public class PostsPanel extends JPanel {
     private MongoPostDataAccessObject postDAO;
     private MongoLikeRecordDataAccessObject likeRecordDAO;
     private String currentUsername;
+    private String sectionFilter;
 
-    public PostsPanel(String username) {
+    public PostsPanel(String username, String sectionFilter) {
         this.currentUsername = username;
+        this.sectionFilter = sectionFilter;
+
         setLayout(new BorderLayout());
 
         postDAO = new MongoPostDataAccessObject(MongoDBConnection.getDatabase("posts"));
@@ -71,7 +74,59 @@ public class PostsPanel extends JPanel {
         SwingWorker<List<Post>, Void> worker = new SwingWorker<>() {
             @Override
             protected List<Post> doInBackground() {
-                return postDAO.getPostsByPage(currentPage, PAGE_SIZE);
+                // if on the homepage, load all posts
+                if (sectionFilter == null) {
+                    return postDAO.getPostsByPage(currentPage, PAGE_SIZE);
+                } else { // else load the posts for that section only, by filtering
+                    return postDAO.getPostsBySection(sectionFilter, currentPage, PAGE_SIZE); // Filter by section
+                }
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    List<Post> posts = get();
+
+                    // stop loading more if there are no new posts (there should be no repeated post)
+                    if (posts.isEmpty()) {
+                        isLoading = false;
+                        return;
+                    }
+
+                    for (Post post : posts) {
+
+                        if (!postListModel.contains(post)) {
+                            postListModel.addElement(post);
+                        }
+                    }
+
+                    // increment page only if needed
+                    if (!posts.isEmpty()) {
+                        currentPage++;
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    isLoading = false;
+                }
+            }
+        };
+
+        worker.execute();
+    }
+
+    // testing, for different section's post loading
+    public void loadPostsBySection(String section) {
+        // update and clear the previous post panel
+        sectionFilter = section;
+        currentPage = 0;
+        postListModel.clear();
+
+        SwingWorker<List<Post>, Void> worker = new SwingWorker<>() {
+            @Override
+            protected List<Post> doInBackground() {
+                return postDAO.getPostsBySection(sectionFilter, currentPage, PAGE_SIZE);
             }
 
             @Override
@@ -80,7 +135,9 @@ public class PostsPanel extends JPanel {
                     List<Post> posts = get();
                     if (!posts.isEmpty()) {
                         for (Post post : posts) {
-                            postListModel.addElement(post);
+                            if (!postListModel.contains(post)) { // avoid duplicates
+                                postListModel.addElement(post);
+                            }
                         }
                         currentPage++;
                     }
@@ -91,6 +148,7 @@ public class PostsPanel extends JPanel {
                 }
             }
         };
+
         worker.execute();
     }
 
@@ -101,8 +159,15 @@ public class PostsPanel extends JPanel {
     }
 
     public void addPost(Post post) {
-        postDAO.addPost(post);
-        postListModel.addElement(post);
+        postDAO.addPost(post); // Save to MongoDB
+
+        if (sectionFilter == null || post.getSection().toString().equalsIgnoreCase(sectionFilter)) {
+            SwingUtilities.invokeLater(() -> {
+                if (!postListModel.contains(post)) {
+                    postListModel.addElement(post);
+                }
+            });
+        }
     }
 
     private class PostCellRenderer extends JPanel implements ListCellRenderer<Post> {
