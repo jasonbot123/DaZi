@@ -4,6 +4,7 @@ import com.mongodb.client.MongoDatabase;
 import data_access.MongoDBConnection;
 import data_access.MongoPostDataAccessObject;
 import entity.Post;
+import use_case.search.SearchInteractor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,9 +36,10 @@ public class HomePage1 extends JFrame {
 
         add(leftPanel, BorderLayout.WEST);
 
-        // search bar
+        // pass SearchInteractor to SearchBar
         JPanel topPanel = new JPanel(new BorderLayout());
-        JPanel searchBar = new SearchBar(this);
+        JPanel searchBar = new SearchBar(this,
+                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")));
         topPanel.add(searchBar, BorderLayout.CENTER);
 
         // upper right, icon buttons

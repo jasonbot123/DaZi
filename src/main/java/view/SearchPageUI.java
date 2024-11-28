@@ -1,6 +1,9 @@
 package view;
 
+import data_access.MongoDBConnection;
+import data_access.MongoPostDataAccessObject;
 import entity.Post;
+import use_case.search.SearchInteractor;
 import view.HomePageUI.PostsPanel;
 
 import view.HomePageUI.PostsPanel;
@@ -13,17 +16,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class SearchPageUI extends JFrame {
-    private PostsPanel postsPanel;
 
-    public SearchPageUI(String keyword, List<Post> searchResults, String currentUsername) {
-        setTitle("Search Results - " + currentUsername);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+public class SearchPageUI extends JFrame {
+
+    public SearchPageUI(JFrame previousFrame, List<Post> searchResults) {
+        setTitle("Search Results");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Left Panel (Logo + Sidebar)
+        // Left Sidebar (keep the same as HomePage)
         JPanel leftPanel = new JPanel(new BorderLayout());
         leftPanel.setBackground(new Color(0, 51, 102));
 
@@ -31,14 +34,15 @@ public class SearchPageUI extends JFrame {
         logoPanel.setBackground(new Color(0, 51, 102));
         leftPanel.add(logoPanel, BorderLayout.NORTH);
 
-        JPanel sideBar = new SideBar(currentUsername);
+        JPanel sideBar = new SideBar(previousFrame.getTitle());
         leftPanel.add(sideBar, BorderLayout.CENTER);
 
         add(leftPanel, BorderLayout.WEST);
 
-        // Top Panel (Search Bar and Icons)
+        // Top Panel (Search Bar remains the same)
         JPanel topPanel = new JPanel(new BorderLayout());
-        JPanel searchBar = new SearchBar(this);
+        JPanel searchBar = new SearchBar(this,
+                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")));
         topPanel.add(searchBar, BorderLayout.CENTER);
 
         JPanel topRightIcons = new TopRightIconsPanel(this);
@@ -46,15 +50,16 @@ public class SearchPageUI extends JFrame {
 
         add(topPanel, BorderLayout.NORTH);
 
-        // Center Panel (Posts Panel)
-        PostsPanel postsPanel = new PostsPanel(currentUsername, null); // No section filter
-        postsPanel.updatePosts(searchResults); // Populate the panel with search results
-        add(postsPanel, BorderLayout.CENTER);
+        // Center Panel (Display search results)
+        DefaultListModel<Post> postListModel = new DefaultListModel<>();
+        for (Post post : searchResults) {
+            postListModel.addElement(post);
+        }
+        JList<Post> postList = new JList<>(postListModel);
+        postList.setCellRenderer(new PostsPanel.PostCellRenderer());
+        JScrollPane scrollPane = new JScrollPane(postList);
+        add(scrollPane, BorderLayout.CENTER);
 
         setVisible(true);
-    }
-
-    public PostsPanel getPostsPanel() {
-        return postsPanel;
     }
 }

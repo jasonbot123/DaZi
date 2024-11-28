@@ -8,7 +8,11 @@ import java.util.List;
 
 public class SideBar extends JPanel {
 
+   //  private final SearchInteractor searchInteractor;
+
     public SideBar(String currentUsername) {
+        // this.searchInteractor = searchInteractor; // Assign searchInteractor
+
         setLayout(new BorderLayout());
         setBackground(new Color(0, 51, 102)); // TODO: change sidebar background color
 

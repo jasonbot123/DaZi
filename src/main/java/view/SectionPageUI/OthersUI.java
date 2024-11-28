@@ -1,5 +1,6 @@
 package view.SectionPageUI;
 
+import data_access.MongoDBConnection;
 import data_access.MongoPostDataAccessObject;
 import view.HomePageUI.HomePage1;
 import view.HomePageUI.PostsPanel;
@@ -39,7 +40,8 @@ public class OthersUI extends JFrame{
 
         // Top Panel (Search Bar and Icons)
         JPanel topPanel = new JPanel(new BorderLayout());
-        JPanel searchBar = new SearchBar(this);
+        JPanel searchBar = new SearchBar(this,
+                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")));
         topPanel.add(searchBar, BorderLayout.CENTER);
 
         JPanel topRightIcons = new TopRightIconsPanel(this);

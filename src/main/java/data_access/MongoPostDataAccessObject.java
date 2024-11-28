@@ -54,7 +54,7 @@ public class MongoPostDataAccessObject {
         try {
             // Use a case-insensitive regex to find matching titles
             for (Document doc : postCollection.find(new Document("title", new Document("$regex", title).append("$options", "i")))) {
-                System.out.println("Matching Document: " + doc.toJson()); // TODO
+                // System.out.println("Matching Document: " + doc.toJson()); // TODO
                 Post post = Post.fromDocument(doc);
                 if (post != null) {
                     posts.add(post);

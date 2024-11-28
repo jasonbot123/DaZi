@@ -3,50 +3,45 @@ package view.HomePageUI;
 import data_access.MongoDBConnection;
 import data_access.MongoPostDataAccessObject;
 import entity.Post;
+import use_case.search.SearchInteractor;
 import view.SearchPageUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.util.List;
 
 public class SearchBar extends JPanel {
-    private JFrame parentFrame;
+    private JTextField searchField;
+    private JButton searchButton;
 
-    public SearchBar(JFrame parentFrame) {
-        this.parentFrame = parentFrame;
-
+    public SearchBar(JFrame parentFrame, MongoPostDataAccessObject postDAO) {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
-        JTextField searchField = new JTextField("Hinted search text", 30);
+        searchField = new JTextField("Enter your search keyword...");
         searchField.setFont(new Font("SansSerif", Font.PLAIN, 16));
 
-        JButton searchButton = new JButton("🔍");
+        searchButton = new JButton("🔍");
         searchButton.setFont(new Font("SansSerif", Font.BOLD, 18));
         searchButton.addActionListener(e -> {
             String keyword = searchField.getText().trim();
-            System.out.println("Searching keyword: " + keyword); // Debugging
-
             if (!keyword.isEmpty()) {
-                // Search posts by title
-                MongoPostDataAccessObject postDAO = new MongoPostDataAccessObject(MongoDBConnection.getDatabase("posts"));
+                // Perform the search
                 List<Post> searchResults = postDAO.searchPostsByTitle(keyword);
-
                 if (!searchResults.isEmpty()) {
-                    // Transition to SearchPageUI with the results
-                    JFrame newFrame = new SearchPageUI(keyword, searchResults, "currentUsername"); // Replace with actual username
-                    newFrame.setVisible(true);
-
-                    if (parentFrame != null) {
-                        parentFrame.dispose();
-                    }
+                    // Navigate to SearchPageUI
+                    new SearchPageUI(parentFrame, searchResults);
+                    parentFrame.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(null,
-                            "No posts found matching the keyword.", "Info", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this,
+                            "No posts found for keyword: " + keyword,
+                            "Info", JOptionPane.INFORMATION_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(null,
-                        "Please enter a keyword!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Please enter a keyword!",
+                        "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 

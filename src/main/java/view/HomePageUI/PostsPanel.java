@@ -182,7 +182,7 @@ public class PostsPanel extends JPanel {
         }
     }
 
-    private class PostCellRenderer extends JPanel implements ListCellRenderer<Post> {
+    public static class PostCellRenderer extends JPanel implements ListCellRenderer<Post> {
         private final JLabel titleLabel;
         private final JLabel contentLabel;
         private final JLabel userLabel;
@@ -349,6 +349,7 @@ public class PostsPanel extends JPanel {
         commentPage.setVisible(true);
     }
 
+    /*
     public void searchPosts(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
             JOptionPane.showMessageDialog(this,
@@ -385,6 +386,8 @@ public class PostsPanel extends JPanel {
 
         worker.execute();
     }
+
+     */
     public void updatePosts(List<Post> posts) {
         SwingUtilities.invokeLater(() -> {
             postListModel.clear();
