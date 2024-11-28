@@ -4,6 +4,7 @@ import entity.Post;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class InMemoryPostDataAccessObject {
     private List<Post> posts = new ArrayList<>();
@@ -20,5 +21,15 @@ public class InMemoryPostDataAccessObject {
                 .skip(page * pageSize)
                 .limit(pageSize)
                 .toList();
+    }
+
+    public List<Post> searchPostsByTitle(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return new ArrayList<>(); // Return empty list for empty or null keyword
+        }
+        // Filter posts whose title contains the keyword (case-insensitive)
+        return posts.stream()
+                .filter(post -> post.getTitle().toLowerCase().contains(keyword.toLowerCase()))
+                .collect(Collectors.toList());
     }
 }
