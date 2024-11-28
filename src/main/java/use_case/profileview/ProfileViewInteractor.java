@@ -21,10 +21,5 @@ public class ProfileViewInteractor implements ProfileViewInputBoundary {
         ProfileViewOutputData outputData = new ProfileViewOutputData(profileData);
         presenter.presentProfile(outputData);
     }
-
-//    @Override
-//    public void saveProfile(ProfileViewInputData inputData) {
-//        dataAccess.saveProfile(inputData);
-//    }
 }
 

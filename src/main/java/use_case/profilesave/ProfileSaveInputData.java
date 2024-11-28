@@ -1,27 +1,67 @@
 package use_case.profilesave;
 
+import org.bson.Document;
+
 public class ProfileSaveInputData {
-    private final String username;
-    private String yearOfStudy;
-    private String program;
-    private String bio;
-    private String college;
+//    private final String username;
+//    private String yearOfStudy;
+//    private String program;
+//    private String bio;
+//    private String college;
+    private final Document profileDoc;
 
     public ProfileSaveInputData(String username, String yearOfStudy, String program, String bio, String college) {
-        this.username = username;
-        this.yearOfStudy = yearOfStudy;
-        this.program = program;
-        this.bio = bio;
-        this.college = college;
+        this.profileDoc = new Document("username", username)
+                .append("yearofstudy", yearOfStudy)
+                .append("program", program)
+                .append("bio", bio)
+                .append("college", college);
     }
+        public String getUsername() {
+            return profileDoc.getString("username");
+        }
 
-    public String getUsername() { return username; }
-    public String getYearOfStudy() { return yearOfStudy; }
-    public void setYearOfStudy(String yearOfStudy) { this.yearOfStudy = yearOfStudy; }
-    public String getProgram() { return program; }
-    public void setProgram(String program) { this.program = program; }
-    public String getBio() { return bio; }
-    public void setBio(String bio) { this.bio = bio; }
-    public String getCollege() { return college; }
-    public void setCollege(String college) { this.college = college; }
-}
+        public void setUsername(String username) {
+            if (username == null || username.isEmpty()) {
+                throw new IllegalArgumentException("Username cannot be null or empty.");
+            }
+            profileDoc.put("username", username);
+        }
+
+        public String getYearOfStudy() {
+            return profileDoc.getString("yearofstudy");
+        }
+
+        public void setYearOfStudy(String yearOfStudy) {
+            profileDoc.put("yearofstudy", yearOfStudy);
+        }
+
+        public String getProgram() {
+            return profileDoc.getString("program");
+        }
+
+        public void setProgram(String program) {
+            profileDoc.put("program", program);
+        }
+
+        public String getBio() {
+            return profileDoc.getString("bio");
+        }
+
+        public void setBio(String bio) {
+            profileDoc.put("bio", bio);
+        }
+
+        public String getCollege() {
+            return profileDoc.getString("college");
+        }
+
+        public void setCollege(String college) {
+            profileDoc.put("college", college);
+        }
+
+        // Getter for the complete Document
+        public Document getProfileDocument() {
+            return profileDoc;
+        }
+    }

@@ -1,36 +1,29 @@
-//package use_case.profilesave;
-//
-//import org.bson.Document;
-//import use_case.profilesave.ProfileSaveDataAccessInterface;
-//
-//public class ProfileSaveInteractor {
-//    private final ProfileSaveDataAccessInterface dataAccess;
-//    private final ProfileSaveOutputBoundary presenter;
-//
-//    public ProfileSaveInteractor(ProfileSaveDataAccessInterface dataAccess, ProfileSaveOutputBoundary presenter) {
-//        this.dataAccess = dataAccess;
-//        this.presenter = presenter;
-//    }
-//
-//    public void saveProfile(ProfileSaveInputData inputData) {
-//        Document profileDoc = new Document("userId", inputData.getUsername())
-//                .append("yearOfStudy", inputData.getYearOfStudy())
-//                .append("program", inputData.getProgram())
-//                .append("bio", inputData.getBio())
-//                .append("college", inputData.getCollege());
-//
+package use_case.profilesave;
+
+import org.bson.Document;
+import use_case.profileview.ProfileViewOutputData;
+
+public class ProfileSaveInteractor implements ProfileSaveInputBoundary {
+    private final ProfileSaveDataAccessInterface dataAccess;
+    private final ProfileSaveOutputBoundary presenter;
+
+    public ProfileSaveInteractor(ProfileSaveDataAccessInterface dataAccess, ProfileSaveOutputBoundary presenter) {
+        this.dataAccess = dataAccess;
+        this.presenter = presenter;
+    }
+
+    public void saveProfile(ProfileSaveInputData inputData) {
+        dataAccess.saveProfile(inputData);
+        ProfileSaveOutputData outputData = new ProfileSaveOutputData(inputData.getProfileDocument());
+        presenter.presentProfile(outputData);
 //        try {
-//            dataAccess.saveProfile(inputData.getUsername(), profileDoc);
-//
-//            ProfileSaveOutputData outputData = new ProfileSaveOutputData();
-//            outputData.setSuccess(true);
-//            outputData.setMessage("Profile saved successfully.");
-//            presenter.presentSaveResult(outputData);
+//            dataAccess.saveProfile(inputData);
+//            ProfileSaveOutputData outputData = new ProfileSaveOutputData(inputData.getProfileDocument());
+//            presenter.presentProfile(outputData);
 //        } catch (Exception e) {
 //            ProfileSaveOutputData outputData = new ProfileSaveOutputData();
 //            outputData.setSuccess(false);
-//            outputData.setMessage("Failed to save profile: " + e.getMessage());
-//            presenter.presentSaveResult(outputData);
+//            presenter.saveResult(outputData);
 //        }
-//    }
-//}
+    }
+}

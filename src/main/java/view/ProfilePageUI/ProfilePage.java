@@ -1,6 +1,14 @@
 package view.ProfilePageUI;
 
-import interface_adapter.profileview.ProfileViewModel;
+import data_access.MongoDBConnection;
+import data_access.MongoUserProfileViewDataAccessObject;
+import service.ProfileService;
+import use_case.profileview.*;
+import use_case.profileview.ProfileViewInteractor;
+import data_access.MongoUserProfileSaveDataAccessObject;
+import interface_adapter.profilesave.*;
+import interface_adapter.profileview.*;
+import use_case.profilesave.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,7 +62,13 @@ public class ProfilePage extends JFrame {
         //if currentuser == viewModel.getUsername()
         JButton editButton = new JButton("Edit Profile");
         editButton.addActionListener(e -> {
-//            new EditProfilePage(viewModel); // Navigate to Edit Profile Page
+            MongoDBConnection connection = new MongoDBConnection();
+            ProfileSaveDataAccessInterface dataAccess = new MongoUserProfileSaveDataAccessObject(connection.getDatabase("UserDataBase"));
+            ProfileSavePresenter presenter = new ProfileSavePresenter(viewModel);
+            ProfileService service = new ProfileService(); // Optional: For validation
+            ProfileSaveInteractor interactor = new ProfileSaveInteractor(dataAccess, presenter);
+            ProfileSaveController controller = new ProfileSaveController(interactor);
+            new EditProfilePage(viewModel, controller); // Navigate to Edit Profile Page
             dispose(); // Close the current Profile Page
         });
         JPanel buttonPanel = new JPanel();

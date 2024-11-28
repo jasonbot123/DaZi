@@ -49,7 +49,7 @@ public class MongoUserProfileViewDataAccessObject implements ProfileViewDataAcce
     private Document profileInputDataToDocument(ProfileViewInputData profile) {
         Document doc = new Document("username", profile.getUsername())
                 .append("email", profile.getEmail())
-                .append("yearOfStudy", profile.getYearOfStudy())
+                .append("yearofstudy", profile.getYearOfStudy())
                 .append("program", profile.getProgram())
                 .append("bio", profile.getBio())
                 .append("college", profile.getCollege());
