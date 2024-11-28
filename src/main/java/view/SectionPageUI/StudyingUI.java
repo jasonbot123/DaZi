@@ -40,7 +40,7 @@ public class StudyingUI extends JFrame {
 
         // Top Panel (Search Bar and Icons)
         JPanel topPanel = new JPanel(new BorderLayout());
-        JPanel searchBar = new SearchBar();
+        JPanel searchBar = new SearchBar(this);
         topPanel.add(searchBar, BorderLayout.CENTER);
 
         JPanel topRightIcons = new TopRightIconsPanel(this);

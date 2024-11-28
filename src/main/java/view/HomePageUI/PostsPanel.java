@@ -5,6 +5,7 @@ import data_access.MongoPostDataAccessObject;
 import data_access.MongoLikeRecordDataAccessObject;
 import entity.Post;
 import entity.LikeRecord;
+import view.SearchPageUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -346,5 +347,50 @@ public class PostsPanel extends JPanel {
     private void handleCommentClick(Post post) {
         CommentPage commentPage = new CommentPage(post);
         commentPage.setVisible(true);
+    }
+
+    public void searchPosts(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Please enter a keyword to search!",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        SwingWorker<List<Post>, Void> worker = new SwingWorker<>() {
+            @Override
+            protected List<Post> doInBackground() {
+                return postDAO.searchPostsByTitle(keyword.trim());
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    List<Post> searchResults = get();
+                    if (searchResults.isEmpty()) {
+                        JOptionPane.showMessageDialog(PostsPanel.this,
+                                "No posts found for: " + keyword,
+                                "Search Results", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        SwingUtilities.invokeLater(() -> new SearchPageUI(keyword, searchResults, currentUsername));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(PostsPanel.this,
+                            "Error loading search results.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        };
+
+        worker.execute();
+    }
+    public void updatePosts(List<Post> posts) {
+        SwingUtilities.invokeLater(() -> {
+            postListModel.clear();
+            for (Post post : posts) {
+                postListModel.addElement(post);
+            }
+        });
     }
 }

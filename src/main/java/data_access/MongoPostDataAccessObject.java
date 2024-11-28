@@ -47,6 +47,27 @@ public class MongoPostDataAccessObject {
         return postCollection.find(eq("title", title)).first();
     }
 
+    // get a post by title, for search bar
+    public List<Post> searchPostsByTitle(String title) {
+        List<Post> posts = new ArrayList<>();
+
+        try {
+            // Use a case-insensitive regex to find matching titles
+            for (Document doc : postCollection.find(new Document("title", new Document("$regex", title).append("$options", "i")))) {
+                System.out.println("Matching Document: " + doc.toJson()); // TODO
+                Post post = Post.fromDocument(doc);
+                if (post != null) {
+                    posts.add(post);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error searching posts by title: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return posts;
+    }
+
     // get a post by section, for section page
     public List<Post> getPostsBySection(String section, int page, int pageSize) {
 
