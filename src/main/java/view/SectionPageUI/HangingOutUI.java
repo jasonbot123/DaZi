@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class HangingOutUI extends JFrame {
+    private static HangingOutUI instance;
     private PostsPanel postsPanel;
     private String currentUsername;
 
@@ -49,10 +50,17 @@ public class HangingOutUI extends JFrame {
 
         // Center Panel
         postsPanel = new PostsPanel(currentUsername, "HANGING_OUT");
-        postsPanel.loadPostsBySection("HANGING_OUT");
+        //postsPanel.loadMorePosts();
         add(postsPanel, BorderLayout.CENTER);
 
         setVisible(true);
+    }
+
+    public static HangingOutUI getInstance(String username) {
+        if (instance == null) {
+            instance = new HangingOutUI(username);
+        }
+        return instance;
     }
 
     public static void main(String[] args) {

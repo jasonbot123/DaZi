@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GamingUI extends JFrame{
+    private static GamingUI instance;
     private PostsPanel postsPanel;
     private String currentUsername;
 
@@ -49,14 +50,21 @@ public class GamingUI extends JFrame{
 
         // Center Panel
         postsPanel = new PostsPanel(currentUsername, "GAMING");
-        postsPanel.loadPostsBySection("GAMING");
+        //postsPanel.loadMorePosts();
         add(postsPanel, BorderLayout.CENTER);
 
         setVisible(true);
     }
 
+    public static GamingUI getInstance(String username) {
+        if (instance == null) {
+            instance = new GamingUI(username);
+        }
+        return instance;
+    }
+
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new StudyingUI("testUser"));
+        SwingUtilities.invokeLater(() -> new GamingUI("testUser"));
     }
 
     public PostsPanel getPostsPanel() {

@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class DiningUI extends JFrame {
+    private static DiningUI instance;
     private PostsPanel postsPanel;
     private String currentUsername;
 
@@ -49,10 +50,17 @@ public class DiningUI extends JFrame {
 
         // Center Panel
         postsPanel = new PostsPanel(currentUsername, "DINING");
-        postsPanel.loadPostsBySection("DINING");
+        //postsPanel.loadMorePosts();
         add(postsPanel, BorderLayout.CENTER);
 
         setVisible(true);
+    }
+
+    public static DiningUI getInstance(String username) {
+        if (instance == null) {
+            instance = new DiningUI(username);
+        }
+        return instance;
     }
 
     public static void main(String[] args) {

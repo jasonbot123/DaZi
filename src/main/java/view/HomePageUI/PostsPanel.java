@@ -51,7 +51,31 @@ public class PostsPanel extends JPanel {
         scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         add(scrollPane, BorderLayout.CENTER);
+        if (sectionFilter != null) {
+            loadPostsBySection(sectionFilter);
+        } else {
+            loadMorePosts();
+        }
 
+        scrollPane.getVerticalScrollBar().addAdjustmentListener(e -> {
+            JScrollBar scrollBar = (JScrollBar) e.getAdjustable();
+            int extent = scrollBar.getModel().getExtent();
+            int maximum = scrollBar.getModel().getMaximum();
+            int value = e.getValue();
+
+            if (!isLoading && value + extent > maximum - 50) { // Near the bottom
+                if (sectionFilter != null) {
+                    // System.out.println("loadPostsBySection for section: " + sectionFilter);
+                    loadPostsBySection(sectionFilter);
+                } else {
+                    loadMorePosts();
+                }
+            }
+        });
+
+        addListListeners();
+
+        /*
         scrollPane.getVerticalScrollBar().addAdjustmentListener(e -> {
             JScrollBar scrollBar = (JScrollBar) e.getAdjustable();
             int extent = scrollBar.getModel().getExtent();
@@ -63,8 +87,15 @@ public class PostsPanel extends JPanel {
             }
         });
 
-        loadMorePosts();
+        if (sectionFilter != null) {
+            loadPostsBySection(sectionFilter);
+        } else {
+            loadMorePosts();
+        }
+
         addListListeners();
+
+         */
     }
 
     private void loadMorePosts() {
@@ -74,37 +105,19 @@ public class PostsPanel extends JPanel {
         SwingWorker<List<Post>, Void> worker = new SwingWorker<>() {
             @Override
             protected List<Post> doInBackground() {
-                // if on the homepage, load all posts
-                if (sectionFilter == null) {
-                    return postDAO.getPostsByPage(currentPage, PAGE_SIZE);
-                } else { // else load the posts for that section only, by filtering
-                    return postDAO.getPostsBySection(sectionFilter, currentPage, PAGE_SIZE); // Filter by section
-                }
+                return postDAO.getPostsByPage(currentPage, PAGE_SIZE);
             }
 
             @Override
             protected void done() {
                 try {
                     List<Post> posts = get();
-
-                    // stop loading more if there are no new posts (there should be no repeated post)
-                    if (posts.isEmpty()) {
-                        isLoading = false;
-                        return;
-                    }
-
-                    for (Post post : posts) {
-
-                        if (!postListModel.contains(post)) {
+                    if (!posts.isEmpty()) {
+                        for (Post post : posts) {
                             postListModel.addElement(post);
                         }
-                    }
-
-                    // increment page only if needed
-                    if (!posts.isEmpty()) {
                         currentPage++;
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -112,16 +125,16 @@ public class PostsPanel extends JPanel {
                 }
             }
         };
-
         worker.execute();
     }
 
-    // testing, for different section's post loading
+    // helper, for different section's post loading
     public void loadPostsBySection(String section) {
-        // update and clear the previous post panel
+        // System.out.println("Loading posts for: " + section);
         sectionFilter = section;
         currentPage = 0;
         postListModel.clear();
+        isLoading = true;
 
         SwingWorker<List<Post>, Void> worker = new SwingWorker<>() {
             @Override
@@ -133,14 +146,13 @@ public class PostsPanel extends JPanel {
             protected void done() {
                 try {
                     List<Post> posts = get();
-                    if (!posts.isEmpty()) {
-                        for (Post post : posts) {
-                            if (!postListModel.contains(post)) { // avoid duplicates
-                                postListModel.addElement(post);
-                            }
+
+                    for (Post post : posts) {
+                        if (!postListModel.contains(post)) { // Check for duplicates
+                            postListModel.addElement(post);
                         }
-                        currentPage++;
                     }
+                    currentPage++;
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -159,8 +171,7 @@ public class PostsPanel extends JPanel {
     }
 
     public void addPost(Post post) {
-        postDAO.addPost(post); // Save to MongoDB
-
+        // add post to the UI only
         if (sectionFilter == null || post.getSection().toString().equalsIgnoreCase(sectionFilter)) {
             SwingUtilities.invokeLater(() -> {
                 if (!postListModel.contains(post)) {

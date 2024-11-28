@@ -43,7 +43,7 @@ public class CreatePostPage extends JFrame {
 
         // Section
         JLabel sectionLabel = new JLabel("Section:");
-        String[] sections = {"Studying", "Gaming", "Dining", "Hanging Out", "Others"};
+        String[] sections = {"Studying", "Gaming", "Dining", "Hanging_Out", "Others"};
         JComboBox<String> sectionComboBox = new JComboBox<>(sections);
         formPanel.add(sectionLabel);
         formPanel.add(sectionComboBox);
@@ -61,26 +61,22 @@ public class CreatePostPage extends JFrame {
                 try {
                     Section section = Section.valueOf(sectionString.toUpperCase());
 
-                    Post newPost = new Post(title, content, section, "currentUsername", LocalDateTime.now());
+                    Post newPost = new Post(title, content, section, "currentUsername", LocalDateTime.now()); //TODO: set to the correct username
 
                     // Save to MongoDB
                     MongoDatabase database = MongoDBConnection.getDatabase("PostDataBase");
                     MongoPostDataAccessObject dao = new MongoPostDataAccessObject(database);
                     dao.addPost(newPost);
 
-                    // Add the new post to the appropriate page
                     if (parentFrame instanceof HomePage1 homePage) {
                         homePage.getPostsPanel().addPost(newPost);
-                    } else if (parentFrame instanceof StudyingUI studyingUI) {
-                        studyingUI.getPostsPanel().addPost(newPost);
-                    } else if (parentFrame instanceof GamingUI gamingUI) {
-                        gamingUI.getPostsPanel().addPost(newPost);
-                    } else if (parentFrame instanceof DiningUI diningUI) {
-                        diningUI.getPostsPanel().addPost(newPost);
-                    } else if (parentFrame instanceof HangingOutUI hangingOutUI) {
-                        hangingOutUI.getPostsPanel().addPost(newPost);
-                    } else if (parentFrame instanceof OthersUI othersUI) {
-                        othersUI.getPostsPanel().addPost(newPost);
+                    }
+                    switch (section) {
+                        case STUDYING -> StudyingUI.getInstance("currentUsername").getPostsPanel().addPost(newPost);
+                        case GAMING -> GamingUI.getInstance("currentUsername").getPostsPanel().addPost(newPost);
+                        case DINING -> DiningUI.getInstance("currentUsername").getPostsPanel().addPost(newPost);
+                        case HANGING_OUT -> HangingOutUI.getInstance("currentUsername").getPostsPanel().addPost(newPost);
+                        case OTHERS -> OthersUI.getInstance("currentUsername").getPostsPanel().addPost(newPost);
                     }
 
                     dispose();
