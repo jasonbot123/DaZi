@@ -1,24 +1,31 @@
 package entity;
 
+import org.bson.types.ObjectId;
 import java.time.LocalDateTime;
 
 public class Post {
+    private ObjectId id;
     private String title;
     private String content;
     private Section section;
     private LocalDateTime timestamp;
     private String username;
+    private int likes;
 
     public Post(String title, String content, Section section, String username, LocalDateTime timestamp) {
+        this.id = new ObjectId();
         this.title = title;
         this.content = content;
         this.section = section;
         this.timestamp = timestamp;
-        this.timestamp = LocalDateTime.now();
         this.username = username;
+        this.likes = 0;
     }
 
     // Getters
+    public ObjectId getId() {
+        return id;
+    }
     public String getTitle() {
         return title;
     }
@@ -34,8 +41,14 @@ public class Post {
     public String getUsername() {
         return username;
     }
+    public int getLikes() {
+        return likes;
+    }
 
     // Setters
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
     public void setTitle(String title) {
         this.title = title;
     }
@@ -50,6 +63,9 @@ public class Post {
     }
     public void setUsername(String username) {
         this.username = username;
+    }
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 
     // TODO: for displaying limited content on the homepage, not implemented to Homepage
