@@ -1,19 +1,22 @@
 package view.ProfilePageUI;
 
+import com.mongodb.client.MongoDatabase;
 import data_access.MongoDBConnection;
-import data_access.MongoUserProfileViewDataAccessObject;
+import data_access.MongoPostDataAccessObject;
+import entity.Post;
 import service.ProfileService;
-import use_case.profileview.*;
-import use_case.profileview.ProfileViewInteractor;
 import data_access.MongoUserProfileSaveDataAccessObject;
 import interface_adapter.profilesave.*;
 import interface_adapter.profileview.*;
 import use_case.profilesave.*;
+import view.HomePageUI.PostsPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class ProfilePage extends JFrame {
+    private final ProfilePostsPanel postsPanel;
     public ProfilePage(ProfileViewModel viewModel) {
         setTitle("Profile Page");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -55,8 +58,9 @@ public class ProfilePage extends JFrame {
         add(infoPanel, BorderLayout.NORTH);
 
         // User Posts Panel
-        UserPostsPanel userPostsPanel = new UserPostsPanel(viewModel);
-        add(userPostsPanel, BorderLayout.CENTER);
+        postsPanel = new ProfilePostsPanel("currentUsername");
+        add(postsPanel, BorderLayout.CENTER);
+//        loadPostsFromDatabase();
 
         // Edit Profile Button
         //if currentuser == viewModel.getUsername()
@@ -76,5 +80,19 @@ public class ProfilePage extends JFrame {
         add(buttonPanel, BorderLayout.SOUTH);
 
         setVisible(true);
+    }
+    private void loadPostsFromDatabase() {
+        try {
+            MongoDatabase database = MongoDBConnection.getDatabase("posts");
+            MongoPostDataAccessObject dao = new MongoPostDataAccessObject(database);
+            List<Post> posts = dao.getAllPostsByUsername("currentUsername");
+
+            for (Post post : posts) {
+                postsPanel.addPost(post);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Failed to load posts from the database.", "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }
 }
