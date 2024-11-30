@@ -7,6 +7,7 @@ import entity.Post;
 import entity.Section;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import use_case.post.PostDataAccessInterface;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -17,7 +18,7 @@ import java.util.List;
 import static com.mongodb.client.model.Filters.eq;
 
 
-public class MongoPostDataAccessObject {
+public class MongoPostDataAccessObject implements PostDataAccessInterface {
     private MongoCollection<Document> postCollection;
 
     public MongoPostDataAccessObject(MongoDatabase database) {

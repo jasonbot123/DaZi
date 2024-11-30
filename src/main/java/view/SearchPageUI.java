@@ -3,6 +3,7 @@ package view;
 import data_access.MongoDBConnection;
 import data_access.MongoPostDataAccessObject;
 import entity.Post;
+import interface_adapter.search.SearchViewModel;
 import use_case.search.SearchInteractor;
 import view.HomePageUI.PostsPanel;
 
@@ -19,14 +20,14 @@ import java.util.List;
 
 public class SearchPageUI extends JFrame {
 
-    public SearchPageUI(JFrame previousFrame, List<Post> searchResults) {
+    public SearchPageUI(JFrame previousFrame,  SearchViewModel viewModel) {
         setTitle("Search Results");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Left Sidebar (keep the same as HomePage)
+        // Left Sidebar (same as HomePage)
         JPanel leftPanel = new JPanel(new BorderLayout());
         leftPanel.setBackground(new Color(0, 51, 102));
 
@@ -36,25 +37,25 @@ public class SearchPageUI extends JFrame {
 
         JPanel sideBar = new SideBar(previousFrame.getTitle());
         leftPanel.add(sideBar, BorderLayout.CENTER);
-
         add(leftPanel, BorderLayout.WEST);
 
         // Top Panel (Search Bar remains the same)
         JPanel topPanel = new JPanel(new BorderLayout());
         JPanel searchBar = new SearchBar(this,
-                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")));
+                new SearchInteractor(new MongoPostDataAccessObject
+                        (MongoDBConnection.getDatabase("PostDataBase")), viewModel), viewModel);
         topPanel.add(searchBar, BorderLayout.CENTER);
 
         JPanel topRightIcons = new TopRightIconsPanel(this);
         topPanel.add(topRightIcons, BorderLayout.EAST);
-
         add(topPanel, BorderLayout.NORTH);
 
         // Center Panel (Display search results)
         DefaultListModel<Post> postListModel = new DefaultListModel<>();
-        for (Post post : searchResults) {
+        for (Post post : viewModel.getSearchResults()) {
             postListModel.addElement(post);
         }
+
         JList<Post> postList = new JList<>(postListModel);
         postList.setCellRenderer(new PostsPanel.PostCellRenderer());
         JScrollPane scrollPane = new JScrollPane(postList);
@@ -62,4 +63,5 @@ public class SearchPageUI extends JFrame {
 
         setVisible(true);
     }
+
 }

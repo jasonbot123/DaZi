@@ -5,7 +5,7 @@ import entity.Post;
 import java.util.List;
 
 public interface SearchInputBoundary {
-    void searchPostsByTitle(String keyword);
+    List<Post> searchPostsByTitle(String keyword);
 }
 
 

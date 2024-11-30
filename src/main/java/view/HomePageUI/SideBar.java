@@ -25,11 +25,10 @@ public class SideBar extends JPanel {
 
         // emojis and buttons
         String[] emojis = {
-                "📜", "💬", "📚", "🎮", "🍽️", "🤝", "🌀"
+                "📜", "📚", "🎮", "🍽️", "🤝", "🌀"
         };
         List<String> buttonLabels = List.of(
                 "Latest Post",
-                "Your Post",
                 "Studying",
                 "Gaming",
                 "Dining",
@@ -47,7 +46,6 @@ public class SideBar extends JPanel {
             button.addActionListener(e -> {
                 switch (label) {
                     case "Latest Post" -> new HomePage1(currentUsername); // redirect to HomePage
-                    case "Your Post" -> JOptionPane.showMessageDialog(this, "TODO"); // TODO
                     case "Studying" -> new StudyingUI(currentUsername);
                     case "Gaming" -> new GamingUI(currentUsername);
                     case "Dining" -> new DiningUI(currentUsername);

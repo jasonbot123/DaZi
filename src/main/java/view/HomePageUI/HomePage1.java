@@ -4,6 +4,7 @@ import com.mongodb.client.MongoDatabase;
 import data_access.MongoDBConnection;
 import data_access.MongoPostDataAccessObject;
 import entity.Post;
+import interface_adapter.search.SearchViewModel;
 import use_case.search.SearchInteractor;
 
 import javax.swing.*;
@@ -13,9 +14,15 @@ import java.util.List;
 public class HomePage1 extends JFrame {
     private PostsPanel postsPanel;
     private String currentUsername;
+    private final SearchInteractor searchInteractor;
+    private final SearchViewModel searchViewModel;
 
     public HomePage1(String username) {
         this.currentUsername = username;
+        this.searchViewModel = new SearchViewModel();
+        this.searchInteractor = new SearchInteractor(new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
+                searchViewModel);
+
         setTitle("Home Page - " + username);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -38,8 +45,7 @@ public class HomePage1 extends JFrame {
 
         // pass SearchInteractor to SearchBar
         JPanel topPanel = new JPanel(new BorderLayout());
-        JPanel searchBar = new SearchBar(this,
-                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")));
+        JPanel searchBar = new SearchBar(this, searchInteractor, searchViewModel);
         topPanel.add(searchBar, BorderLayout.CENTER);
 
         // upper right, icon buttons

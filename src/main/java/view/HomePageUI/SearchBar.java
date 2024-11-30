@@ -3,6 +3,7 @@ package view.HomePageUI;
 import data_access.MongoDBConnection;
 import data_access.MongoPostDataAccessObject;
 import entity.Post;
+import interface_adapter.search.SearchViewModel;
 import use_case.search.SearchInteractor;
 import view.SearchPageUI;
 
@@ -15,34 +16,30 @@ public class SearchBar extends JPanel {
     private JTextField searchField;
     private JButton searchButton;
 
-    public SearchBar(JFrame parentFrame, MongoPostDataAccessObject postDAO) {
+    public SearchBar(JFrame parentFrame, SearchInteractor searchInteractor, SearchViewModel viewModel) {
+        // this.searchInteractor = searchInteractor;
+
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
-        searchField = new JTextField("Enter your search keyword...");
+        searchField = new JTextField("What are you looking for...");
         searchField.setFont(new Font("SansSerif", Font.PLAIN, 16));
 
         searchButton = new JButton("🔍");
         searchButton.setFont(new Font("SansSerif", Font.BOLD, 18));
         searchButton.addActionListener(e -> {
             String keyword = searchField.getText().trim();
-            if (!keyword.isEmpty()) {
-                // Perform the search
-                List<Post> searchResults = postDAO.searchPostsByTitle(keyword);
-                if (!searchResults.isEmpty()) {
-                    // Navigate to SearchPageUI
-                    new SearchPageUI(parentFrame, searchResults);
-                    parentFrame.dispose();
-                } else {
-                    JOptionPane.showMessageDialog(this,
-                            "No posts found for keyword: " + keyword,
-                            "Info", JOptionPane.INFORMATION_MESSAGE);
-                }
-            } else {
+            searchInteractor.searchPostsByTitle(keyword);
+
+            if (viewModel.getErrorMessage() != null) {
                 JOptionPane.showMessageDialog(this,
-                        "Please enter a keyword!",
-                        "Error", JOptionPane.ERROR_MESSAGE);
+                        viewModel.getErrorMessage(),
+                        "Info", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                new SearchPageUI(parentFrame, viewModel);
+                parentFrame.dispose();
             }
+
         });
 
         add(searchField, BorderLayout.CENTER);
