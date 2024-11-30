@@ -31,6 +31,10 @@ public class MongoUserDataAccessObject {
         return userCollection.find(eq("username", username)).first();
     }
 
+    public Document getPasswerd(String password) {
+        return userCollection.find(eq("password", password)).first();
+    }
+
     // check if a user exists by username
     public boolean userExists(String username) {
         return userCollection.find(eq("username", username)).first() != null;
