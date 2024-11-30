@@ -60,14 +60,6 @@ public class StudyingUI extends JFrame {
         leftPanel.add(sideBar, BorderLayout.CENTER);
         add(leftPanel, BorderLayout.WEST);
 
-        /*
-        JPanel sideBar = new SideBar(currentUsername);
-        leftPanel.add(sideBar, BorderLayout.CENTER);
-
-         */
-
-        add(leftPanel, BorderLayout.WEST);
-
         // Top Panel (Search Bar and Icons)
         JPanel topPanel = new JPanel(new BorderLayout());
         SearchViewModel sViewModel = new SearchViewModel();
@@ -85,23 +77,6 @@ public class StudyingUI extends JFrame {
         // Center Panel
         add(postsPanel, BorderLayout.CENTER);
         interactor.getPostsBySection("STUDYING", 10);
-
-        /*
-        String sectionFilter = "STUDYING";
-        PostsViewModel viewModel = new PostsViewModel();
-
-        PostsPanel postsPanel = new PostsPanel(currentUsername, sectionFilter, viewModel);
-
-        PostsInteractor interactor = new PostsInteractor(
-                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
-                viewModel,
-                postsPanel
-        );
-        postsPanel.setInteractor(interactor);
-
-        add(postsPanel, BorderLayout.CENTER);
-
-         */
 
         setVisible(true);
     }

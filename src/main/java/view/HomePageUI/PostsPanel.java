@@ -17,7 +17,6 @@ public class PostsPanel extends JPanel {
     private final PostsViewModel viewModel;
     private String sectionFilter;
 
-
     public PostsPanel(String username, String sectionFilter, PostsViewModel viewModel) {
         this.viewModel = viewModel;
         this.sectionFilter = sectionFilter;

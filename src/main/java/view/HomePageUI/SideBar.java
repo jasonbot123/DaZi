@@ -43,7 +43,7 @@ public class SideBar extends JPanel {
             menuPanel.add(Box.createRigidArea(new Dimension(0, 15)));
 
             button.addActionListener(e -> {
-                String sectionFilter = switch (buttonLabel) {
+                String sectionFilter = switch (buttonLabel) { // refresh the sectionFilter first
                     case "Studying" -> "STUDYING";
                     case "Gaming" -> "GAMING";
                     case "Dining" -> "DINING";
@@ -53,10 +53,10 @@ public class SideBar extends JPanel {
                 };
 
                 viewModel.clearPosts();
-                postsPanel.updateSectionFilter(sectionFilter);
+                postsPanel.updateSectionFilter(sectionFilter); // refresh again
 
                 switch (buttonLabel) {
-                    case "Latest Post" -> new HomePage1(currentUsername); // Open HomePage
+                    case "Latest Post" -> new HomePage1(currentUsername); // open HomePage
                     case "Studying" -> new StudyingUI(currentUsername);
                     case "Gaming" -> new GamingUI(currentUsername);
                     case "Dining" -> new DiningUI(currentUsername);

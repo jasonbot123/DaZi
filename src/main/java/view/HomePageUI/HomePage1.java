@@ -72,21 +72,6 @@ public class HomePage1 extends JFrame {
         add(postsPanel, BorderLayout.CENTER);
         interactor.getThePosts(10);
 
-        /*
-        PostsViewModel viewModel = new PostsViewModel();
-        PostsPanel postsPanel = new PostsPanel(currentUsername, null, viewModel);
-        PostsInteractor interactor = new PostsInteractor(
-                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
-                viewModel,
-                postsPanel
-        );
-        postsPanel.setInteractor(interactor);
-        interactor.getThePosts(10);
-
-        add(postsPanel, BorderLayout.CENTER);
-
-         */
-
         setVisible(true);
     }
 
