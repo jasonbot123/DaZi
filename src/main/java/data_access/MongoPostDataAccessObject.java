@@ -26,6 +26,7 @@ public class MongoPostDataAccessObject implements PostDataAccessInterface {
     }
 
     //  add a new post
+    @Override
     public void addPost(Post post) {
         try {
             Document doc = new Document()

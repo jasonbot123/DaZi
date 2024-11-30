@@ -2,6 +2,12 @@ package view.SectionPageUI;
 
 import data_access.MongoDBConnection;
 import data_access.MongoPostDataAccessObject;
+import interface_adapter.posts.PostsViewModel;
+import interface_adapter.posts.SectionViewModel;
+import interface_adapter.search.SearchViewModel;
+import use_case.post.PostsInteractor;
+import use_case.post.SectionInteractor;
+import use_case.search.SearchInteractor;
 import view.HomePageUI.HomePage1;
 import view.HomePageUI.PostsPanel;
 import view.HomePageUI.LogoPanel;
@@ -13,12 +19,17 @@ import javax.swing.*;
 import java.awt.*;
 
 public class OthersUI extends JFrame{
-    private static OthersUI instance;
-    private PostsPanel postsPanel;
     private String currentUsername;
+    private final SectionInteractor interactor;
+    private final SectionViewModel viewModel;
 
     public OthersUI(String username){
         this.currentUsername = username;
+        this.viewModel = new SectionViewModel();
+        this.interactor = new SectionInteractor(
+                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
+                viewModel);
+
         setTitle("Others Section - " + username);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -40,8 +51,10 @@ public class OthersUI extends JFrame{
 
         // Top Panel (Search Bar and Icons)
         JPanel topPanel = new JPanel(new BorderLayout());
+        SearchViewModel sViewModel = new SearchViewModel();
         JPanel searchBar = new SearchBar(this,
-                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")));
+                new SearchInteractor(new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),sViewModel),
+                sViewModel);
         topPanel.add(searchBar, BorderLayout.CENTER);
 
         JPanel topRightIcons = new TopRightIconsPanel(this);
@@ -50,24 +63,26 @@ public class OthersUI extends JFrame{
         add(topPanel, BorderLayout.NORTH);
 
         // Center Panel
-        postsPanel = new PostsPanel(currentUsername, "OTHERS");
+        String sectionFilter = "OTHERS";
+        PostsViewModel viewModel = new PostsViewModel();
+
+        PostsPanel postsPanel = new PostsPanel(currentUsername, sectionFilter, viewModel);
+
+        PostsInteractor interactor = new PostsInteractor(
+                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
+                viewModel,
+                postsPanel
+        );
+        postsPanel.setInteractor(interactor);
+
         add(postsPanel, BorderLayout.CENTER);
 
         setVisible(true);
     }
 
-    public static OthersUI getInstance(String username) {
-        if (instance == null) {
-            instance = new OthersUI(username);
-        }
-        return instance;
-    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new OthersUI("testUser"));
     }
 
-    public PostsPanel getPostsPanel() {
-        return postsPanel;
-    }
 }

@@ -12,6 +12,7 @@ import view.HomePageUI.LogoPanel;
 import view.HomePageUI.SideBar;
 import view.HomePageUI.SearchBar;
 import view.HomePageUI.TopRightIconsPanel;
+import view.HomePageUI.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,14 +51,14 @@ public class SearchPageUI extends JFrame {
         topPanel.add(topRightIcons, BorderLayout.EAST);
         add(topPanel, BorderLayout.NORTH);
 
-        // Center Panel (Display search results)
+        // Center Panel (display search results)
         DefaultListModel<Post> postListModel = new DefaultListModel<>();
         for (Post post : viewModel.getSearchResults()) {
             postListModel.addElement(post);
         }
 
         JList<Post> postList = new JList<>(postListModel);
-        postList.setCellRenderer(new PostsPanel.PostCellRenderer());
+        postList.setCellRenderer(new PostCellRenderer());
         JScrollPane scrollPane = new JScrollPane(postList);
         add(scrollPane, BorderLayout.CENTER);
 

@@ -2,12 +2,21 @@ package view.SectionPageUI;
 
 import data_access.MongoDBConnection;
 import data_access.MongoPostDataAccessObject;
+
+import interface_adapter.posts.PostsViewModel;
+import interface_adapter.posts.SectionViewModel;
+import use_case.post.PostDataAccessInterface;
+import use_case.post.PostsInteractor;
+import use_case.post.SectionInteractor;
 import view.HomePageUI.HomePage1;
 import view.HomePageUI.PostsPanel;
 import view.HomePageUI.LogoPanel;
 import view.HomePageUI.SideBar;
 import view.HomePageUI.SearchBar;
 import view.HomePageUI.TopRightIconsPanel;
+
+import interface_adapter.search.SearchViewModel;
+import use_case.search.SearchInteractor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,9 +25,15 @@ public class GamingUI extends JFrame{
     private static GamingUI instance;
     private PostsPanel postsPanel;
     private String currentUsername;
+    private final SectionInteractor interactor;
+    private final SectionViewModel viewModel;
 
     public GamingUI(String username) {
         this.currentUsername = username;
+        this.viewModel = new SectionViewModel();
+        this.interactor = new SectionInteractor(
+                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
+                viewModel);
 
         setTitle("Gaming Section - " + username);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -41,8 +56,11 @@ public class GamingUI extends JFrame{
 
         // Top Panel (Search Bar and Icons)
         JPanel topPanel = new JPanel(new BorderLayout());
+        SearchViewModel sViewModel = new SearchViewModel();
         JPanel searchBar = new SearchBar(this,
-                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")));
+                new SearchInteractor(new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),sViewModel),
+                sViewModel);
+
         topPanel.add(searchBar, BorderLayout.CENTER);
 
         JPanel topRightIcons = new TopRightIconsPanel(this);
@@ -51,8 +69,19 @@ public class GamingUI extends JFrame{
         add(topPanel, BorderLayout.NORTH);
 
         // Center Panel
-        postsPanel = new PostsPanel(currentUsername, "GAMING");
-        //postsPanel.loadMorePosts();
+        String sectionFilter = "GAMING";
+
+        PostsViewModel viewModel = new PostsViewModel();
+
+        PostsPanel postsPanel = new PostsPanel(currentUsername, sectionFilter, viewModel);
+
+        PostsInteractor interactor = new PostsInteractor(
+                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
+                viewModel,
+                postsPanel
+        );
+        postsPanel.setInteractor(interactor);
+
         add(postsPanel, BorderLayout.CENTER);
 
         setVisible(true);

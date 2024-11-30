@@ -3,16 +3,15 @@ package view.HomePageUI;
 import com.mongodb.client.MongoDatabase;
 import data_access.MongoDBConnection;
 import data_access.MongoPostDataAccessObject;
-import entity.Post;
+import interface_adapter.posts.PostsViewModel;
 import interface_adapter.search.SearchViewModel;
+import use_case.post.PostsInteractor;
 import use_case.search.SearchInteractor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 public class HomePage1 extends JFrame {
-    private PostsPanel postsPanel;
     private String currentUsername;
     private final SearchInteractor searchInteractor;
     private final SearchViewModel searchViewModel;
@@ -20,7 +19,8 @@ public class HomePage1 extends JFrame {
     public HomePage1(String username) {
         this.currentUsername = username;
         this.searchViewModel = new SearchViewModel();
-        this.searchInteractor = new SearchInteractor(new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
+        this.searchInteractor = new SearchInteractor(
+                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
                 searchViewModel);
 
         setTitle("Home Page - " + username);
@@ -55,14 +55,19 @@ public class HomePage1 extends JFrame {
         add(topPanel, BorderLayout.NORTH);
 
         // posts
-        postsPanel = new PostsPanel(currentUsername, null);
+        PostsViewModel viewModel = new PostsViewModel();
+        PostsPanel postsPanel = new PostsPanel(currentUsername, null, viewModel);
+        PostsInteractor interactor = new PostsInteractor(
+                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
+                viewModel,
+                postsPanel
+        );
+        postsPanel.setInteractor(interactor);
+        interactor.getThePosts(10);
+
         add(postsPanel, BorderLayout.CENTER);
 
         setVisible(true);
-    }
-
-    public PostsPanel getPostsPanel() {
-        return postsPanel;
     }
 
     public static void main(String[] args) {

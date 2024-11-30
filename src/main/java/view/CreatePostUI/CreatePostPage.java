@@ -11,13 +11,19 @@ import entity.Post;
 import entity.Section;
 import view.HomePageUI.HomePage1;
 import view.SectionPageUI.*;
+import use_case.post.PostsInteractor;
+import interface_adapter.posts.PostsViewModel;
 
 public class CreatePostPage extends JFrame {
 
-    private JFrame parentFrame; // Generalized parent frame
+    private final PostsInteractor postsInteractor;
+    private final PostsViewModel postsViewModel;
+    private final String sectionFilter;
 
-    public CreatePostPage(JFrame parentFrame) {
-        this.parentFrame = parentFrame;
+    public CreatePostPage(JFrame parentFrame, PostsInteractor postsInteractor, PostsViewModel postsViewModel, String sectionFilter) {
+        this.postsInteractor = postsInteractor;
+        this.postsViewModel = postsViewModel;
+        this.sectionFilter = sectionFilter;
 
         setTitle("Create a Post");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -27,7 +33,7 @@ public class CreatePostPage extends JFrame {
 
         // Form Panel
         JPanel formPanel = new JPanel();
-        formPanel.setLayout(new GridLayout(4, 2, 10, 10));
+        formPanel.setLayout(new GridLayout(3, 2, 10, 10));
 
         // Title
         JLabel titleLabel = new JLabel("Title:");
@@ -41,52 +47,34 @@ public class CreatePostPage extends JFrame {
         formPanel.add(contentLabel);
         formPanel.add(new JScrollPane(contentArea));
 
-        // Section
-        JLabel sectionLabel = new JLabel("Section:");
-        String[] sections = {"Studying", "Gaming", "Dining", "Hanging_Out", "Others"};
-        JComboBox<String> sectionComboBox = new JComboBox<>(sections);
-        formPanel.add(sectionLabel);
-        formPanel.add(sectionComboBox);
-
         add(formPanel, BorderLayout.CENTER);
 
-        // Post button + action listener
+        // Post Button + Action Listener
         JButton postButton = new JButton("Post");
         postButton.addActionListener(e -> {
             String title = titleField.getText().trim();
             String content = contentArea.getText().trim();
-            String sectionString = (String) sectionComboBox.getSelectedItem();
 
-            if (!title.isEmpty() && !content.isEmpty() && sectionString != null) {
+            if (!title.isEmpty() && !content.isEmpty()) {
                 try {
-                    Section section = Section.valueOf(sectionString.toUpperCase());
+                    // Create the post
+                    Section section = Section.valueOf(sectionFilter.toUpperCase());
+                    Post newPost = new Post(title, content, section, "currentUsername", LocalDateTime.now()); // Replace with real username
+                    postsInteractor.createPost(newPost);
 
-                    Post newPost = new Post(title, content, section, "currentUsername", LocalDateTime.now()); //TODO: set to the correct username
-
-                    // Save to MongoDB
-                    MongoDatabase database = MongoDBConnection.getDatabase("PostDataBase");
-                    MongoPostDataAccessObject dao = new MongoPostDataAccessObject(database);
-                    dao.addPost(newPost);
-
-                    if (parentFrame instanceof HomePage1 homePage) {
-                        homePage.getPostsPanel().addPost(newPost);
+                    // Observe success or error messages via the ViewModel
+                    if (postsViewModel.getErrorMessage() != null) {
+                        JOptionPane.showMessageDialog(this, postsViewModel.getErrorMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Post created successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        dispose();
+                        if (parentFrame != null) {
+                            parentFrame.setVisible(true); // Navigate back to parent frame
+                        }
                     }
-                    switch (section) {
-                        case STUDYING -> StudyingUI.getInstance("currentUsername").getPostsPanel().addPost(newPost);
-                        case GAMING -> GamingUI.getInstance("currentUsername").getPostsPanel().addPost(newPost);
-                        case DINING -> DiningUI.getInstance("currentUsername").getPostsPanel().addPost(newPost);
-                        case HANGING_OUT -> HangingOutUI.getInstance("currentUsername").getPostsPanel().addPost(newPost);
-                        case OTHERS -> OthersUI.getInstance("currentUsername").getPostsPanel().addPost(newPost);
-                    }
-
-                    dispose();
 
                 } catch (IllegalArgumentException ex) {
-                    JOptionPane.showMessageDialog(this, "Invalid section.", "Error", JOptionPane.ERROR_MESSAGE);
-
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this, "Failed to save the post.", "Error", JOptionPane.ERROR_MESSAGE);
-                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Invalid section: " + sectionFilter, "Error", JOptionPane.ERROR_MESSAGE);
                 }
 
             } else {

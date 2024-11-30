@@ -1,5 +1,9 @@
 package view.HomePageUI;
 
+import data_access.MongoDBConnection;
+import data_access.MongoPostDataAccessObject;
+import interface_adapter.posts.PostsViewModel;
+import use_case.post.PostsInteractor;
 import view.CreatePostUI.CreatePostPage;
 import view.SectionPageUI.*;
 
@@ -13,30 +17,55 @@ public class TopRightIconsPanel extends JPanel {
         setLayout(new FlowLayout(FlowLayout.RIGHT));
 
         String[] icons = {"📩", "➕", "👤", "🔔", "🚪"};
-
         for (String icon : icons) {
             JButton iconButton = new JButton(icon);
             add(iconButton);
 
-            // Example ActionListener for "➕" button
-            if ("➕".equals(icon)) {
+            // ActionListener for "+" button
+            if ( "➕".equals(icon)) {
                 iconButton.addActionListener(e -> {
-                    if (parentFrame instanceof HomePage1) {
-                        new CreatePostPage((HomePage1) parentFrame); // redirect to CreatePostPage
-                    } else if (parentFrame instanceof StudyingUI) {
-                        new CreatePostPage((StudyingUI) parentFrame);
-                    } else if (parentFrame instanceof DiningUI) {
-                        new CreatePostPage((DiningUI) parentFrame);
-                    } else if (parentFrame instanceof GamingUI) {
-                        new CreatePostPage((GamingUI) parentFrame);
-                    } else if (parentFrame instanceof HangingOutUI) {
-                        new CreatePostPage((HangingOutUI) parentFrame);
-                    } else if (parentFrame instanceof  OthersUI) {
-                        new CreatePostPage((OthersUI) parentFrame);
-                    }
+                    String sectionFilter = resolveSectionFilter(parentFrame);
+                    if (sectionFilter != null) {
+                        PostsViewModel viewModel = new PostsViewModel();
+                        PostsPanel postsPanel = new PostsPanel("currentUsername", sectionFilter, viewModel);
+                        PostsInteractor interactor = new PostsInteractor(
+                                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
+                                viewModel,
+                                postsPanel);
 
+                        // pass them along with sectionFilter to CreatePostPage
+                        new CreatePostPage(parentFrame, interactor, viewModel, sectionFilter);
+                    } else {
+                        JOptionPane.showMessageDialog(
+                                parentFrame,
+                                "Unable to determine section filter.",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+                    }
                 });
             }
         }
+    }
+
+    /**
+     * Resolves the section filter from the parent frame.
+     * After creating a post, return to where the user hit the plus button
+     */
+    private String resolveSectionFilter(JFrame parentFrame) {
+        if (parentFrame instanceof HomePage1) {
+            return "Latest Post";
+        } else if (parentFrame instanceof StudyingUI) {
+            return "Studying";
+        } else if (parentFrame instanceof GamingUI) {
+            return "Gaming";
+        } else if (parentFrame instanceof DiningUI) {
+            return "Dining";
+        } else if (parentFrame instanceof HangingOutUI) {
+            return "Hanging_Out";
+        } else if (parentFrame instanceof OthersUI) {
+            return "Others";
+        }
+        return null;
     }
 }

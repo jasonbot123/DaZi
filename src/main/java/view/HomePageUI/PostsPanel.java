@@ -1,16 +1,79 @@
 package view.HomePageUI;
 
-import data_access.MongoDBConnection;
-import data_access.MongoPostDataAccessObject;
-import data_access.MongoLikeRecordDataAccessObject;
 import entity.Post;
-import entity.LikeRecord;
-import view.SearchPageUI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+import use_case.post.PostsInteractor;
+import interface_adapter.posts.PostsViewModel;
+
+public class PostsPanel extends JPanel {
+    private static final int PAGE_SIZE = 10;
+    private final DefaultListModel<Post> postListModel = new DefaultListModel<>();
+    private final JList<Post> postList = new JList<>(postListModel);
+    private PostsInteractor interactor;
+    private final PostsViewModel viewModel;
+    private final String sectionFilter;
+
+
+    public PostsPanel(String username, String sectionFilter, PostsViewModel viewModel) {
+        this.viewModel = viewModel;
+        this.sectionFilter = sectionFilter;
+
+        setupUI();
+    }
+
+    private void setupUI() {
+        setLayout(new BorderLayout());
+
+        postList.setCellRenderer(new PostCellRenderer());
+        postList.setFixedCellHeight(150);
+        postList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        postList.setBackground(Color.WHITE);
+        postList.setSelectionBackground(new Color(240, 240, 240));
+        postList.setBorder(null);
+
+        JScrollPane scrollPane = new JScrollPane(postList);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        add(scrollPane, BorderLayout.CENTER);
+
+        scrollPane.getVerticalScrollBar().addAdjustmentListener(e -> {
+            JScrollBar scrollBar = (JScrollBar) e.getAdjustable();
+            int extent = scrollBar.getModel().getExtent();
+            int maximum = scrollBar.getModel().getMaximum();
+            int value = e.getValue();
+
+            if (!viewModel.isLoading() && value + extent > maximum - 50) {
+                interactor.getThePosts(PAGE_SIZE);
+            }
+        });
+    }
+
+    public void updatePosts(List<Post> posts) {
+        SwingUtilities.invokeLater(() -> {
+            postListModel.clear(); // Clear the old posts
+            for (Post post : posts) {
+                postListModel.addElement(post);
+            }
+            postList.repaint(); // refresh  UI
+        });
+    }
+
+    public void setInteractor(PostsInteractor interactor) {
+        this.interactor = interactor;
+        if (sectionFilter != null) {
+            interactor.getPostsBySection(sectionFilter, 10);
+        } else {
+            interactor.getThePosts(10);
+        }
+    }
+}
+
+/*
 public class PostsPanel extends JPanel {
     private static final int PAGE_SIZE = 10;
     private int currentPage = 0;
@@ -76,27 +139,6 @@ public class PostsPanel extends JPanel {
 
         addListListeners();
 
-        /*
-        scrollPane.getVerticalScrollBar().addAdjustmentListener(e -> {
-            JScrollBar scrollBar = (JScrollBar) e.getAdjustable();
-            int extent = scrollBar.getModel().getExtent();
-            int maximum = scrollBar.getModel().getMaximum();
-            int value = e.getValue();
-
-            if (!isLoading && value + extent > maximum - 50) { // 近底部时加载更多
-                loadMorePosts();
-            }
-        });
-
-        if (sectionFilter != null) {
-            loadPostsBySection(sectionFilter);
-        } else {
-            loadMorePosts();
-        }
-
-        addListListeners();
-
-         */
     }
 
     private void loadMorePosts() {
@@ -349,45 +391,7 @@ public class PostsPanel extends JPanel {
         commentPage.setVisible(true);
     }
 
-    /*
-    public void searchPosts(String keyword) {
-        if (keyword == null || keyword.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                    "Please enter a keyword to search!",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
 
-        SwingWorker<List<Post>, Void> worker = new SwingWorker<>() {
-            @Override
-            protected List<Post> doInBackground() {
-                return postDAO.searchPostsByTitle(keyword.trim());
-            }
-
-            @Override
-            protected void done() {
-                try {
-                    List<Post> searchResults = get();
-                    if (searchResults.isEmpty()) {
-                        JOptionPane.showMessageDialog(PostsPanel.this,
-                                "No posts found for: " + keyword,
-                                "Search Results", JOptionPane.INFORMATION_MESSAGE);
-                    } else {
-                        SwingUtilities.invokeLater(() -> new SearchPageUI(keyword, searchResults, currentUsername));
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(PostsPanel.this,
-                            "Error loading search results.",
-                            "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        };
-
-        worker.execute();
-    }
-
-     */
     public void updatePosts(List<Post> posts) {
         SwingUtilities.invokeLater(() -> {
             postListModel.clear();
@@ -397,3 +401,5 @@ public class PostsPanel extends JPanel {
         });
     }
 }
+
+ */

@@ -25,6 +25,16 @@ public class InMemoryPostDataAccessObject implements PostDataAccessInterface {
                 .toList();
     }
 
+    @Override
+    public List<Post> getPostsByPage(int page, int pageSize) {
+        int start = page * pageSize;
+        int end = Math.min(start + pageSize, posts.size());
+        if (start >= posts.size()) {
+            return new ArrayList<>();
+        }
+        return posts.subList(start, end);
+    }
+
     public List<Post> searchPostsByTitle(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
             return new ArrayList<>(); // Return empty list for empty or null keyword
