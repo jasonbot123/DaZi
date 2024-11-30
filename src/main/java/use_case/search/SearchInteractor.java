@@ -33,13 +33,4 @@ public class SearchInteractor implements SearchInputBoundary{
         return results;
     }
 
-    /*
-    public List<Post> searchPostsByTitle(String keyword) {
-        if (keyword == null || keyword.trim().isEmpty()) {
-            throw new IllegalArgumentException("Keyword cannot be null or empty.");
-        }
-        return postDAO.searchPostsByTitle(keyword.trim());
-    }
-
-     */
 }

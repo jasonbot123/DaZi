@@ -43,7 +43,7 @@ public class HomePage1 extends JFrame {
 
         add(leftPanel, BorderLayout.WEST);
 
-        // pass SearchInteractor to SearchBar
+        // searchInteractor, searchBar
         JPanel topPanel = new JPanel(new BorderLayout());
         JPanel searchBar = new SearchBar(this, searchInteractor, searchViewModel);
         topPanel.add(searchBar, BorderLayout.CENTER);

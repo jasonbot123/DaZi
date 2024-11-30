@@ -17,7 +17,6 @@ public class SearchBar extends JPanel {
     private JButton searchButton;
 
     public SearchBar(JFrame parentFrame, SearchInteractor searchInteractor, SearchViewModel viewModel) {
-        // this.searchInteractor = searchInteractor;
 
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);

@@ -5,7 +5,6 @@ import data_access.MongoPostDataAccessObject;
 import entity.Post;
 import interface_adapter.search.SearchViewModel;
 import use_case.search.SearchInteractor;
-import view.HomePageUI.PostsPanel;
 
 import view.HomePageUI.PostsPanel;
 import view.HomePageUI.LogoPanel;
@@ -51,7 +50,7 @@ public class SearchPageUI extends JFrame {
         topPanel.add(topRightIcons, BorderLayout.EAST);
         add(topPanel, BorderLayout.NORTH);
 
-        // Center Panel (display search results)
+        // post panel (display search results)
         DefaultListModel<Post> postListModel = new DefaultListModel<>();
         for (Post post : viewModel.getSearchResults()) {
             postListModel.addElement(post);

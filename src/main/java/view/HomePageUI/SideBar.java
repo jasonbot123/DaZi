@@ -8,15 +8,9 @@ import java.util.List;
 
 public class SideBar extends JPanel {
 
-   //  private final SearchInteractor searchInteractor;
-
     public SideBar(String currentUsername) {
-        // this.searchInteractor = searchInteractor; // Assign searchInteractor
-
         setLayout(new BorderLayout());
-        setBackground(new Color(0, 51, 102)); // TODO: change sidebar background color
-
-        //add(new LogoPanel(), BorderLayout.NORTH);
+        setBackground(new Color(0, 51, 102));
 
         // menu section
         JPanel menuPanel = new JPanel();
@@ -25,7 +19,7 @@ public class SideBar extends JPanel {
 
         // emojis and buttons
         String[] emojis = {
-                "📜", "📚", "🎮", "🍽️", "🤝", "🌀"
+                "📜", "📚", "🎮", "🍕", "🤝", "🌀"
         };
         List<String> buttonLabels = List.of(
                 "Latest Post",
@@ -40,9 +34,8 @@ public class SideBar extends JPanel {
             String label = buttonLabels.get(i);
             JButton button = createStyledButton(emojis[i] + "  " + label);
             menuPanel.add(button);
-            menuPanel.add(Box.createRigidArea(new Dimension(0, 15))); // Add vertical spacing
+            menuPanel.add(Box.createRigidArea(new Dimension(0, 15))); // ertical spacing
 
-            // Add functionality to the buttons
             button.addActionListener(e -> {
                 switch (label) {
                     case "Latest Post" -> new HomePage1(currentUsername); // redirect to HomePage

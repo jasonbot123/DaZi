@@ -58,7 +58,8 @@ public class GamingUI extends JFrame{
         JPanel topPanel = new JPanel(new BorderLayout());
         SearchViewModel sViewModel = new SearchViewModel();
         JPanel searchBar = new SearchBar(this,
-                new SearchInteractor(new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),sViewModel),
+                new SearchInteractor(new MongoPostDataAccessObject(
+                        MongoDBConnection.getDatabase("PostDataBase")),sViewModel),
                 sViewModel);
 
         topPanel.add(searchBar, BorderLayout.CENTER);

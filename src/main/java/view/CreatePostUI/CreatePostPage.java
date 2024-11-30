@@ -20,7 +20,8 @@ public class CreatePostPage extends JFrame {
     private final PostsViewModel postsViewModel;
     private final String sectionFilter;
 
-    public CreatePostPage(JFrame parentFrame, PostsInteractor postsInteractor, PostsViewModel postsViewModel, String sectionFilter) {
+    public CreatePostPage(JFrame parentFrame, PostsInteractor postsInteractor,
+                          PostsViewModel postsViewModel, String sectionFilter) {
         this.postsInteractor = postsInteractor;
         this.postsViewModel = postsViewModel;
         this.sectionFilter = sectionFilter;
@@ -31,7 +32,6 @@ public class CreatePostPage extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Form Panel
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new GridLayout(3, 2, 10, 10));
 
@@ -59,26 +59,35 @@ public class CreatePostPage extends JFrame {
                 try {
                     // Create the post
                     Section section = Section.valueOf(sectionFilter.toUpperCase());
-                    Post newPost = new Post(title, content, section, "currentUsername", LocalDateTime.now()); // Replace with real username
+                    Post newPost = new Post(title, content, section, "currentUsername", LocalDateTime.now()); // TODO Replace with real username
                     postsInteractor.createPost(newPost);
 
                     // Observe success or error messages via the ViewModel
                     if (postsViewModel.getErrorMessage() != null) {
-                        JOptionPane.showMessageDialog(this, postsViewModel.getErrorMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this,
+                                postsViewModel.getErrorMessage(),
+                                "Error", JOptionPane.ERROR_MESSAGE);
                     } else {
-                        JOptionPane.showMessageDialog(this, "Post created successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(this,
+                                "Post created successfully!",
+                                "Success",
+                                JOptionPane.INFORMATION_MESSAGE);
                         dispose();
                         if (parentFrame != null) {
-                            parentFrame.setVisible(true); // Navigate back to parent frame
+                            parentFrame.setVisible(true);
                         }
                     }
 
                 } catch (IllegalArgumentException ex) {
-                    JOptionPane.showMessageDialog(this, "Invalid section: " + sectionFilter, "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this,
+                            "Invalid section: " + sectionFilter,
+                            "Error", JOptionPane.ERROR_MESSAGE);
                 }
 
             } else {
-                JOptionPane.showMessageDialog(this, "Please fill in all fields!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Please fill in all fields!",
+                        "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
