@@ -15,7 +15,7 @@ public class PostsPanel extends JPanel {
     private final JList<Post> postList = new JList<>(postListModel);
     private PostsInteractor interactor;
     private final PostsViewModel viewModel;
-    private final String sectionFilter;
+    private String sectionFilter;
 
 
     public PostsPanel(String username, String sectionFilter, PostsViewModel viewModel) {
@@ -48,7 +48,14 @@ public class PostsPanel extends JPanel {
             int value = e.getValue();
 
             if (!viewModel.isLoading() && value + extent > maximum - 50) {
-                interactor.getThePosts(PAGE_SIZE);
+                System.out.println("get posts for section: " + sectionFilter);
+                if (sectionFilter != null) {
+                    viewModel.setLoading(true);
+                    interactor.getPostsBySection(sectionFilter, PAGE_SIZE);
+                } else {
+                    viewModel.setLoading(true);
+                    interactor.getThePosts(PAGE_SIZE);
+                }
             }
         });
     }
@@ -71,6 +78,22 @@ public class PostsPanel extends JPanel {
             interactor.getThePosts(10);
         }
     }
+    public void updateSectionFilter(String sectionFilter) {
+        this.sectionFilter = sectionFilter;
+        if (interactor != null) {
+            loadPostsForCurrentSection();
+        }
+    }
+
+    // helper
+    private void loadPostsForCurrentSection() {
+        if (sectionFilter != null) {
+            interactor.getPostsBySection(sectionFilter, PAGE_SIZE);
+        } else {
+            interactor.getThePosts(PAGE_SIZE);
+        }
+    }
+
 }
 
 /*

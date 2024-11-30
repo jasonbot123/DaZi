@@ -49,10 +49,22 @@ public class GamingUI extends JFrame{
         logoPanel.setBackground(new Color(0, 51, 102));
         leftPanel.add(logoPanel, BorderLayout.NORTH);
 
-        JPanel sideBar = new SideBar(currentUsername);
-        leftPanel.add(sideBar, BorderLayout.CENTER);
+        // post setup
+        PostsViewModel viewModel = new PostsViewModel();
+        PostsPanel postsPanel = new PostsPanel(username, "GAMING", viewModel);
+        viewModel.clearPosts();
+        PostsInteractor interactor = new PostsInteractor(
+                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
+                viewModel,
+                postsPanel
+        );
+        postsPanel.setInteractor(interactor);
 
+        // sidebar
+        JPanel sideBar = new SideBar(username, postsPanel, viewModel);
+        leftPanel.add(sideBar, BorderLayout.CENTER);
         add(leftPanel, BorderLayout.WEST);
+
 
         // Top Panel (Search Bar and Icons)
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -70,20 +82,8 @@ public class GamingUI extends JFrame{
         add(topPanel, BorderLayout.NORTH);
 
         // Center Panel
-        String sectionFilter = "GAMING";
-
-        PostsViewModel viewModel = new PostsViewModel();
-
-        PostsPanel postsPanel = new PostsPanel(currentUsername, sectionFilter, viewModel);
-
-        PostsInteractor interactor = new PostsInteractor(
-                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
-                viewModel,
-                postsPanel
-        );
-        postsPanel.setInteractor(interactor);
-
         add(postsPanel, BorderLayout.CENTER);
+        interactor.getPostsBySection("GAMING", 10);
 
         setVisible(true);
     }

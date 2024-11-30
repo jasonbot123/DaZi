@@ -20,7 +20,11 @@ public class PostsViewModel {
     }
 
     public void addPosts(List<Post> newPosts) {
-        posts.addAll(newPosts);
+        for (Post post : newPosts) {
+            if (!posts.contains(post)) { // prevent duplicates
+                posts.add(post);
+            }
+        }
     }
 
     public boolean isLoading() {
@@ -36,4 +40,6 @@ public class PostsViewModel {
     }
 
     public void setErrorMessage(String msg) { this.errorMessage = msg;}
+
+    public void clearPosts() {posts.clear();}
 }

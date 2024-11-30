@@ -44,8 +44,27 @@ public class StudyingUI extends JFrame {
         logoPanel.setBackground(new Color(0, 51, 102));
         leftPanel.add(logoPanel, BorderLayout.NORTH);
 
+        // post setup
+        PostsViewModel viewModel = new PostsViewModel();
+        PostsPanel postsPanel = new PostsPanel(username, "STUDYING", viewModel);
+        viewModel.clearPosts();
+        PostsInteractor interactor = new PostsInteractor(
+                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
+                viewModel,
+                postsPanel
+        );
+        postsPanel.setInteractor(interactor);
+
+        // sidebar
+        JPanel sideBar = new SideBar(username, postsPanel,viewModel);
+        leftPanel.add(sideBar, BorderLayout.CENTER);
+        add(leftPanel, BorderLayout.WEST);
+
+        /*
         JPanel sideBar = new SideBar(currentUsername);
         leftPanel.add(sideBar, BorderLayout.CENTER);
+
+         */
 
         add(leftPanel, BorderLayout.WEST);
 
@@ -64,6 +83,10 @@ public class StudyingUI extends JFrame {
         add(topPanel, BorderLayout.NORTH);
 
         // Center Panel
+        add(postsPanel, BorderLayout.CENTER);
+        interactor.getPostsBySection("STUDYING", 10);
+
+        /*
         String sectionFilter = "STUDYING";
         PostsViewModel viewModel = new PostsViewModel();
 
@@ -77,6 +100,8 @@ public class StudyingUI extends JFrame {
         postsPanel.setInteractor(interactor);
 
         add(postsPanel, BorderLayout.CENTER);
+
+         */
 
         setVisible(true);
     }

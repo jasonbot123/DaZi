@@ -15,10 +15,13 @@ public class HomePage1 extends JFrame {
     private String currentUsername;
     private final SearchInteractor searchInteractor;
     private final SearchViewModel searchViewModel;
+    private final PostsViewModel postsViewModel;
+    // private final PostsPanel postsPanel;
 
     public HomePage1(String username) {
         this.currentUsername = username;
         this.searchViewModel = new SearchViewModel();
+        this.postsViewModel = new PostsViewModel();
         this.searchInteractor = new SearchInteractor(
                 new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
                 searchViewModel);
@@ -38,9 +41,20 @@ public class HomePage1 extends JFrame {
         logoPanel.setBackground(new Color(0, 51, 102));
         leftPanel.add(logoPanel, BorderLayout.NORTH);
 
-        JPanel sideBar = new SideBar(currentUsername);
-        leftPanel.add(sideBar, BorderLayout.CENTER);
+        // posts panel setup
+        PostsViewModel viewModel = new PostsViewModel();
+        PostsPanel postsPanel = new PostsPanel(username, null, viewModel);
+        viewModel.clearPosts();
+        PostsInteractor interactor = new PostsInteractor(
+                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
+                viewModel,
+                postsPanel
+        );
+        postsPanel.setInteractor(interactor);
 
+        // sidebar
+        JPanel sideBar = new SideBar(currentUsername, postsPanel, viewModel);
+        leftPanel.add(sideBar, BorderLayout.CENTER);
         add(leftPanel, BorderLayout.WEST);
 
         // searchInteractor, searchBar
@@ -55,6 +69,10 @@ public class HomePage1 extends JFrame {
         add(topPanel, BorderLayout.NORTH);
 
         // posts
+        add(postsPanel, BorderLayout.CENTER);
+        interactor.getThePosts(10);
+
+        /*
         PostsViewModel viewModel = new PostsViewModel();
         PostsPanel postsPanel = new PostsPanel(currentUsername, null, viewModel);
         PostsInteractor interactor = new PostsInteractor(
@@ -66,6 +84,8 @@ public class HomePage1 extends JFrame {
         interactor.getThePosts(10);
 
         add(postsPanel, BorderLayout.CENTER);
+
+         */
 
         setVisible(true);
     }
@@ -85,3 +105,4 @@ public class HomePage1 extends JFrame {
         return currentUsername.toString();
     }
 }
+

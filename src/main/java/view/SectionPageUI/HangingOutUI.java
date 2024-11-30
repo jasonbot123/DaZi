@@ -44,8 +44,27 @@ public class HangingOutUI extends JFrame {
         logoPanel.setBackground(new Color(0, 51, 102));
         leftPanel.add(logoPanel, BorderLayout.NORTH);
 
+        // post setup
+        PostsViewModel viewModel = new PostsViewModel();
+        PostsPanel postsPanel = new PostsPanel(username, "HANGING_OUT", viewModel);
+        viewModel.clearPosts();
+        PostsInteractor interactor = new PostsInteractor(
+                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
+                viewModel,
+                postsPanel
+        );
+        postsPanel.setInteractor(interactor);
+
+        // sidebar
+        JPanel sideBar = new SideBar(username, postsPanel, viewModel);
+        leftPanel.add(sideBar, BorderLayout.CENTER);
+        add(leftPanel, BorderLayout.WEST);
+
+        /*
         JPanel sideBar = new SideBar(currentUsername);
         leftPanel.add(sideBar, BorderLayout.CENTER);
+
+         */
 
         add(leftPanel, BorderLayout.WEST);
 
@@ -64,6 +83,7 @@ public class HangingOutUI extends JFrame {
         add(topPanel, BorderLayout.NORTH);
 
         // Center Panel
+        /*
         String sectionFilter = "HANGING_OUT";
 
         PostsViewModel viewModel = new PostsViewModel();
@@ -78,7 +98,10 @@ public class HangingOutUI extends JFrame {
         );
         postsPanel.setInteractor(interactor);
 
+         */
+
         add(postsPanel, BorderLayout.CENTER);
+        interactor.getPostsBySection("HANGING_OUT", 10);
 
         setVisible(true);
     }

@@ -44,9 +44,21 @@ public class DiningUI extends JFrame {
         logoPanel.setBackground(new Color(0, 51, 102));
         leftPanel.add(logoPanel, BorderLayout.NORTH);
 
-        JPanel sideBar = new SideBar(currentUsername);
-        leftPanel.add(sideBar, BorderLayout.CENTER);
+        // post setup
+        PostsViewModel viewModel = new PostsViewModel();
+        viewModel.clearPosts();
+        PostsPanel postsPanel = new PostsPanel(username, "DINING", viewModel);
 
+        PostsInteractor interactor = new PostsInteractor(
+                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
+                viewModel,
+                postsPanel
+        );
+        postsPanel.setInteractor(interactor);
+
+        // sidebar
+        JPanel sideBar = new SideBar(username, postsPanel, viewModel);
+        leftPanel.add(sideBar, BorderLayout.CENTER);
         add(leftPanel, BorderLayout.WEST);
 
         // Top Panel (Search Bar and Icons)
@@ -60,23 +72,12 @@ public class DiningUI extends JFrame {
 
         JPanel topRightIcons = new TopRightIconsPanel(this);
         topPanel.add(topRightIcons, BorderLayout.EAST);
-
         add(topPanel, BorderLayout.NORTH);
 
-        // Center Panel
-        String sectionFilter = "DINING";
-        PostsViewModel viewModel = new PostsViewModel();
-
-        PostsPanel postsPanel = new PostsPanel(currentUsername, sectionFilter, viewModel);
-
-        PostsInteractor interactor = new PostsInteractor(
-                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
-                viewModel,
-                postsPanel
-        );
-        postsPanel.setInteractor(interactor);
-
+        // central post panel
         add(postsPanel, BorderLayout.CENTER);
+        // interactor.getPostsBySection("DINING", 10);
+
 
         setVisible(true);
     }

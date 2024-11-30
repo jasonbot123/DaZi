@@ -20,7 +20,7 @@ public class PostService {
         Section section = Section.valueOf(sectionName.toUpperCase());
         Post post = new Post(title, content, section, username, LocalDateTime.now());
         postDao.addPost(post);
-        System.out.println("Post added successfully!");
+        // System.out.println("Post added successfully!");
     }
 
     // get a post by title
