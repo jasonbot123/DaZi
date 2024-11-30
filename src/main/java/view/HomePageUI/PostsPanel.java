@@ -47,7 +47,7 @@ public class PostsPanel extends JPanel {
             int value = e.getValue();
 
             if (!viewModel.isLoading() && value + extent > maximum - 50) {
-                System.out.println("get posts for section: " + sectionFilter);
+                // System.out.println("get posts for section: " + sectionFilter);
                 if (sectionFilter != null) {
                     viewModel.setLoading(true);
                     interactor.getPostsBySection(sectionFilter, PAGE_SIZE);
