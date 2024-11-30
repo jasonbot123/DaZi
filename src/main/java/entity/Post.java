@@ -112,29 +112,6 @@ public class Post {
         return post;
     }
 
-    /*
-    public static Post fromDocument(Document doc) {
-        String title = doc.getString("title");
-        String content = doc.getString("content");
-        String sectionString = doc.getString("section");
-        Section section = Section.valueOf(sectionString.toUpperCase());
-        String username = doc.getString("username");
-        LocalDateTime timestamp = doc.getDate("timestamp").toInstant().atZone(ZoneOffset.UTC).toLocalDateTime();
-        int likes = doc.getInteger("likes", 0);
-
-        Post post = new Post(title, content, section, username, timestamp);
-        post.setLikes(likes);
-
-        Object idField = doc.get("_id");
-        if (idField instanceof ObjectId) {
-            post.setId((ObjectId) idField);
-        }
-
-        return post;
-    }
-
-     */
-
     public String getTruncatedContent(int maxLength) {
         return content.length() > maxLength ? content.substring(0, maxLength) + "..." : content;
     }

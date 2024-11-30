@@ -1,12 +1,14 @@
 package data_access;
 
 import entity.Post;
+import entity.Section;
+import use_case.post.PostDataAccessInterface;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class InMemoryPostDataAccessObject {
+public class InMemoryPostDataAccessObject implements PostDataAccessInterface {
     private List<Post> posts = new ArrayList<>();
 
     // Simulate adding a post to the "database"
