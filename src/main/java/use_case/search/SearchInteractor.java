@@ -7,12 +7,10 @@ import use_case.post.PostDataAccessInterface;
 import java.util.List;
 
 public class SearchInteractor implements SearchInputBoundary{
-    private final MongoPostDataAccessObject postDAO;
     private final PostDataAccessInterface dataAccess;
     private final SearchOutputBoundary outputBoundary;
 
-    public SearchInteractor(MongoPostDataAccessObject postDAO) {
-        this.postDAO = postDAO;
+    public SearchInteractor(PostDataAccessInterface dataAccess, SearchOutputBoundary outputBoundary) {
         this.dataAccess = dataAccess;
         this.outputBoundary = outputBoundary;
     }
