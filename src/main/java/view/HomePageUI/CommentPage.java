@@ -4,10 +4,10 @@ import data_access.MongoCommentDataAccessObject;
 import data_access.MongoDBConnection;
 import entity.Comment;
 import entity.Post;
+import interface_adapter.comment.CommentController;
 import interface_adapter.comment.CommentPresenter;
 import interface_adapter.comment.CommentViewModel;
 import use_case.comment.CommentInputBoundary;
-import use_case.comment.CommentInputData;
 import use_case.comment.CommentInteractor;
 
 import javax.swing.*;
@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 public class CommentPage extends JFrame {
     private final Post post;
     private final CommentViewModel viewModel;
-    private final CommentInputBoundary commentInteractor;
+    private final CommentController commentController;
     private final JPanel commentsPanel;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -32,7 +32,8 @@ public class CommentPage extends JFrame {
         );
         this.viewModel = new CommentViewModel();
         CommentPresenter presenter = new CommentPresenter(viewModel);
-        this.commentInteractor = new CommentInteractor(commentDAO, presenter);
+        CommentInputBoundary interactor = new CommentInteractor(commentDAO, presenter);
+        this.commentController = new CommentController(interactor);
 
         setTitle("Comments for: " + post.getTitle());
         setSize(800, 600);
@@ -58,7 +59,7 @@ public class CommentPage extends JFrame {
         viewModel.addPropertyChangeListener(this::onViewModelChanged);
 
         // 加载评论
-        commentInteractor.loadComments(post.getId());
+        commentController.loadComments(post.getId());
     }
 
     private void onViewModelChanged(PropertyChangeEvent evt) {
@@ -106,12 +107,7 @@ public class CommentPage extends JFrame {
         submitButton.addActionListener(e -> {
             String content = commentInput.getText().trim();
             if (!content.isEmpty()) {
-                CommentInputData inputData = new CommentInputData(
-                    post.getId(),
-                    content,
-                    currentUsername
-                );
-                commentInteractor.addComment(inputData);
+                commentController.addComment(post.getId(), content, currentUsername);
                 commentInput.setText("");
             }
         });
