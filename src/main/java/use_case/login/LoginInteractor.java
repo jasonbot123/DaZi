@@ -51,7 +51,14 @@ public class LoginInteractor implements LoginInputBoundary {
                 userDataAccessObject.setCurrentUsername(user.getName());
                 final LoginOutputData loginOutputData = new LoginOutputData(user.getName(), false);
                 loginPresenter.prepareSuccessView(loginOutputData);
+                System.out.println("You've logged in successfully.");
+
+                SwingUtilities.invokeLater(() -> {
+                    HomePage1 homePage = new HomePage1(user.getName());
+                    homePage.setVisible(true);
+                });
             }
+
         }
     }
 
