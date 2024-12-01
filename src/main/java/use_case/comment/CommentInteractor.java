@@ -1,16 +1,15 @@
 package use_case.comment;
 
-import data_access.MongoCommentDataAccessObject;
 import entity.Comment;
 import org.bson.types.ObjectId;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class CommentInteractor implements CommentInputBoundary {
-    private final MongoCommentDataAccessObject commentDAO;
+    private final CommentDataAccessInterface commentDAO;
     private final CommentOutputBoundary commentPresenter;
 
-    public CommentInteractor(MongoCommentDataAccessObject commentDAO, 
+    public CommentInteractor(CommentDataAccessInterface commentDAO, 
                            CommentOutputBoundary commentPresenter) {
         this.commentDAO = commentDAO;
         this.commentPresenter = commentPresenter;
