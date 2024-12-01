@@ -5,7 +5,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
-
+import org.bson.conversions.Bson;
 import static com.mongodb.client.model.Updates.set;
 
 import static com.mongodb.client.model.Filters.eq;

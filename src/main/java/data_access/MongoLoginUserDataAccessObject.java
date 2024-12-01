@@ -3,8 +3,9 @@ package data_access;
 import entity.CommonUser;
 import entity.User;
 import use_case.login.LoginUserDataAccessInterface;
+import use_case.signup.SignupUserDataAccessInterface;
 
-public class MongoLoginUserDataAccessObject implements LoginUserDataAccessInterface {
+public class MongoLoginUserDataAccessObject implements LoginUserDataAccessInterface, SignupUserDataAccessInterface {
 
     private final MongoUserDataAccessObject userDataAccessObject;
     private String currentUsername = null;
@@ -20,7 +21,8 @@ public class MongoLoginUserDataAccessObject implements LoginUserDataAccessInterf
 
     @Override
     public void save(User user) {
-        //userDataAccessObject.addUser(user.getName(), user.getEmail(), user.getPassword());
+        System.out.println("SKAJDBAKDJSBAKASJD");
+        userDataAccessObject.addUser(user.getName(), user.getEmail(), user.getPassword());
     }
 
     @Override
@@ -29,8 +31,9 @@ public class MongoLoginUserDataAccessObject implements LoginUserDataAccessInterf
         var userDocument = userDataAccessObject.getUser(username);
         if (userDocument != null) {
             String name = userDocument.getString("username");
+            String email = userDocument.getString("email");
             String password = userDocument.getString("password");
-            return new CommonUser(name, password);
+            return new CommonUser(name, email, password);
         }
         return null;
     }
