@@ -5,6 +5,7 @@ package interface_adapter.signup;
  */
 public class SignupState {
     private String username = "";
+    private String email = "";
     private String usernameError;
     private String password = "";
     private String passwordError;
@@ -14,6 +15,10 @@ public class SignupState {
     public String getUsername() {
         return username;
     }
+
+    public String getEmail() {return this.email;}
+
+    public void setEmail(String email) {this.email = email;}
 
     public String getUsernameError() {
         return usernameError;
@@ -63,8 +68,10 @@ public class SignupState {
     public String toString() {
         return "SignupState{"
                 + "username='" + username + '\''
+                + ", email='" + email + '\''
                 + ", password='" + password + '\''
                 + ", repeatPassword='" + repeatPassword + '\''
                 + '}';
     }
+
 }
