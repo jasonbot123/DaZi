@@ -11,10 +11,12 @@ public class PostsViewModel {
     private String errorMessage;
 
     public List<Post> getPosts() {
+        System.out.println("PostsViewModel getPosts called: " + posts);
         return new ArrayList<>(posts); // return a copy to avoid external modification
     }
 
     public void setPosts(List<Post> newPosts) {
+        System.out.println("PostsViewModel setPosts called: " + posts);
         posts.clear();
         posts.addAll(newPosts);
     }

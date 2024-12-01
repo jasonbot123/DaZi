@@ -58,16 +58,37 @@ public class PostsPanel extends JPanel {
             }
         });
     }
-
     public void updatePosts(List<Post> posts) {
+        System.out.println("UpdatePosts called with: " + posts);
         SwingUtilities.invokeLater(() -> {
             postListModel.clear(); // Clear the old posts
             for (Post post : posts) {
+                System.out.println("Adding post to UI: " + post.getTitle());
+                postListModel.addElement(post);
+            }
+            postList.repaint(); // refresh UI
+        });
+    }
+
+    public void updateSearchResults(List<Post> searchResults) {
+        System.out.println("UpdateSearchResults called with: " + searchResults);
+        updatePosts(searchResults); // Directly delegate to updatePosts
+    }
+
+   /*
+    public void updatePosts(List<Post> posts) {
+        System.out.println("UpdatePosts called with: " + posts);
+        SwingUtilities.invokeLater(() -> {
+            postListModel.clear(); // Clear the old posts
+            for (Post post : posts) {
+                System.out.println("Adding post to UI: " + post.getTitle());
                 postListModel.addElement(post);
             }
             postList.repaint(); // refresh  UI
         });
     }
+
+    */
 
     public void setInteractor(PostsInteractor interactor) {
         this.interactor = interactor;
@@ -92,6 +113,7 @@ public class PostsPanel extends JPanel {
             interactor.getThePosts(PAGE_SIZE);
         }
     }
+
 
 }
 

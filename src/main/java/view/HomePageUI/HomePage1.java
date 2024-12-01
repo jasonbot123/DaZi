@@ -4,6 +4,7 @@ import com.mongodb.client.MongoDatabase;
 import data_access.MongoDBConnection;
 import data_access.MongoPostDataAccessObject;
 import interface_adapter.posts.PostsViewModel;
+import interface_adapter.search.SearchPresenter;
 import interface_adapter.search.SearchViewModel;
 import use_case.post.PostsInteractor;
 import use_case.search.SearchInteractor;
@@ -22,9 +23,11 @@ public class HomePage1 extends JFrame {
         this.currentUsername = username;
         this.searchViewModel = new SearchViewModel();
         this.postsViewModel = new PostsViewModel();
+        SearchPresenter searchPresenter = new SearchPresenter(searchViewModel);
         this.searchInteractor = new SearchInteractor(
                 new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
-                searchViewModel);
+                searchPresenter
+        );
 
         setTitle("Home Page - " + username);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

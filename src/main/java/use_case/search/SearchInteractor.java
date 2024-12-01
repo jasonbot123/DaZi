@@ -10,26 +10,22 @@ import java.util.List;
 
 public class SearchInteractor implements SearchInputBoundary{
     private final PostDataAccessInterface dataAccess;
-    private final SearchViewModel viewModel;
+    private final SearchOutputBoundary presenter;
 
-    public SearchInteractor(PostDataAccessInterface dataAccess, SearchViewModel viewModel1) {
+    public SearchInteractor(PostDataAccessInterface dataAccess, SearchOutputBoundary presenter) {
         this.dataAccess = dataAccess;
-        this.viewModel = viewModel1;
+        this.presenter = presenter;
     }
 
     @Override
     public List<Post> searchPostsByTitle(String keyword) {
         if (keyword == null || keyword.isEmpty()) {
-            viewModel.setErrorMessage("Keyword cannot be empty.");
+            presenter.presentSearchResults(new ArrayList<>());
             return new ArrayList<>();
         }
-
         List<Post> results = dataAccess.searchPostsByTitle(keyword);
-        if (results.isEmpty()) {
-            viewModel.setErrorMessage("No posts found for keyword: " + keyword);
-        } else {
-            viewModel.setSearchResults(results);
-        }
+        System.out.println("Interactor results: " + results);
+        presenter.presentSearchResults(results);
         return results;
     }
 

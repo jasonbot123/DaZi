@@ -4,6 +4,7 @@ import data_access.MongoDBConnection;
 import data_access.MongoPostDataAccessObject;
 import interface_adapter.posts.PostsViewModel;
 import interface_adapter.posts.SectionViewModel;
+import interface_adapter.search.SearchPresenter;
 import interface_adapter.search.SearchViewModel;
 import use_case.post.PostsInteractor;
 import use_case.post.SectionInteractor;
@@ -22,6 +23,7 @@ public class StudyingUI extends JFrame {
     private String currentUsername;
     private final SectionInteractor interactor;
     private final SectionViewModel viewModel;
+    private final SearchInteractor searchInteractor;
 
     public StudyingUI(String username) {
         this.currentUsername = username;
@@ -62,11 +64,13 @@ public class StudyingUI extends JFrame {
 
         // Top Panel (Search Bar and Icons)
         JPanel topPanel = new JPanel(new BorderLayout());
-        SearchViewModel sViewModel = new SearchViewModel();
-        JPanel searchBar = new SearchBar(this,
-                new SearchInteractor(new MongoPostDataAccessObject(
-                        MongoDBConnection.getDatabase("PostDataBase")),sViewModel),
-                sViewModel);
+        SearchViewModel searchViewModel = new SearchViewModel();
+        SearchPresenter searchPresenter = new SearchPresenter(searchViewModel);
+        this.searchInteractor = new SearchInteractor(
+                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
+                searchPresenter
+        );
+        JPanel searchBar = new SearchBar(this, searchInteractor, searchViewModel);
         topPanel.add(searchBar, BorderLayout.CENTER);
 
         JPanel topRightIcons = new TopRightIconsPanel(this);

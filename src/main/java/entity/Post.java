@@ -79,11 +79,20 @@ public class Post {
         return id.equals(post.id);
     }
 
+    /**
+     * Generate a unique integer (hash code) for each Post object based on its id.
+     * @return intergers of unique id.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
 
+    /**
+     * Convert the MongoDB document object into Post object.
+     * @param doc the MongoDB document object (json)
+     * @return post
+     */
     public static Post fromDocument(Document doc) {
         String title = doc.getString("title");
         String content = doc.getString("content");
