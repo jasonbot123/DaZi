@@ -1,6 +1,7 @@
 package view.HomePageUI;
 
 import view.CreatePostUI.CreatePostPage;
+import view.ProfilePageUI.ProfilePage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,8 +24,10 @@ public class TopRightIconsPanel extends JPanel {
             // actionListener for the create post button
             if ("➕".equals(icon)) {
                 iconButton.addActionListener(e -> new CreatePostPage(parentFrame));
+//            } else if ("👤".equals(icon)) {
+//                iconButton.addActionListener(e -> new ProfilePage(parentFrame));
+                
             }
-
         }
     }
 }

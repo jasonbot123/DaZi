@@ -84,6 +84,24 @@ public class MongoPostDataAccessObject {
         return posts;
     }
 
+
+    public List<Post> getAllPostsByUsername(String username) {
+        List<Post> posts = new ArrayList<>();
+        try (MongoCursor<Document> cursor = postCollection.find().iterator()) {
+            while (cursor.hasNext()) {
+                Document doc = cursor.next();
+                if (username.equals(doc.getString("username"))){
+                    String title = doc.getString("title");
+                    String content = doc.getString("content");
+                    String section = doc.getString("section");
+                    LocalDateTime timestamp = LocalDateTime.ofInstant(doc.getDate("timestamp").toInstant(), ZoneOffset.UTC);
+
+                    posts.add(new Post(title, content, Section.valueOf(section), username, timestamp));
+                }
+            }
+        }
+        return posts;
+
     private Post documentToPost(Document doc) {
         String title = doc.getString("title");
         String content = doc.getString("content");
@@ -102,6 +120,7 @@ public class MongoPostDataAccessObject {
     public void createIndexes() {
         postCollection.createIndex(new Document("timestamp", -1));
         postCollection.createIndex(new Document("_id", 1));
+
     }
 }
 
