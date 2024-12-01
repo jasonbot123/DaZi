@@ -17,7 +17,6 @@ public class HomePage1 extends JFrame {
     private final SearchInteractor searchInteractor;
     private final SearchViewModel searchViewModel;
     private final PostsViewModel postsViewModel;
-    // private final PostsPanel postsPanel;
 
     public HomePage1(String username) {
         this.currentUsername = username;

@@ -80,8 +80,6 @@ public class DiningUI extends JFrame {
 
         // central post panel
         add(postsPanel, BorderLayout.CENTER);
-        // interactor.getPostsBySection("DINING", 10);
-
 
         setVisible(true);
     }

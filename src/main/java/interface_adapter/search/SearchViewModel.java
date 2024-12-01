@@ -28,8 +28,8 @@ public class SearchViewModel {
     }
 
     public void setErrorMessage(String errorMessage) {
-
         this.errorMessage = errorMessage;
+
         if (errorMessage != null) {
             this.searchResults = new ArrayList<>();
         }
