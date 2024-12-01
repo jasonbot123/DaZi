@@ -29,6 +29,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
     private final JButton logIn;
     private final JButton cancel;
+    private final JButton signUp; // New button
     private LoginController loginController;
 
     public LoginView(LoginViewModel loginViewModel) {
@@ -38,7 +39,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         // Set layout and background
         this.setLayout(new GridBagLayout());
         this.setBackground(Color.WHITE);
-        this.setPreferredSize(new Dimension(600, 400)); // Increased screen size
+        this.setPreferredSize(new Dimension(600, 450)); // Increased height to accommodate Sign Up button
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -114,6 +115,33 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         gbc.gridy = 5;
         gbc.gridwidth = 2;
         this.add(buttonPanel, gbc);
+
+        // "Sign Up" Section
+        JPanel signUpPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        signUpPanel.setBackground(Color.WHITE);
+
+        JLabel signUpLabel = new JLabel("Don't have an account? ");
+        signUpLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        signUpLabel.setForeground(Color.GRAY);
+
+        signUp = new JButton("Sign Up Here");
+        signUp.setFont(new Font("Arial", Font.PLAIN, 12));
+        signUp.setBackground(Color.WHITE);
+        signUp.setForeground(new Color(51, 153, 255));
+        signUp.setFocusPainted(false);
+        signUp.setBorderPainted(false);
+        signUp.setContentAreaFilled(false);
+
+        signUp.addActionListener(e -> {loginController.switchToSignUpView();
+        });
+
+        signUpPanel.add(signUpLabel);
+        signUpPanel.add(signUp);
+
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        gbc.gridwidth = 2;
+        this.add(signUpPanel, gbc);
 
         // Add document listeners
         usernameInputField.getDocument().addDocumentListener(createDocumentListener());
