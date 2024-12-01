@@ -10,13 +10,13 @@ public class SearchViewModel {
     private String errorMessage = null;
 
     public void setSearchResults(List<Post> searchResults) {
-        System.out.println("SearchViewModel - set - Setting search results: " + searchResults);
-        this.searchResults = new ArrayList<>(searchResults); // Deep copy
+
+        this.searchResults = new ArrayList<>(searchResults);
     }
 
     public List<Post> getSearchResults() {
-        System.out.println("SearchViewModel - get - Returning search results: " + searchResults);
-        return new ArrayList<>(this.searchResults); // Return a copy
+
+        return new ArrayList<>(this.searchResults);
     }
 
     public String getErrorMessage() {
@@ -24,7 +24,10 @@ public class SearchViewModel {
     }
 
     public void setErrorMessage(String errorMessage) {
+
         this.errorMessage = errorMessage;
-        this.searchResults = new ArrayList<>(); // Clear previous results
+        if (errorMessage != null) {
+            this.searchResults = new ArrayList<>();
+        }
     }
 }

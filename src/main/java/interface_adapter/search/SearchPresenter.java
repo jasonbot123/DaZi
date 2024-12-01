@@ -15,17 +15,15 @@ public class SearchPresenter implements SearchOutputBoundary {
 
     @Override
     public void presentSearchResults(List<Post> results) {
-        System.out.println("Presenting search results: " + results);// results for UI consumption
-        if (results.isEmpty()) {
 
+        if (results.isEmpty()) {
             viewModel.setSearchResults(new ArrayList<>());
             viewModel.setErrorMessage("No results found.");
         } else {
-            System.out.println("else-Presenting search results: " + results);
+            viewModel.setErrorMessage(null); // Clear any previous error
             viewModel.setSearchResults(results);
-            viewModel.setErrorMessage(null);
         }
-        System.out.println("ViewModel after presenting: " + viewModel.getSearchResults());
+
     }
 
 }

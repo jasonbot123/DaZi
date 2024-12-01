@@ -24,7 +24,6 @@ public class SearchInteractor implements SearchInputBoundary{
             return new ArrayList<>();
         }
         List<Post> results = dataAccess.searchPostsByTitle(keyword);
-        System.out.println("Interactor results: " + results);
         presenter.presentSearchResults(results);
         return results;
     }

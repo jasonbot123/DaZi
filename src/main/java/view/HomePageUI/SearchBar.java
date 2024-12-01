@@ -38,7 +38,6 @@ public class SearchBar extends JPanel {
                 new SearchPageUI(parentFrame, viewModel);
                 parentFrame.dispose();
             }
-
         });
 
         add(searchField, BorderLayout.CENTER);

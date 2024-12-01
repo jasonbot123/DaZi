@@ -38,7 +38,9 @@ public class SearchPageUI extends JFrame {
         leftPanel.add(logoPanel, BorderLayout.NORTH);
 
         String currentUsername = previousFrame.getTitle().replace("Home Page - ", "").trim();
-        JPanel sideBar = new SideBar(currentUsername, null, null); // Sidebar for navigation
+        PostsViewModel postsViewModel = new PostsViewModel();
+        PostsPanel postsPanel = new PostsPanel(currentUsername, null, postsViewModel);
+        JPanel sideBar = new SideBar(currentUsername, postsPanel, postsViewModel);
         leftPanel.add(sideBar, BorderLayout.CENTER);
         add(leftPanel, BorderLayout.WEST);
 
@@ -55,9 +57,10 @@ public class SearchPageUI extends JFrame {
         add(topPanel, BorderLayout.NORTH);
 
         // SearchPostsPanel to display search results
-        SearchPostsPanel postsPanel = new SearchPostsPanel(viewModel);
-        postsPanel.updateSearchResults(viewModel.getSearchResults()); // Update with search results
-        add(postsPanel, BorderLayout.CENTER);
+        SearchViewModel searchViewModel = viewModel;
+        SearchPostsPanel sPostsPanel = new SearchPostsPanel(searchViewModel);
+        sPostsPanel.updateSearchResults(viewModel.getSearchResults()); // Update with search results
+        add(sPostsPanel, BorderLayout.CENTER);
 
         setVisible(true);
     }
