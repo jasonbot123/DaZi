@@ -5,12 +5,13 @@ package interface_adapter.change_password;
  */
 public class LoggedInState {
     private String username = "";
-
+    private String email = "";
     private String password = "";
     private String passwordError;
 
     public LoggedInState(LoggedInState copy) {
         username = copy.username;
+        email = copy.email;
         password = copy.password;
         passwordError = copy.passwordError;
     }
@@ -38,4 +39,6 @@ public class LoggedInState {
     public String getPassword() {
         return password;
     }
+
+    public String getEmail() {return email;}
 }

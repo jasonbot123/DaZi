@@ -3,6 +3,7 @@ package view.HomePageUI;
 import view.ChatPageUI.ChatPage;
 import view.ChatPageUI.ChatWindow;
 import view.CreatePostUI.CreatePostPage;
+import view.ProfilePageUI.ProfilePage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,9 +27,11 @@ public class TopRightIconsPanel extends JPanel {
             if ("➕".equals(icon)) {
                 iconButton.addActionListener(e -> new CreatePostPage(parentFrame));
             }
-
             if ("💬".equals(icon)) {
                 iconButton.addActionListener(e -> new ChatPage(parentFrame));
+            }
+            if ("👤".equals(icon)) {
+              iconButton.addActionListener(e -> new ProfilePage(parentFrame));
             }
         }
     }

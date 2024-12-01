@@ -17,6 +17,15 @@ import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
+import org.bson.Document;
+import org.bson.conversions.Bson;
+import static com.mongodb.client.model.Updates.set;
+
+import static com.mongodb.client.model.Filters.eq;
 /**
  * The DAO for user data.
  */
@@ -31,6 +40,7 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
     private static final String MESSAGE = "message";
+    private static final String EMAIL = "email";
     private final UserFactory userFactory;
 
     public DBUserDataAccessObject(UserFactory userFactory) {
@@ -54,8 +64,9 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
                 final JSONObject userJSONObject = responseBody.getJSONObject("user");
                 final String name = userJSONObject.getString(USERNAME);
                 final String password = userJSONObject.getString(PASSWORD);
+                final String email = userJSONObject.getString(EMAIL);
 
-                return userFactory.create(name, password);
+                return userFactory.create(name, password, email);
             }
             else {
                 throw new RuntimeException(responseBody.getString(MESSAGE));
