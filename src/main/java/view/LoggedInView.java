@@ -33,6 +33,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         this.loggedInViewModel.addPropertyChangeListener(this);
 
         // Set layout and background
+
         this.setLayout(new GridBagLayout());
         this.setBackground(Color.WHITE);
         this.setPreferredSize(new Dimension(600, 400));

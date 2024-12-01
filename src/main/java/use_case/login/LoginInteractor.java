@@ -4,7 +4,9 @@ import entity.CommonUserFactory;
 import entity.User;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.login.LoginViewModel;
 import view.HomePageUI.HomePage1;
+import view.LoginView;
 import view.ViewManager;
 
 import javax.swing.*;
@@ -17,15 +19,6 @@ import java.awt.*;
 public class LoginInteractor implements LoginInputBoundary {
     private final LoginUserDataAccessInterface userDataAccessObject;
     private final LoginOutputBoundary loginPresenter;
-
-    private final JPanel cardPanel = new JPanel();
-    private final CardLayout cardLayout = new CardLayout();
-    private final UserFactory userFactory = new CommonUserFactory();
-    private final ViewManagerModel viewManagerModel = new ViewManagerModel();
-    private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
-
-    private HomePage1 homePage1;
-
     public LoginInteractor(LoginUserDataAccessInterface userDataAccessInterface,
                            LoginOutputBoundary loginOutputBoundary) {
         this.userDataAccessObject = userDataAccessInterface;
@@ -50,13 +43,8 @@ public class LoginInteractor implements LoginInputBoundary {
 
                 userDataAccessObject.setCurrentUsername(user.getName());
                 final LoginOutputData loginOutputData = new LoginOutputData(user.getName(), false);
-                loginPresenter.prepareSuccessView(loginOutputData);
-                System.out.println("You've logged in successfully.");
-
-                SwingUtilities.invokeLater(() -> {
-                    HomePage1 homePage = new HomePage1(user.getName());
-                    homePage.setVisible(true);
-                });
+                //loginPresenter.prepareSuccessView(loginOutputData);
+                loginPresenter.switchToMainView();
             }
 
         }
@@ -66,5 +54,10 @@ public class LoginInteractor implements LoginInputBoundary {
     public void switchToSignUpView() {
         loginPresenter.switchToSignUpView();
 
+    }
+
+    @Override
+    public void switchToMainView() {
+        loginPresenter.switchToMainView();
     }
 }
