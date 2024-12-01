@@ -5,6 +5,10 @@ import entity.Post;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A place to hold data that the UI observes to display search results or error messages.
+ */
+
 public class SearchViewModel {
     private List<Post> searchResults = new ArrayList<>();
     private String errorMessage = null;

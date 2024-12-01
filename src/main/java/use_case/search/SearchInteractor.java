@@ -8,6 +8,10 @@ import use_case.post.PostDataAccessInterface;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The search use case interactor that implements the SearchInputBoundary interface.
+ * Get data from the Data Access Interface then pass the data to the Output Boundary.
+ */
 public class SearchInteractor implements SearchInputBoundary{
     private final PostDataAccessInterface dataAccess;
     private final SearchOutputBoundary presenter;
