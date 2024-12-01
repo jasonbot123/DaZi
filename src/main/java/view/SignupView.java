@@ -1,18 +1,12 @@
 package view;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -21,212 +15,224 @@ import interface_adapter.signup.SignupState;
 import interface_adapter.signup.SignupViewModel;
 
 /**
- * The View for the Signup Use Case.
+ * The View for when the user is signing up for the program.
  */
 public class SignupView extends JPanel implements ActionListener, PropertyChangeListener {
-    private final String viewName = "Create a DaZi Account";
 
+    private final String viewName = "sign up";
     private final SignupViewModel signupViewModel;
-    private final JTextField usernameInputField = new JTextField(15);
-    private final JPasswordField passwordInputField = new JPasswordField(15);
-    private final JPasswordField repeatPasswordInputField = new JPasswordField(15);
-    private final JTextField emailInputField = new JTextField(15);
 
-    private SignupController signupController;
+    private final JTextField usernameInputField = new JTextField(15);
+    private final JLabel usernameErrorField = new JLabel();
+    private final JPasswordField passwordInputField = new JPasswordField(15);
+    private final JLabel passwordErrorField = new JLabel();
+    private final JPasswordField repeatPasswordInputField = new JPasswordField(15);
+    private final JLabel repeatPasswordErrorField = new JLabel();
+    private final JTextField emailInputField = new JTextField(15);
+    private final JLabel emailErrorField = new JLabel();
 
     private final JButton signUp;
     private final JButton cancel;
     private final JButton toLogin;
+    private SignupController signupController;
 
     public SignupView(SignupViewModel signupViewModel) {
         this.signupViewModel = signupViewModel;
-        signupViewModel.addPropertyChangeListener(this);
+        this.signupViewModel.addPropertyChangeListener(this);
 
-        final JLabel title = new JLabel(SignupViewModel.TITLE_LABEL);
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Set layout and background
+        this.setLayout(new GridBagLayout());
+        this.setBackground(Color.WHITE);
+        this.setPreferredSize(new Dimension(600, 500));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        final LabelTextPanel usernameInfo = new LabelTextPanel(
-                new JLabel(SignupViewModel.USERNAME_LABEL), usernameInputField);
-        final LabelTextPanel passwordInfo = new LabelTextPanel(
-                new JLabel(SignupViewModel.PASSWORD_LABEL), passwordInputField);
-        final LabelTextPanel repeatPasswordInfo = new LabelTextPanel(
-                new JLabel(SignupViewModel.REPEAT_PASSWORD_LABEL), repeatPasswordInputField);
-        final LabelTextPanel emailInfo = new LabelTextPanel(
-                new JLabel(SignupViewModel.EMAIL_LABEL), emailInputField);
+        // Title
+        JLabel title = new JLabel("Create a DaZi Account", SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 24));
+        title.setForeground(new Color(34, 34, 34));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        this.add(title, gbc);
 
-        final JPanel buttons = new JPanel();
-        toLogin = new JButton(SignupViewModel.TO_LOGIN_BUTTON_LABEL);
-        buttons.add(toLogin);
-        signUp = new JButton(SignupViewModel.SIGNUP_BUTTON_LABEL);
-        buttons.add(signUp);
-        cancel = new JButton(SignupViewModel.CANCEL_BUTTON_LABEL);
-        buttons.add(cancel);
+        // Username input
+        gbc.gridwidth = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        this.add(new JLabel("Username:"), gbc);
 
-        signUp.addActionListener(
-                // This creates an anonymous subclass of ActionListener and instantiates it.
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(signUp)) {
-                            final SignupState currentState = signupViewModel.getState();
+        gbc.gridx = 1;
+        usernameInputField.setFont(new Font("Arial", Font.PLAIN, 14));
+        this.add(usernameInputField, gbc);
 
-                            signupController.execute(
-                                    currentState.getUsername(),
-                                    currentState.getPassword(),
-                                    currentState.getRepeatPassword(),
-                                    currentState.getEmail()
-                            );
-                        }
-                    }
-                }
-        );
+        gbc.gridy = 2;
+        usernameErrorField.setForeground(Color.RED);
+        usernameErrorField.setFont(new Font("Arial", Font.ITALIC, 12));
+        this.add(usernameErrorField, gbc);
 
-        toLogin.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        signupController.switchToLoginView();
-                    }
-                }
-        );
+        // Email input
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        this.add(new JLabel("Email:"), gbc);
 
+        gbc.gridx = 1;
+        emailInputField.setFont(new Font("Arial", Font.PLAIN, 14));
+        this.add(emailInputField, gbc);
+
+        gbc.gridy = 4;
+        emailErrorField.setForeground(Color.RED);
+        emailErrorField.setFont(new Font("Arial", Font.ITALIC, 12));
+        this.add(emailErrorField, gbc);
+
+        // Password input
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        this.add(new JLabel("Password:"), gbc);
+
+        gbc.gridx = 1;
+        passwordInputField.setFont(new Font("Arial", Font.PLAIN, 14));
+        this.add(passwordInputField, gbc);
+
+        gbc.gridy = 6;
+        passwordErrorField.setForeground(Color.RED);
+        passwordErrorField.setFont(new Font("Arial", Font.ITALIC, 12));
+        this.add(passwordErrorField, gbc);
+
+        // Repeat Password input
+        gbc.gridx = 0;
+        gbc.gridy = 7;
+        this.add(new JLabel("Repeat Password:"), gbc);
+
+        gbc.gridx = 1;
+        repeatPasswordInputField.setFont(new Font("Arial", Font.PLAIN, 14));
+        this.add(repeatPasswordInputField, gbc);
+
+        gbc.gridy = 8;
+        repeatPasswordErrorField.setForeground(Color.RED);
+        repeatPasswordErrorField.setFont(new Font("Arial", Font.ITALIC, 12));
+        this.add(repeatPasswordErrorField, gbc);
+
+        // Buttons
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        buttonPanel.setBackground(Color.WHITE);
+
+        signUp = new JButton("Sign Up");
+        signUp.setFont(new Font("Arial", Font.BOLD, 14));
+        signUp.setBackground(new Color(51, 153, 255));
+        signUp.setForeground(Color.BLACK);
+        signUp.setFocusPainted(false);
+        signUp.addActionListener(e -> {
+            SignupState currentState = signupViewModel.getState();
+            signupController.execute(
+                    currentState.getUsername(),
+                    currentState.getPassword(),
+                    currentState.getRepeatPassword(),
+                    currentState.getEmail()
+            );
+        });
+
+        cancel = new JButton("Cancel");
+        cancel.setFont(new Font("Arial", Font.BOLD, 14));
+        cancel.setBackground(new Color(220, 53, 69));
+        cancel.setForeground(Color.BLACK);
+        cancel.setFocusPainted(false);
         cancel.addActionListener(this);
 
-        addUsernameListener();
-        addEmailListener();
-        addPasswordListener();
-        addRepeatPasswordListener();
+        toLogin = new JButton("Back to Login");
+        toLogin.setFont(new Font("Arial", Font.BOLD, 14));
+        toLogin.setBackground(new Color(102, 204, 102));
+        toLogin.setForeground(Color.BLACK);
+        toLogin.setFocusPainted(false);
+        toLogin.addActionListener(e -> signupController.switchToLoginView());
 
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        buttonPanel.add(signUp);
+        buttonPanel.add(cancel);
+        buttonPanel.add(toLogin);
 
-        this.add(title);
-        this.add(usernameInfo);
-        this.add(emailInfo);
-        this.add(passwordInfo);
-        this.add(repeatPasswordInfo);
-        this.add(buttons);
+        gbc.gridx = 0;
+        gbc.gridy = 9;
+        gbc.gridwidth = 2;
+        this.add(buttonPanel, gbc);
+
+        // Add document listeners
+        usernameInputField.getDocument().addDocumentListener(createDocumentListener(() -> {
+            SignupState currentState = signupViewModel.getState();
+            currentState.setUsername(usernameInputField.getText());
+            signupViewModel.setState(currentState);
+        }));
+
+        emailInputField.getDocument().addDocumentListener(createDocumentListener(() -> {
+            SignupState currentState = signupViewModel.getState();
+            currentState.setEmail(emailInputField.getText());
+            signupViewModel.setState(currentState);
+        }));
+
+        passwordInputField.getDocument().addDocumentListener(createDocumentListener(() -> {
+            SignupState currentState = signupViewModel.getState();
+            currentState.setPassword(new String(passwordInputField.getPassword()));
+            signupViewModel.setState(currentState);
+        }));
+
+        repeatPasswordInputField.getDocument().addDocumentListener(createDocumentListener(() -> {
+            SignupState currentState = signupViewModel.getState();
+            currentState.setRepeatPassword(new String(repeatPasswordInputField.getPassword()));
+            signupViewModel.setState(currentState);
+        }));
     }
 
-    private void addUsernameListener() {
-        usernameInputField.getDocument().addDocumentListener(new DocumentListener() {
-
-            private void documentListenerHelper() {
-                final SignupState currentState = signupViewModel.getState();
-                currentState.setUsername(usernameInputField.getText());
-                signupViewModel.setState(currentState);
-            }
-
+    private DocumentListener createDocumentListener(Runnable updateState) {
+        return new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                documentListenerHelper();
+                updateState.run();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                documentListenerHelper();
+                updateState.run();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                documentListenerHelper();
+                updateState.run();
             }
-        });
-    }
-
-    private void addEmailListener() {
-        emailInputField.getDocument().addDocumentListener(new DocumentListener() {
-
-            private void documentListenerHelper() {
-                final SignupState currentState = signupViewModel.getState();
-                currentState.setEmail(emailInputField.getText());
-                signupViewModel.setState(currentState);
-            }
-
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                documentListenerHelper();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                documentListenerHelper();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                documentListenerHelper();
-            }
-        });
-    }
-
-    private void addPasswordListener() {
-        passwordInputField.getDocument().addDocumentListener(new DocumentListener() {
-
-            private void documentListenerHelper() {
-                final SignupState currentState = signupViewModel.getState();
-                currentState.setPassword(new String(passwordInputField.getPassword()));
-                signupViewModel.setState(currentState);
-            }
-
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                documentListenerHelper();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                documentListenerHelper();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                documentListenerHelper();
-            }
-        });
-    }
-
-    private void addRepeatPasswordListener() {
-        repeatPasswordInputField.getDocument().addDocumentListener(new DocumentListener() {
-
-            private void documentListenerHelper() {
-                final SignupState currentState = signupViewModel.getState();
-                currentState.setRepeatPassword(new String(repeatPasswordInputField.getPassword()));
-                signupViewModel.setState(currentState);
-            }
-
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                documentListenerHelper();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                documentListenerHelper();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                documentListenerHelper();
-            }
-        });
+        };
     }
 
     @Override
     public void actionPerformed(ActionEvent evt) {
-        JOptionPane.showMessageDialog(this, "Cancel not implemented yet.");
+        if (evt.getSource() == cancel) {
+            usernameInputField.setText("");
+            passwordInputField.setText("");
+            repeatPasswordInputField.setText("");
+            emailInputField.setText("");
+        }
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        final SignupState state = (SignupState) evt.getNewValue();
-        if (state.getUsernameError() != null) {
-            JOptionPane.showMessageDialog(this, state.getUsernameError());
-        }
+        SignupState state = (SignupState) evt.getNewValue();
+        setFields(state);
+        usernameErrorField.setText(state.getUsernameError());
+        emailErrorField.setText(state.getEmailError());
+        passwordErrorField.setText(state.getPasswordError());
+        repeatPasswordErrorField.setText(state.getRepeatPasswordError());
+    }
+
+    private void setFields(SignupState state) {
+        usernameInputField.setText(state.getUsername());
+        emailInputField.setText(state.getEmail());
+        passwordInputField.setText(state.getPassword());
+        repeatPasswordInputField.setText(state.getRepeatPassword());
     }
 
     public String getViewName() {
         return viewName;
     }
 
-    public void setSignupController(SignupController controller) {
-        this.signupController = controller;
+    public void setSignupController(SignupController signupController) {
+        this.signupController = signupController;
     }
 }

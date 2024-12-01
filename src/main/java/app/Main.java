@@ -49,6 +49,7 @@ public class Main {
         application.pack();
         application.setVisible(true);
 
+
         /*
         String title = "Post";
         String content = "test ";

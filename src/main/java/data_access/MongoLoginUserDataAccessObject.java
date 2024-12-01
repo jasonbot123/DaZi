@@ -21,13 +21,11 @@ public class MongoLoginUserDataAccessObject implements LoginUserDataAccessInterf
 
     @Override
     public void save(User user) {
-        System.out.println("SKAJDBAKDJSBAKASJD");
         userDataAccessObject.addUser(user.getName(), user.getEmail(), user.getPassword());
     }
 
     @Override
     public User get(String username) {
-        System.out.println("AHSDKSAJHDSKJDH");
         var userDocument = userDataAccessObject.getUser(username);
         if (userDocument != null) {
             String name = userDocument.getString("username");
