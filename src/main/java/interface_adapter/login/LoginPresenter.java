@@ -3,6 +3,7 @@ package interface_adapter.login;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.signup.SignupViewModel;
 import use_case.login.LoginOutputBoundary;
 import use_case.login.LoginOutputData;
 
@@ -12,6 +13,7 @@ import use_case.login.LoginOutputData;
 public class LoginPresenter implements LoginOutputBoundary {
 
     private final LoginViewModel loginViewModel;
+    private final SignupViewModel signUpViewModel;
     private final LoggedInViewModel loggedInViewModel;
     private final ViewManagerModel viewManagerModel;
 
@@ -19,6 +21,7 @@ public class LoginPresenter implements LoginOutputBoundary {
                           LoggedInViewModel loggedInViewModel,
                           LoginViewModel loginViewModel) {
         this.viewManagerModel = viewManagerModel;
+        this.signUpViewModel = new SignupViewModel();
         this.loggedInViewModel = loggedInViewModel;
         this.loginViewModel = loginViewModel;
     }
@@ -40,5 +43,12 @@ public class LoginPresenter implements LoginOutputBoundary {
         final LoginState loginState = loginViewModel.getState();
         loginState.setLoginError(error);
         loginViewModel.firePropertyChanged();
+    }
+
+    @Override
+    public void switchToSignUpView() {
+        System.out.println("AKSJHASKJDH");
+        viewManagerModel.setState(signUpViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
     }
 }

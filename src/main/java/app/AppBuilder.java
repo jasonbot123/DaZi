@@ -173,7 +173,7 @@ public class AppBuilder {
         application.add(cardPanel);
 
         //Have this set to loginview by default
-        viewManagerModel.setState(signupView.getViewName());
+        viewManagerModel.setState(loginView.getViewName());
         viewManagerModel.firePropertyChanged();
 
         return application;
