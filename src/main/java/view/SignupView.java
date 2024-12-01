@@ -120,7 +120,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
 
         signUp = new JButton("Sign Up");
         signUp.setFont(new Font("Arial", Font.BOLD, 14));
-        signUp.setBackground(new Color(51, 153, 255));
+        signUp.setBackground(new Color(173, 173, 173, 255));
         signUp.setForeground(Color.BLACK);
         signUp.setFocusPainted(false);
         signUp.addActionListener(e -> {
@@ -135,14 +135,14 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
 
         cancel = new JButton("Cancel");
         cancel.setFont(new Font("Arial", Font.BOLD, 14));
-        cancel.setBackground(new Color(220, 53, 69));
+        cancel.setBackground(new Color(173, 173, 173, 255));
         cancel.setForeground(Color.BLACK);
         cancel.setFocusPainted(false);
         cancel.addActionListener(this);
 
         toLogin = new JButton("Back to Login");
         toLogin.setFont(new Font("Arial", Font.BOLD, 14));
-        toLogin.setBackground(new Color(102, 204, 102));
+        toLogin.setBackground(new Color(173, 173, 173, 255));
         toLogin.setForeground(Color.BLACK);
         toLogin.setFocusPainted(false);
         toLogin.addActionListener(e -> signupController.switchToLoginView());
