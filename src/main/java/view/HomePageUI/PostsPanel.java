@@ -47,6 +47,7 @@ public class PostsPanel extends JPanel {
             int value = e.getValue();
 
             if (!viewModel.isLoading() && value + extent > maximum - 50) {
+                // System.out.println("get posts for section: " + sectionFilter);
                 if (sectionFilter != null) {
                     viewModel.setLoading(true);
                     interactor.getPostsBySection(sectionFilter, PAGE_SIZE);
@@ -57,13 +58,14 @@ public class PostsPanel extends JPanel {
             }
         });
     }
+
     public void updatePosts(List<Post> posts) {
         SwingUtilities.invokeLater(() -> {
             postListModel.clear(); // Clear the old posts
             for (Post post : posts) {
                 postListModel.addElement(post);
             }
-            postList.repaint(); // refresh UI
+            postList.repaint(); // refresh  UI
         });
     }
 
@@ -90,7 +92,6 @@ public class PostsPanel extends JPanel {
             interactor.getThePosts(PAGE_SIZE);
         }
     }
-
 
 }
 

@@ -5,6 +5,7 @@ import com.mongodb.client.MongoDatabase;
 import entity.Comment;
 import org.bson.Document;
 import org.bson.types.ObjectId;
+import use_case.comment.CommentDataAccessInterface;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -13,7 +14,7 @@ import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 
-public class MongoCommentDataAccessObject {
+public class MongoCommentDataAccessObject implements CommentDataAccessInterface {
     private MongoCollection<Document> commentCollection;
 
     public MongoCommentDataAccessObject(MongoDatabase database) {
@@ -21,6 +22,7 @@ public class MongoCommentDataAccessObject {
         commentCollection.createIndex(new Document("postId", 1));
     }
 
+    @Override
     public void addComment(Comment comment) {
         Document commentDoc = new Document("_id", comment.getId())
                 .append("postId", comment.getPostId())
@@ -30,6 +32,7 @@ public class MongoCommentDataAccessObject {
         commentCollection.insertOne(commentDoc);
     }
 
+    @Override
     public List<Comment> getCommentsForPost(ObjectId postId) {
         List<Comment> comments = new ArrayList<>();
         commentCollection.find(eq("postId", postId))
