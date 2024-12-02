@@ -44,6 +44,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
+
         // Title
         JLabel title = new JLabel("Login to DaZi", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 24));

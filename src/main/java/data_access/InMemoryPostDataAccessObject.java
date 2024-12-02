@@ -1,7 +1,6 @@
 package data_access;
 
 import entity.Post;
-import entity.Section;
 import use_case.post.PostDataAccessInterface;
 
 import java.util.ArrayList;

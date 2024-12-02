@@ -23,7 +23,7 @@ public class TopRightIconsPanel extends JPanel {
         setLayout(new FlowLayout(FlowLayout.RIGHT));
 
 
-        String[] icons = {"📩", "➕", "👤", "🔔", "🚪"};
+        String[] icons = {"📩", "➕", "👤","🚪"};
         for (String icon : icons) {
             JButton iconButton = new JButton(icon);
             add(iconButton);
