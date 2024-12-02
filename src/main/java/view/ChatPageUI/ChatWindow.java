@@ -19,13 +19,14 @@ import java.util.List;
 
 public class ChatWindow extends JFrame {
     private final ChatController chatController;
-    private final String currentUser = "jason";
+    private final String currentUser;
     private final String chatPartner;
     private final JTextArea chatArea;
     private final JTextField inputField;
 
-    public ChatWindow(String chatPartner) {
+    public ChatWindow(String chatPartner, String currentUser) {
         this.chatPartner = chatPartner;
+        this.currentUser = currentUser;
 
         setTitle("Chat with " + chatPartner);
         setSize(400, 600);

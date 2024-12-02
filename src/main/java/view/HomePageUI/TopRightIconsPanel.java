@@ -8,6 +8,9 @@ import use_case.post.PostsInteractor;
 import view.CreatePostUI.CreatePostPage;
 import view.SectionPageUI.*;
 import view.ProfilePageUI.*;
+import view.ChatPageUI.ChatPage;
+import view.ChatPageUI.ChatWindow;
+
 
 
 
@@ -15,7 +18,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TopRightIconsPanel extends JPanel {
-    public TopRightIconsPanel(JFrame parentFrame) {
+
+    public TopRightIconsPanel(JFrame parentFrame, String currentuser) {
         setLayout(new FlowLayout(FlowLayout.RIGHT));
 
 
@@ -30,7 +34,7 @@ public class TopRightIconsPanel extends JPanel {
                     String sectionFilter = resolveSectionFilter(parentFrame);
                     if (sectionFilter != null) {
                         PostsViewModel viewModel = new PostsViewModel();
-                        PostsPanel postsPanel = new PostsPanel("currentUsername", sectionFilter, viewModel);
+                        PostsPanel postsPanel = new PostsPanel(currentuser, sectionFilter, viewModel);
                         PostsInteractor interactor = new PostsInteractor(
                                 new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
                                 viewModel,
@@ -38,7 +42,23 @@ public class TopRightIconsPanel extends JPanel {
 
 
                         // pass them along with sectionFilter to CreatePostPage
-                        new CreatePostPage(parentFrame, interactor, viewModel, sectionFilter);
+                        new CreatePostPage(parentFrame, interactor, viewModel, sectionFilter, currentuser);
+                    } else {
+                        JOptionPane.showMessageDialog(
+                                parentFrame,
+                                "Unable to determine section filter.",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+                    }
+                });
+
+            }
+            if ("📩".equals(icon)) {
+                iconButton.addActionListener(e -> {
+                    String sectionFilter = resolveSectionFilter(parentFrame);
+                    if (sectionFilter != null) {
+                        ChatPage chatpage = new ChatPage(parentFrame, currentuser);
                     } else {
                         JOptionPane.showMessageDialog(
                                 parentFrame,
@@ -49,6 +69,8 @@ public class TopRightIconsPanel extends JPanel {
                     }
                 });
             }
+
+            }
             if ("👤".equals(icon)) {
                 iconButton.addActionListener(e -> {
                     CreateProfilePage createProfilepage = new CreateProfilePage();
@@ -57,7 +79,6 @@ public class TopRightIconsPanel extends JPanel {
 
             }
         }
-    }
 
         /**
          * Resolves the section filter from the parent frame.

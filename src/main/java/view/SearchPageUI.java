@@ -50,7 +50,7 @@ public class SearchPageUI extends JFrame {
                 viewModel);
         topPanel.add(searchBar, BorderLayout.CENTER);
 
-        JPanel topRightIcons = new TopRightIconsPanel(this);
+        JPanel topRightIcons = new TopRightIconsPanel(this, currentUsername);
         topPanel.add(topRightIcons, BorderLayout.EAST);
         add(topPanel, BorderLayout.NORTH);
 
