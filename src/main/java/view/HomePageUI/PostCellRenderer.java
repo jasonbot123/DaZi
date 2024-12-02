@@ -47,11 +47,12 @@ public class PostCellRenderer extends JPanel implements ListCellRenderer<Post> {
         likeLabel.setHorizontalAlignment(SwingConstants.CENTER);
         likeLabel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
-                BorderFactory.createEmptyBorder(5, 15, 5, 15)
+                BorderFactory.createEmptyBorder(8, 25, 8, 25)
         ));
         likeLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
         likeLabel.setOpaque(true);
-        likeLabel.setBackground(Color.WHITE);
+        likeLabel.setBackground(new Color(245, 245, 245));
+        likeLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         commentLabel = new JLabel("Comments");
         commentLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -100,14 +101,14 @@ public class PostCellRenderer extends JPanel implements ListCellRenderer<Post> {
 
         likeLabel.setText("❤ " + post.getLikes());
         likeLabel.setForeground(new Color(128, 128, 128));
-        likeLabel.setBackground(Color.WHITE);
-
+        
         if (isSelected) {
             setBackground(new Color(240, 240, 240));
             likeLabel.setBackground(new Color(245, 245, 245));
             commentLabel.setBackground(new Color(245, 245, 245));
         } else {
             setBackground(Color.WHITE);
+            likeLabel.setBackground(new Color(250, 250, 250));
             commentLabel.setBackground(Color.WHITE);
         }
 

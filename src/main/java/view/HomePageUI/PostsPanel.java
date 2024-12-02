@@ -8,6 +8,10 @@ import java.util.List;
 
 import use_case.post.PostsInteractor;
 import interface_adapter.posts.PostsViewModel;
+import data_access.MongoLikeRecordDataAccessObject;
+import data_access.MongoDBConnection;
+import entity.LikeRecord;
+import data_access.MongoPostDataAccessObject;
 
 public class PostsPanel extends JPanel {
     private static final int PAGE_SIZE = 10;
@@ -17,11 +21,15 @@ public class PostsPanel extends JPanel {
     private final PostsViewModel viewModel;
     private String sectionFilter;
     private String currentuser;
+    private final MongoLikeRecordDataAccessObject likeRecordDAO;
+    private final MongoPostDataAccessObject postDAO;
 
     public PostsPanel(String username, String sectionFilter, PostsViewModel viewModel) {
         this.viewModel = viewModel;
         this.sectionFilter = sectionFilter;
         this.currentuser = username;
+        this.likeRecordDAO = new MongoLikeRecordDataAccessObject(MongoDBConnection.getDatabase("PostDataBase"));
+        this.postDAO = new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase"));
 
         setupUI();
     }
@@ -70,14 +78,19 @@ public class PostsPanel extends JPanel {
                     Point clickPoint = new Point(evt.getPoint().x - cellBounds.x,
                             evt.getPoint().y - cellBounds.y);
 
-                    int bottomPanelY = cellBounds.height - 60;
+                    int bottomPanelY = cellBounds.height - 65;
+                    int likeX = cellBounds.width - 270;
                     int commentX = cellBounds.width - 150;
-                    int commentWidth = 140;
-                    int commentHeight = 50;
+                    int buttonHeight = 60;
 
-                    if (clickPoint.y >= bottomPanelY && clickPoint.y <= bottomPanelY + commentHeight && clickPoint.x >= commentX) {
-                        CommentPage commentPage = new CommentPage(post, currentuser);
-                        commentPage.setVisible(true);
+                    if (clickPoint.y >= bottomPanelY && clickPoint.y <= bottomPanelY + buttonHeight) {
+                        if (clickPoint.x >= likeX && clickPoint.x < commentX - 10) {
+                            handleLikeClick(post);
+                        }
+                        else if (clickPoint.x >= commentX) {
+                            CommentPage commentPage = new CommentPage(post, currentuser);
+                            commentPage.setVisible(true);
+                        }
                     }
                 }
             }
@@ -116,6 +129,22 @@ public class PostsPanel extends JPanel {
         } else {
             interactor.getThePosts(PAGE_SIZE);
         }
+    }
+
+    private void handleLikeClick(Post post) {
+        boolean hasLiked = likeRecordDAO.hasUserLiked(currentuser, post.getId().toString());
+        
+        if (!hasLiked) {
+            post.setLikes(post.getLikes() + 1);
+            likeRecordDAO.addLikeRecord(new LikeRecord(currentuser, post.getId().toString()));
+            postDAO.updateLikes(post.getId(), post.getLikes());
+        } else {
+            post.setLikes(Math.max(0, post.getLikes() - 1));
+            likeRecordDAO.removeLikeRecord(currentuser, post.getId().toString());
+            postDAO.updateLikes(post.getId(), post.getLikes());
+        }
+        
+        postList.repaint();
     }
 
 }

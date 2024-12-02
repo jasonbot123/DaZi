@@ -13,28 +13,29 @@ public class MongoLikeRecordDataAccessObject {
 
     public MongoLikeRecordDataAccessObject(MongoDatabase database) {
         this.likeCollection = database.getCollection("LikeRecords");
+        likeCollection.createIndex(new Document("username", 1).append("postId", 1));
     }
 
     public void addLikeRecord(LikeRecord record) {
         Document doc = new Document("username", record.getUsername())
-                .append("postTitle", record.getPostTitle());
+                .append("postId", record.getPostId());
         likeCollection.insertOne(doc);
     }
 
-    public void removeLikeRecord(String username, String postTitle) {
+    public void removeLikeRecord(String username, String postId) {
         likeCollection.deleteOne(
                 and(
                         eq("username", username),
-                        eq("postTitle", postTitle)
+                        eq("postId", postId)
                 )
         );
     }
 
-    public boolean hasUserLiked(String username, String postTitle) {
+    public boolean hasUserLiked(String username, String postId) {
         return likeCollection.find(
                 and(
                         eq("username", username),
-                        eq("postTitle", postTitle)
+                        eq("postId", postId)
                 )
         ).first() != null;
     }
