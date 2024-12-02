@@ -68,36 +68,29 @@ public class TopRightIconsPanel extends JPanel {
                         );
                     }
                 });
-            }
-
-            }
-            if ("👤".equals(icon)) {
+            } else if ("👤".equals(icon)) {
                 iconButton.addActionListener(e -> {
                     CreateProfilePage createProfilepage = new CreateProfilePage();
                     createProfilepage.launchSelfProfilePage("Jason");
                 });
-
             }
-        }
-
-        /**
-         * Resolves the section filter from the parent frame.
-         * After creating a post, return to where the user hit the plus button
-         */
-        private String resolveSectionFilter (JFrame parentFrame){
-            if (parentFrame instanceof HomePage1) {
-                return "Latest Post";
-            } else if (parentFrame instanceof StudyingUI) {
-                return "Studying";
-            } else if (parentFrame instanceof GamingUI) {
-                return "Gaming";
-            } else if (parentFrame instanceof DiningUI) {
-                return "Dining";
-            } else if (parentFrame instanceof HangingOutUI) {
-                return "Hanging_Out";
-            } else if (parentFrame instanceof OthersUI) {
-                return "Others";
-            }
-            return null;
         }
     }
+
+    private String resolveSectionFilter(JFrame parentFrame) {
+        if (parentFrame instanceof HomePage1) {
+            return "Latest Post";
+        } else if (parentFrame instanceof StudyingUI) {
+            return "Studying";
+        } else if (parentFrame instanceof GamingUI) {
+            return "Gaming";
+        } else if (parentFrame instanceof DiningUI) {
+            return "Dining";
+        } else if (parentFrame instanceof HangingOutUI) {
+            return "Hanging_Out";
+        } else if (parentFrame instanceof OthersUI) {
+            return "Others";
+        }
+        return null;
+    }
+}

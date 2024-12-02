@@ -4,8 +4,10 @@ import data_access.InMemoryPostDataAccessObject;
 import entity.Post;
 import entity.Section;
 import interface_adapter.search.SearchViewModel;
+import interface_adapter.search.SearchPresenter;
 import org.junit.Test;
 import use_case.search.SearchInteractor;
+import use_case.search.SearchOutputBoundary;
 
 import java.time.LocalDateTime;
 
@@ -23,7 +25,8 @@ public class searchViewModelTest {
         mockDAO.addPost(new Post("Gaming Night", "Gaming-related content", Section.GAMING, "user2", LocalDateTime.now()));
 
         SearchViewModel viewModel = new SearchViewModel();
-        SearchInteractor interactor = new SearchInteractor(mockDAO, viewModel);
+        SearchOutputBoundary presenter = new SearchPresenter(viewModel);
+        SearchInteractor interactor = new SearchInteractor(mockDAO, presenter);
 
         // Perform search
         interactor.searchPostsByTitle("Study");

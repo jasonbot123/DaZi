@@ -57,11 +57,12 @@ public class PostCellRenderer extends JPanel implements ListCellRenderer<Post> {
         commentLabel.setHorizontalAlignment(SwingConstants.CENTER);
         commentLabel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
-                BorderFactory.createEmptyBorder(5, 15, 5, 15)
+                BorderFactory.createEmptyBorder(8, 25, 8, 25)
         ));
         commentLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
         commentLabel.setOpaque(true);
-        commentLabel.setBackground(Color.WHITE);
+        commentLabel.setBackground(new Color(245, 245, 245));
+        commentLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         JPanel bottomPanel = new JPanel(new BorderLayout());
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
