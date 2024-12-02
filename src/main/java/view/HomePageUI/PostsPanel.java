@@ -91,7 +91,7 @@ public class PostsPanel extends JPanel {
                             handleLikeClick(post);
                         }
                         else if (clickPoint.x >= messageX && clickPoint.x < commentX - 10) {
-                            ChatWindow chatWindow = new ChatWindow(currentuser, post.getUsername());
+                            ChatWindow chatWindow = new ChatWindow(post.getUsername(), currentuser);
                             chatWindow.setVisible(true);
                         }
                         else if (clickPoint.x >= commentX) {
