@@ -9,15 +9,15 @@ import data_access.MongoUserProfileSaveDataAccessObject;
 import interface_adapter.profilesave.*;
 import interface_adapter.profileview.*;
 import use_case.profilesave.*;
-import view.HomePageUI.PostsPanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class ProfilePage extends JFrame {
+public class SelfProfilePage extends JFrame {
     private final ProfilePostsPanel postsPanel;
-    public ProfilePage(ProfileViewModel viewModel) {
+
+    public SelfProfilePage(ProfileViewModel viewModel, String username) {
         setTitle("Profile Page");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(800, 600);
@@ -54,25 +54,20 @@ public class ProfilePage extends JFrame {
         infoPanel.add(new JScrollPane(bioArea));
 
 
-
         add(infoPanel, BorderLayout.NORTH);
 
         // User Posts Panel
         postsPanel = new ProfilePostsPanel("currentUsername");
         add(postsPanel, BorderLayout.CENTER);
-//        loadPostsFromDatabase();
 
         // Edit Profile Button
-        //if currentuser == viewModel.getUsername()
         JButton editButton = new JButton("Edit Profile");
         editButton.addActionListener(e -> {
-            MongoDBConnection connection = new MongoDBConnection();
-            ProfileSaveDataAccessInterface dataAccess = new MongoUserProfileSaveDataAccessObject(connection.getDatabase("UserDataBase"));
+            ProfileSaveDataAccessInterface dataAccess = new MongoUserProfileSaveDataAccessObject(MongoDBConnection.getDatabase("UserDataBase"));
             ProfileSavePresenter presenter = new ProfileSavePresenter(viewModel);
-            ProfileService service = new ProfileService(); // Optional: For validation
             ProfileSaveInteractor interactor = new ProfileSaveInteractor(dataAccess, presenter);
             ProfileSaveController controller = new ProfileSaveController(interactor);
-            new EditProfilePage(viewModel, controller); // Navigate to Edit Profile Page
+            new EditProfilePage(viewModel, controller, username); // Navigate to Edit Profile Page
             dispose(); // Close the current Profile Page
         });
         JPanel buttonPanel = new JPanel();
@@ -80,19 +75,5 @@ public class ProfilePage extends JFrame {
         add(buttonPanel, BorderLayout.SOUTH);
 
         setVisible(true);
-    }
-    private void loadPostsFromDatabase() {
-        try {
-            MongoDatabase database = MongoDBConnection.getDatabase("posts");
-            MongoPostDataAccessObject dao = new MongoPostDataAccessObject(database);
-            List<Post> posts = dao.getAllPostsByUsername("currentUsername");
-
-            for (Post post : posts) {
-                postsPanel.addPost(post);
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Failed to load posts from the database.", "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        }
     }
 }

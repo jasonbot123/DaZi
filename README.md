@@ -1,39 +1,133 @@
-# DaZi
-# Group  #77
+# **Dazi - Your Campus Connection**
 
-##Domain:
-Our app is a social networking platform designed for university students, 
-focusing on connecting them through a “buddy pairing” system. Students can use the 
-platform to find like-minded individuals for various activities, such as academic work, 
-gaming, or attending social events. By helping students connect, the platform aims to enrich 
-both their academic and social experiences. Additionally, our app is intended specifically for 
-university students, with all users required to verify their student status, ensuring a safe 
-and trusted environment for collaboration and socialization.
+---
 
+## **Authors and Contributors**
+- **jasonbot123**
+- **CelineChien81777**
+- **JqrqmyChqn**
 
-## Software Specification:
-The app allows university students to sign up using their verified school email addresses. 
-Once registered, users will be able to browse, post, and search for buddy opportunities in 
-several categories such as academic work, gaming, meal-sharing, and social events.
+---
 
-- Students can sign up for an account. User must sign up with their university email, 
-and the app will verify their status before granting access. Once they sign up, users can sign in or sign out.
+## **Project Summary**
+Dazi is a **community-centric app** designed exclusively for students at the **University of Toronto (U of T)**. Its purpose is to simplify and enhance social interactions and collaborations by providing a unique platform for connecting like-minded peers. With Dazi, students can efficiently find partners for various activities—academic, social, or recreational.
 
-- Each user will have a basic profile showing their personal information such as attending school, 
-location, age, and any relevant information they choose to share, such as their interests or previous activities.
+### **Motivation**
+University life is bustling yet often isolating. Traditional methods of seeking connections—such as emails, bulletin boards, or social media groups—are either inefficient or too broad.  
+Dazi bridges this gap by fostering a **safe, trusted environment** exclusive to U of T students, ensuring genuine community connections.
 
-- Users can create posts (invitations) where they specify what kind of buddy they are looking for, 
-including details like the activity type, time, and any relevant preferences. Once posted, other users should be 
-able to see and respond to the invitation on a specific page.
+### **What Problem Does Dazi Solve?**
+1. **Efficient Networking**: Easily find and connect with peers for specific activities.
+2. **Verified Community**: U of T-exclusive accounts via university email verification.
+3. **Streamlined Communication**: Built-in tools like messaging and profile viewing enable seamless interactions.
+4. **Activity Visibility**: Showcase initiatives to attract participants effortlessly.
 
-- Users can select the appropriate category when creating a post (e.g., Learning Buddy, Gaming Buddy, etc.). 
-This ensures that posts are organized by type of activity and that other users can browse the intrested invitations.
+### **How Does Dazi Work?**
+1. **Create Posts**: Organize activities or request help with tasks (e.g., recruiting teammates, survey participants, or social events).
+2. **Browse and Join**: Explore activities and join those matching your interests or goals.
+3. **Connect and Collaborate**: Message and view profiles of participants for a trusted, seamless connection.
 
-- Users should be able to search for specific posts using filters such as category, date, and location.
+### **Who Benefits from Dazi?**
+- **Students Seeking Collaboration**: Effortlessly find group members or participants.
+- **Event Organizersb  **: Target U of T-specific audiences for academic or social events.
+- **Socially Active Students**: Discover opportunities to connect, socialize, and build relationships.
 
-- Users will receive notifications when there are responses to their posts or when new posts match their interests.
+### **Why is Dazi Useful?**
+Dazi addresses inefficiency, mistrust, and visibility issues in traditional networking, making it a **purpose-built solution** for U of T students to thrive academically and socially.
 
-## User Stories:
-- Team user story: As a student looking for a study partner for CSC207, I want to create a post in the “Learning Buddy” 
-section, specifying the topic I want to review, the available times, and the preferred meeting location, so I can find 
-someone to study with.
+---
+
+## **Table of Contents**
+1. [Features](#features)
+2. [Installation Instructions](#installation-instructions)
+3. [Usage Guide](#usage-guide)
+4. [License](#license)
+5. [Feedback](#feedback)
+6. [Contributions](#contributions)
+
+---
+
+## **Features**
+- **Post Creation**:  
+  Create detailed posts for activities or collaborations like:
+    - Group project recruitment
+    - Academic survey participation
+    - Social events such as game nights or study sessions
+  ```text
+  Example Post: "Looking for two teammates for CSC148 final project. DM if interested!"
+
+## **Installation Instructions**
+To get started with this project, follow these steps:
+
+1. **Pre-requisites**:
+    - Operating System: [Windows/Mac/Linux]
+    - Software: [List required software]
+    - Versions: [Mention required versions]
+
+2. **Installation Steps**:
+    - Step 1: [Instructions to install]
+    - Step 2: [More detailed steps]
+    - Step 3: [Final steps]
+
+3. **Additional Resources**:
+    - Required Packages:
+        - [Package Name 1](link-to-package)
+        - [Package Name 2](link-to-package)
+
+4. **Common Issues and Fixes**:
+    - Issue 1: [Brief description and solution]
+    - Issue 2: [Brief description and solution]
+
+[Include tutorials, code snippets, or videos if necessary.]
+
+---
+
+## **Usage Guide**
+Once the software is installed, follow these steps to use it:
+
+1. **Getting Started**:
+    - Run the software:
+      ```shell
+      command to run
+      ```
+    - Access features through [describe access method].
+
+2. **Feature-Specific Usage**:
+    - Example for Feature 1:  
+      ```code snippet here```
+    - Example for Feature 2:  
+      [Include screenshot or video tutorial].
+
+[Add more examples as needed.]
+
+---
+
+## **License**
+This project is licensed under the **[License Name]**.  
+For more details, read the [LICENSE](link-to-license-file).
+
+---
+
+## **Feedback**
+We value your feedback!  
+Submit your thoughts via:
+- [Google Form Link](link-to-google-form)
+- [Discussion Board](link-to-discussion-board)
+
+### Guidelines for Feedback
+- **What counts as valid feedback?**
+    - Bug reports, feature requests, or improvement suggestions.
+- **Expectations when submitting feedback**:
+    - A response within [timeframe] for valid submissions.
+
+---
+
+## **Contributions**
+We welcome contributions to this project!
+
+### How to Contribute
+1. **Fork this repository**:
+    - Go to the project’s GitHub page and click “Fork”.
+2. **Create a branch**:
+   ```shell
+   git checkout -b feature/your-feature-name
