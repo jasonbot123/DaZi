@@ -27,11 +27,9 @@ public class Main {
         MongoUserDataAccessObject userDao = new MongoUserDataAccessObject(connection.getDatabase("UserDataBase"));
         UserService userService = new UserService(userDao);
 
-        // Test post1
         MongoPostDataAccessObject postDao = new MongoPostDataAccessObject(connection.getDatabase("PostDataBase"));
         PostService postService = new PostService(postDao);
 
-        // Initializing controllers and interactors within AppBuilder
         MongoLoginUserDataAccessObject loginUserDAO = new MongoLoginUserDataAccessObject(userDao);
         MongoLoginUserDataAccessObject signUpUserDAO = new MongoLoginUserDataAccessObject(userDao);
 

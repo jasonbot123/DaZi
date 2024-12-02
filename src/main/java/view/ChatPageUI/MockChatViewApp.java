@@ -44,9 +44,9 @@ public class MockChatViewApp {
         ChatContactInteractor interactor = new ChatContactInteractor(contactPresenter, chatDataAccess);
         ChatContactController chatContactController = new ChatContactController(interactor);
 
-        JFrame frame = new JFrame();
-        ChatPage chatPage = new ChatPage(frame);
-        chatPage.setVisible(true);
+//        JFrame frame = new JFrame();
+//        ChatPage chatPage = new ChatPage(frame);
+//        chatPage.setVisible(true);
 
         List<ChatContact> contacts = chatDataAccess.getChatContacts("jason");
         System.out.println(contacts);

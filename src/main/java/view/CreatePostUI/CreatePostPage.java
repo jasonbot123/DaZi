@@ -21,7 +21,7 @@ public class CreatePostPage extends JFrame {
     private final String sectionFilter;
 
     public CreatePostPage(JFrame parentFrame, PostsInteractor postsInteractor,
-                          PostsViewModel postsViewModel, String sectionFilter) {
+                          PostsViewModel postsViewModel, String sectionFilter, String username) {
         this.postsInteractor = postsInteractor;
         this.postsViewModel = postsViewModel;
         this.sectionFilter = sectionFilter;
@@ -75,7 +75,7 @@ public class CreatePostPage extends JFrame {
                     Post newPost = new Post(title,
                             content,
                             section,
-                            "currentUsername",
+                            username,
                             LocalDateTime.now()); // TODO: Replace with real username
 
                     postsInteractor.createPost(newPost);

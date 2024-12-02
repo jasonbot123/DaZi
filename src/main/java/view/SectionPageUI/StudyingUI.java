@@ -33,7 +33,7 @@ public class StudyingUI extends JFrame {
                 viewModel);
 
         setTitle("Studying Section - " + username);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -73,7 +73,7 @@ public class StudyingUI extends JFrame {
         JPanel searchBar = new SearchBar(this, searchInteractor, searchViewModel);
         topPanel.add(searchBar, BorderLayout.CENTER);
 
-        JPanel topRightIcons = new TopRightIconsPanel(this);
+        JPanel topRightIcons = new TopRightIconsPanel(this, username);
         topPanel.add(topRightIcons, BorderLayout.EAST);
 
         add(topPanel, BorderLayout.NORTH);
