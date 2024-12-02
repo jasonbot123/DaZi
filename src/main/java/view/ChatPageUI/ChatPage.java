@@ -21,7 +21,7 @@ import java.util.List;
 public class ChatPage extends JFrame {
     private final DefaultListModel<String> contactsListModel;
 
-    public ChatPage(JFrame parentFrame) {
+    public ChatPage(JFrame parentFrame, String username) {
 
         setTitle("Direct Chats");
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -61,7 +61,7 @@ public class ChatPage extends JFrame {
         });
 
         // Load chat contacts for the current user
-        chatContactController.getChatContacts("jason");
+        chatContactController.getChatContacts(username);
 
         setVisible(true);
     }

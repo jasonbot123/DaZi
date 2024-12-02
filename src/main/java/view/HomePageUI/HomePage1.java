@@ -65,7 +65,7 @@ public class HomePage1 extends JFrame {
         topPanel.add(searchBar, BorderLayout.CENTER);
 
         // upper right, icon buttons
-        JPanel topRightIcons = new TopRightIconsPanel(this);
+        JPanel topRightIcons = new TopRightIconsPanel(this, currentUsername);
         topPanel.add(topRightIcons, BorderLayout.EAST);
 
         add(topPanel, BorderLayout.NORTH);
