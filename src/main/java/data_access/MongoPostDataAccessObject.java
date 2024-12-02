@@ -103,7 +103,8 @@ public class MongoPostDataAccessObject {
         return posts;
     }
 
-        private Post documentToPost (Document doc){
+
+        private Post documentToPost(Document doc) {
             String title = doc.getString("title");
             String content = doc.getString("content");
             String section = doc.getString("section");
@@ -118,12 +119,13 @@ public class MongoPostDataAccessObject {
             return post;
         }
 
-        public void createIndexes () {
+
+
+        public void createIndexes() {
             postCollection.createIndex(new Document("timestamp", -1));
             postCollection.createIndex(new Document("_id", 1));
 
         }
     }
-
 
 
