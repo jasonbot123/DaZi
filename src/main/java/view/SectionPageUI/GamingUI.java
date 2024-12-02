@@ -1,51 +1,59 @@
-package view.HomePageUI;
+package view.SectionPageUI;
 
-import com.mongodb.client.MongoDatabase;
 import data_access.MongoDBConnection;
 import data_access.MongoPostDataAccessObject;
+
 import interface_adapter.posts.PostsViewModel;
+import interface_adapter.posts.SectionViewModel;
 import interface_adapter.search.SearchPresenter;
-import interface_adapter.search.SearchViewModel;
+import use_case.post.PostDataAccessInterface;
 import use_case.post.PostsInteractor;
+import use_case.post.SectionInteractor;
+import view.HomePageUI.HomePage1;
+import view.HomePageUI.PostsPanel;
+import view.HomePageUI.LogoPanel;
+import view.HomePageUI.SideBar;
+import view.HomePageUI.SearchBar;
+import view.HomePageUI.TopRightIconsPanel;
+
+import interface_adapter.search.SearchViewModel;
 import use_case.search.SearchInteractor;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class HomePage1 extends JFrame {
+public class GamingUI extends JFrame{
+    private static GamingUI instance;
+    private PostsPanel postsPanel;
     private String currentUsername;
+    private final SectionInteractor interactor;
+    private final SectionViewModel viewModel;
     private final SearchInteractor searchInteractor;
-    private final SearchViewModel searchViewModel;
-    private final PostsViewModel postsViewModel;
 
-    public HomePage1(String username) {
+    public GamingUI(String username) {
         this.currentUsername = username;
-        this.searchViewModel = new SearchViewModel();
-        this.postsViewModel = new PostsViewModel();
-        SearchPresenter searchPresenter = new SearchPresenter(searchViewModel);
-        this.searchInteractor = new SearchInteractor(
+        this.viewModel = new SectionViewModel();
+        this.interactor = new SectionInteractor(
                 new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
-                searchPresenter
-        );
+                viewModel);
 
-        setTitle("Home Page - " + username);
+        setTitle("Gaming Section - " + username);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // left panel, colouring
+        // Left Panel (Logo + Sidebar)
         JPanel leftPanel = new JPanel(new BorderLayout());
         leftPanel.setBackground(new Color(0, 51, 102));
 
-        // logo
         JPanel logoPanel = new LogoPanel();
         logoPanel.setBackground(new Color(0, 51, 102));
         leftPanel.add(logoPanel, BorderLayout.NORTH);
 
-        // posts panel setup
+        // post setup
         PostsViewModel viewModel = new PostsViewModel();
-        PostsPanel postsPanel = new PostsPanel(username, null, viewModel);
+        PostsPanel postsPanel = new PostsPanel(username, "GAMING", viewModel);
         viewModel.clearPosts();
         PostsInteractor interactor = new PostsInteractor(
                 new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
@@ -55,41 +63,46 @@ public class HomePage1 extends JFrame {
         postsPanel.setInteractor(interactor);
 
         // sidebar
-        JPanel sideBar = new SideBar(currentUsername, postsPanel, viewModel);
+        JPanel sideBar = new SideBar(username, postsPanel, viewModel);
         leftPanel.add(sideBar, BorderLayout.CENTER);
         add(leftPanel, BorderLayout.WEST);
 
-        // searchInteractor, searchBar
+
+        // Top Panel (Search Bar and Icons)
         JPanel topPanel = new JPanel(new BorderLayout());
+        SearchViewModel searchViewModel = new SearchViewModel();
+        SearchPresenter searchPresenter = new SearchPresenter(searchViewModel);
+        this.searchInteractor = new SearchInteractor(
+                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
+                searchPresenter
+        );
         JPanel searchBar = new SearchBar(this, searchInteractor, searchViewModel);
         topPanel.add(searchBar, BorderLayout.CENTER);
 
-        // upper right, icon buttons
         JPanel topRightIcons = new TopRightIconsPanel(this);
         topPanel.add(topRightIcons, BorderLayout.EAST);
 
         add(topPanel, BorderLayout.NORTH);
 
-        // posts
+        // Center Panel
         add(postsPanel, BorderLayout.CENTER);
-        interactor.getThePosts(10);
+        interactor.getPostsBySection("GAMING", 10);
 
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-
-            MongoDatabase database = MongoDBConnection.getDatabase("PostDataBase");
-            MongoPostDataAccessObject dao = new MongoPostDataAccessObject(database);
-            dao.createIndexes();
-
-            new HomePage1("testUser");
-        });
+    public static GamingUI getInstance(String username) {
+        if (instance == null) {
+            instance = new GamingUI(username);
+        }
+        return instance;
     }
 
-    public Object getCurrentUsername() {
-        return currentUsername.toString();
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new GamingUI("testUser"));
+    }
+
+    public PostsPanel getPostsPanel() {
+        return postsPanel;
     }
 }
-

@@ -18,9 +18,9 @@ public class PostService {
     public void addPost(String title, String content, String sectionName, String username) {
         // each section is an enum (similar to constant)!!!!!
         Section section = Section.valueOf(sectionName.toUpperCase());
-        Post post = new Post(title, content, section, username, LocalDateTime.now()); // creates a new post with current timestamp
+        Post post = new Post(title, content, section, username, LocalDateTime.now());
         postDao.addPost(post);
-        System.out.println("Post added successfully!");
+        // System.out.println("Post added successfully!");
     }
 
     // get a post by title

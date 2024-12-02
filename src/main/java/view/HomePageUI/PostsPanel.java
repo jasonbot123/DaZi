@@ -1,15 +1,101 @@
 package view.HomePageUI;
 
-import data_access.MongoDBConnection;
-import data_access.MongoPostDataAccessObject;
-import data_access.MongoLikeRecordDataAccessObject;
 import entity.Post;
-import entity.LikeRecord;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+import use_case.post.PostsInteractor;
+import interface_adapter.posts.PostsViewModel;
+
+public class PostsPanel extends JPanel {
+    private static final int PAGE_SIZE = 10;
+    private final DefaultListModel<Post> postListModel = new DefaultListModel<>();
+    private final JList<Post> postList = new JList<>(postListModel);
+    private PostsInteractor interactor;
+    private final PostsViewModel viewModel;
+    private String sectionFilter;
+
+    public PostsPanel(String username, String sectionFilter, PostsViewModel viewModel) {
+        this.viewModel = viewModel;
+        this.sectionFilter = sectionFilter;
+
+        setupUI();
+    }
+
+    private void setupUI() {
+        setLayout(new BorderLayout());
+
+        postList.setCellRenderer(new PostCellRenderer());
+        postList.setFixedCellHeight(150);
+        postList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        postList.setBackground(Color.WHITE);
+        postList.setSelectionBackground(new Color(240, 240, 240));
+        postList.setBorder(null);
+
+        JScrollPane scrollPane = new JScrollPane(postList);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        add(scrollPane, BorderLayout.CENTER);
+
+        scrollPane.getVerticalScrollBar().addAdjustmentListener(e -> {
+            JScrollBar scrollBar = (JScrollBar) e.getAdjustable();
+            int extent = scrollBar.getModel().getExtent();
+            int maximum = scrollBar.getModel().getMaximum();
+            int value = e.getValue();
+
+            if (!viewModel.isLoading() && value + extent > maximum - 50) {
+                // System.out.println("get posts for section: " + sectionFilter);
+                if (sectionFilter != null) {
+                    viewModel.setLoading(true);
+                    interactor.getPostsBySection(sectionFilter, PAGE_SIZE);
+                } else {
+                    viewModel.setLoading(true);
+                    interactor.getThePosts(PAGE_SIZE);
+                }
+            }
+        });
+    }
+
+    public void updatePosts(List<Post> posts) {
+        SwingUtilities.invokeLater(() -> {
+            postListModel.clear(); // Clear the old posts
+            for (Post post : posts) {
+                postListModel.addElement(post);
+            }
+            postList.repaint(); // refresh  UI
+        });
+    }
+
+    public void setInteractor(PostsInteractor interactor) {
+        this.interactor = interactor;
+        if (sectionFilter != null) {
+            interactor.getPostsBySection(sectionFilter, 10);
+        } else {
+            interactor.getThePosts(10);
+        }
+    }
+    public void updateSectionFilter(String sectionFilter) {
+        this.sectionFilter = sectionFilter;
+        if (interactor != null) {
+            loadPostsForCurrentSection();
+        }
+    }
+
+    // helper
+    private void loadPostsForCurrentSection() {
+        if (sectionFilter != null) {
+            interactor.getPostsBySection(sectionFilter, PAGE_SIZE);
+        } else {
+            interactor.getThePosts(PAGE_SIZE);
+        }
+    }
+
+}
+
+/*
 public class PostsPanel extends JPanel {
     private static final int PAGE_SIZE = 10;
     private int currentPage = 0;
@@ -19,9 +105,12 @@ public class PostsPanel extends JPanel {
     private MongoPostDataAccessObject postDAO;
     private MongoLikeRecordDataAccessObject likeRecordDAO;
     private String currentUsername;
+    private String sectionFilter;
 
-    public PostsPanel(String username) {
+    public PostsPanel(String username, String sectionFilter) {
         this.currentUsername = username;
+        this.sectionFilter = sectionFilter;
+
         setLayout(new BorderLayout());
 
         postDAO = new MongoPostDataAccessObject(MongoDBConnection.getDatabase("posts"));
@@ -48,6 +137,11 @@ public class PostsPanel extends JPanel {
         scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         add(scrollPane, BorderLayout.CENTER);
+        if (sectionFilter != null) {
+            loadPostsBySection(sectionFilter);
+        } else {
+            loadMorePosts();
+        }
 
         scrollPane.getVerticalScrollBar().addAdjustmentListener(e -> {
             JScrollBar scrollBar = (JScrollBar) e.getAdjustable();
@@ -55,13 +149,18 @@ public class PostsPanel extends JPanel {
             int maximum = scrollBar.getModel().getMaximum();
             int value = e.getValue();
 
-            if (!isLoading && value + extent > maximum - 50) { // 近底部时加载更多
-                loadMorePosts();
+            if (!isLoading && value + extent > maximum - 50) { // Near the bottom
+                if (sectionFilter != null) {
+                    // System.out.println("loadPostsBySection for section: " + sectionFilter);
+                    loadPostsBySection(sectionFilter);
+                } else {
+                    loadMorePosts();
+                }
             }
         });
 
-        loadMorePosts();
         addListListeners();
+
     }
 
     private void loadMorePosts() {
@@ -94,6 +193,42 @@ public class PostsPanel extends JPanel {
         worker.execute();
     }
 
+    // helper, for different section's post loading
+    public void loadPostsBySection(String section) {
+        // System.out.println("Loading posts for: " + section);
+        sectionFilter = section;
+        currentPage = 0;
+        postListModel.clear();
+        isLoading = true;
+
+        SwingWorker<List<Post>, Void> worker = new SwingWorker<>() {
+            @Override
+            protected List<Post> doInBackground() {
+                return postDAO.getPostsBySection(sectionFilter, currentPage, PAGE_SIZE);
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    List<Post> posts = get();
+
+                    for (Post post : posts) {
+                        if (!postListModel.contains(post)) { // Check for duplicates
+                            postListModel.addElement(post);
+                        }
+                    }
+                    currentPage++;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    isLoading = false;
+                }
+            }
+        };
+
+        worker.execute();
+    }
+
     private void loadPostsFromDatabase() {
         currentPage = 0;
         postListModel.clear();
@@ -101,11 +236,17 @@ public class PostsPanel extends JPanel {
     }
 
     public void addPost(Post post) {
-        postDAO.addPost(post);
-        postListModel.addElement(post);
+        // add post to the UI only
+        if (sectionFilter == null || post.getSection().toString().equalsIgnoreCase(sectionFilter)) {
+            SwingUtilities.invokeLater(() -> {
+                if (!postListModel.contains(post)) {
+                    postListModel.addElement(post);
+                }
+            });
+        }
     }
 
-    private class PostCellRenderer extends JPanel implements ListCellRenderer<Post> {
+    public static class PostCellRenderer extends JPanel implements ListCellRenderer<Post> {
         private final JLabel titleLabel;
         private final JLabel contentLabel;
         private final JLabel userLabel;
@@ -271,4 +412,16 @@ public class PostsPanel extends JPanel {
         CommentPage commentPage = new CommentPage(post);
         commentPage.setVisible(true);
     }
+
+
+    public void updatePosts(List<Post> posts) {
+        SwingUtilities.invokeLater(() -> {
+            postListModel.clear();
+            for (Post post : posts) {
+                postListModel.addElement(post);
+            }
+        });
+    }
 }
+
+ */

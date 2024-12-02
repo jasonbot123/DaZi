@@ -10,24 +10,30 @@ import data_access.MongoPostDataAccessObject;
 import entity.Post;
 import entity.Section;
 import view.HomePageUI.HomePage1;
+import view.SectionPageUI.*;
+import use_case.post.PostsInteractor;
+import interface_adapter.posts.PostsViewModel;
 
 public class CreatePostPage extends JFrame {
 
-    private HomePage1 homePage1;
+    private final PostsInteractor postsInteractor;
+    private final PostsViewModel postsViewModel;
+    private final String sectionFilter;
 
-    public CreatePostPage(HomePage1 homePage1) {
-        this.homePage1 = homePage1;
+    public CreatePostPage(JFrame parentFrame, PostsInteractor postsInteractor,
+                          PostsViewModel postsViewModel, String sectionFilter) {
+        this.postsInteractor = postsInteractor;
+        this.postsViewModel = postsViewModel;
+        this.sectionFilter = sectionFilter;
 
         setTitle("Create a Post");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 400); //TODO: change the size
+        setSize(600, 400);
         setLocationRelativeTo(null);
-
         setLayout(new BorderLayout());
 
-        // Form Panel
         JPanel formPanel = new JPanel();
-        formPanel.setLayout(new GridLayout(4, 2, 10, 10));
+        formPanel.setLayout(new GridLayout(3, 2, 10, 10));
 
         // Title
         JLabel titleLabel = new JLabel("Title:");
@@ -45,46 +51,61 @@ public class CreatePostPage extends JFrame {
         JLabel sectionLabel = new JLabel("Section:");
         String[] sections = {"Studying", "Gaming", "Dining", "Hanging Out", "Others"};
         JComboBox<String> sectionComboBox = new JComboBox<>(sections);
+
+        // preselect the section based on the sectionFilter
+        if (sectionFilter != null) {
+            sectionComboBox.setSelectedItem(formatSectionName(sectionFilter));
+        }
         formPanel.add(sectionLabel);
         formPanel.add(sectionComboBox);
 
         add(formPanel, BorderLayout.CENTER);
 
-        // TODO: action listener for all buttons: delete, save as draft
-
-        // post button + action listener
+        // Post Button + Action Listener
         JButton postButton = new JButton("Post");
         postButton.addActionListener(e -> {
             String title = titleField.getText().trim();
             String content = contentArea.getText().trim();
-            String sectionString = (String) sectionComboBox.getSelectedItem();
+            String selectedSection = (String) sectionComboBox.getSelectedItem();
 
-            if (!title.isEmpty() && !content.isEmpty() && sectionString != null) {
+            if (!title.isEmpty() && !content.isEmpty() && selectedSection != null) {
                 try {
-                    Section section = Section.valueOf(sectionString.toUpperCase());
+                    // use the user-selected section or the default sectionFilter (where user opens the creat post page)
+                    Section section = Section.valueOf(selectedSection.toUpperCase().replace(" ", "_"));
+                    Post newPost = new Post(title,
+                            content,
+                            section,
+                            "currentUsername",
+                            LocalDateTime.now()); // TODO: Replace with real username
 
-                    // create the Post
-                    Post newPost = new Post(title, content, section, "currentUsername", LocalDateTime.now());
+                    postsInteractor.createPost(newPost);
 
-                    // save to MongoDB
-                    MongoDatabase database = MongoDBConnection.getDatabase("PostDataBase");
-                    MongoPostDataAccessObject dao = new MongoPostDataAccessObject(database);
-                    dao.addPost(newPost);
-
-                    // add the new post to HomePage1 and redirect to homepage
-                    homePage1.getPostsPanel().addPost(newPost);
-                    dispose();
+                    // check success or error messages in the ViewModel
+                    if (postsViewModel.getErrorMessage() != null) {
+                        JOptionPane.showMessageDialog(this,
+                                postsViewModel.getErrorMessage(),
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(this,
+                                "Post created successfully!",
+                                "Success",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        dispose();
+                        if (parentFrame != null) {
+                            parentFrame.setVisible(true);
+                        }
+                    }
 
                 } catch (IllegalArgumentException ex) {
-                    JOptionPane.showMessageDialog(this, "Invalid section.", "Error", JOptionPane.ERROR_MESSAGE);
-
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this, "Failed to save the post.", "Error", JOptionPane.ERROR_MESSAGE);
-                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(this,
+                            "Invalid section: " + selectedSection,
+                            "Error", JOptionPane.ERROR_MESSAGE);
                 }
 
             } else {
-                JOptionPane.showMessageDialog(this, "Please fill in all fields!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this,
+                        "Please fill in all fields!",
+                        "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -93,5 +114,21 @@ public class CreatePostPage extends JFrame {
         add(buttonPanel, BorderLayout.SOUTH);
 
         setVisible(true);
+    }
+    private String formatSectionName(String sectionFilter) {
+        switch (sectionFilter.toUpperCase()) {
+            case "STUDYING":
+                return "Studying";
+            case "GAMING":
+                return "Gaming";
+            case "DINING":
+                return "Dining";
+            case "HANGING_OUT":
+                return "Hanging Out";
+            case "OTHERS":
+                return "Others";
+            default:
+                return "Others";
+        }
     }
 }
