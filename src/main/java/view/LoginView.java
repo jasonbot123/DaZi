@@ -99,6 +99,12 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
                     currentState.getUsername(),
                     currentState.getPassword()
             );
+
+            //Close login screen at successful login
+            Window parentWindow = SwingUtilities.getWindowAncestor(LoginView.this);
+            if (parentWindow != null && currentState.isLoggedIn()) {
+                parentWindow.dispose(); // Close the parent window
+            }
         });
 
         cancel = new JButton("Cancel");
@@ -211,6 +217,8 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         LoginState state = (LoginState) evt.getNewValue();
         setFields(state);
         usernameErrorField.setText(state.getLoginError());
+
+
     }
 
     private void setFields(LoginState state) {

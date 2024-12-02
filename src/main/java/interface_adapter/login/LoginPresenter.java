@@ -59,5 +59,6 @@ public class LoginPresenter implements LoginOutputBoundary {
         String user = loginState.getUsername();
         HomePage1 homePage = new HomePage1(user);
         viewManagerModel.firePropertyChanged();
+        loginState.setLoggedIn(true);
     }
 }
