@@ -30,7 +30,10 @@ public class LoginInteractor implements LoginInputBoundary {
         final String username = loginInputData.getUsername();
         final String password = loginInputData.getPassword();
 
-        if (username == " " || password == " ") {
+        System.out.println(username);
+        System.out.println(password);
+
+        if (username != "" && password != "") {
             if (!userDataAccessObject.existsByName(username)) {
                 loginPresenter.prepareFailView(username + ": Account does not exist.");
             }
@@ -47,7 +50,7 @@ public class LoginInteractor implements LoginInputBoundary {
                 }
             }
         }else{
-            loginPresenter.prepareFailView(username + "Please fill out all fields.");
+            loginPresenter.prepareFailView(username + " Please fill out all fields.");
         }
 
     }
