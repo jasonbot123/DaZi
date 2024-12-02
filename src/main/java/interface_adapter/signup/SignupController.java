@@ -15,11 +15,15 @@ public class SignupController {
     }
 
     /**
-     * Executes the Signup Use Case.
-     * @param username the username to sign up
-     * @param password1 the password
-     * @param password2 the password repeated
-     * @param email the email to sign up
+     * Executes the Signup Use Case with the provided user details.
+     * @param username the desired username for the new account
+     * @param bio a brief biography or description of the user
+     * @param college the college the user is affiliated with
+     * @param email the email address for the new account
+     * @param password1 the primary password for the new account
+     * @param program the academic program the user is enrolled in
+     * @param year the year of study the user is in
+     * @param password2 the confirmation of the password (must match password1)
      */
     public void execute(String username, String bio, String college, String email, String password1, String program,
                         String year, String password2) {
