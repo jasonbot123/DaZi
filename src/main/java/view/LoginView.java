@@ -90,7 +90,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
         logIn = new JButton("Log In");
         logIn.setFont(new Font("Arial", Font.BOLD, 14));
-        logIn.setBackground(new Color(51, 153, 255));
+        logIn.setBackground(new Color(173, 173, 173, 255));
         logIn.setForeground(Color.BLACK); // Button font color set to black
         logIn.setFocusPainted(false);
         logIn.addActionListener(e -> {
@@ -99,11 +99,17 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
                     currentState.getUsername(),
                     currentState.getPassword()
             );
+
+            //Close login screen at successful login
+            Window parentWindow = SwingUtilities.getWindowAncestor(LoginView.this);
+            if (parentWindow != null && currentState.isLoggedIn()) {
+                parentWindow.dispose(); // Close the parent window
+            }
         });
 
         cancel = new JButton("Cancel");
         cancel.setFont(new Font("Arial", Font.BOLD, 14));
-        cancel.setBackground(new Color(220, 53, 69));
+        cancel.setBackground(new Color(173, 173, 173, 255));
         cancel.setForeground(Color.BLACK); // Button font color set to black
         cancel.setFocusPainted(false);
         cancel.addActionListener(this);
@@ -211,6 +217,8 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         LoginState state = (LoginState) evt.getNewValue();
         setFields(state);
         usernameErrorField.setText(state.getLoginError());
+
+
     }
 
     private void setFields(LoginState state) {

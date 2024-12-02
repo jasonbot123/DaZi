@@ -38,6 +38,11 @@ class LoginInteractorTest {
             public void switchToSignUpView() {
 
             }
+
+            @Override
+            public void switchToMainView() {
+
+            }
         };
 
         LoginInputBoundary interactor = new LoginInteractor(userRepository, successPresenter);
@@ -68,6 +73,11 @@ class LoginInteractorTest {
 
             @Override
             public void switchToSignUpView() {
+
+            }
+
+            @Override
+            public void switchToMainView() {
 
             }
         };
@@ -106,6 +116,11 @@ class LoginInteractorTest {
             public void switchToSignUpView() {
 
             }
+
+            @Override
+            public void switchToMainView() {
+
+            }
         };
 
         LoginInputBoundary interactor = new LoginInteractor(userRepository, failurePresenter);
@@ -134,6 +149,11 @@ class LoginInteractorTest {
 
             @Override
             public void switchToSignUpView() {
+
+            }
+
+            @Override
+            public void switchToMainView() {
 
             }
         };

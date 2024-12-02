@@ -33,6 +33,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         this.loggedInViewModel.addPropertyChangeListener(this);
 
         // Set layout and background
+
         this.setLayout(new GridBagLayout());
         this.setBackground(Color.WHITE);
         this.setPreferredSize(new Dimension(600, 400));
@@ -80,7 +81,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
         changePasswordButton = new JButton("Change Password");
         changePasswordButton.setFont(new Font("Arial", Font.BOLD, 14));
-        changePasswordButton.setBackground(new Color(40, 167, 69));
+        changePasswordButton.setBackground(new Color(128, 128, 128));
         changePasswordButton.setForeground(Color.BLACK);
         changePasswordButton.setFocusPainted(false);
         changePasswordButton.addActionListener(e -> {
@@ -94,7 +95,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
         logoutButton = new JButton("Log Out");
         logoutButton.setFont(new Font("Arial", Font.BOLD, 14));
-        logoutButton.setBackground(new Color(220, 53, 69));
+        logoutButton.setBackground(new Color(128, 128, 128));
         logoutButton.setForeground(Color.BLACK);
         logoutButton.setFocusPainted(false);
         logoutButton.addActionListener(e -> {

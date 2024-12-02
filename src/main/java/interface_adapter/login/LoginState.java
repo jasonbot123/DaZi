@@ -7,6 +7,7 @@ public class LoginState {
     private String username = "";
     private String loginError;
     private String password = "";
+    private boolean loggedIn;
 
     public String getUsername() {
         return username;
@@ -31,5 +32,9 @@ public class LoginState {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public boolean isLoggedIn() {return loggedIn;}
+
+    public void setLoggedIn(boolean loggedIn) {this.loggedIn = loggedIn;}
 
 }

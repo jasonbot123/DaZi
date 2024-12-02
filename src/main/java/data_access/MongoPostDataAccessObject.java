@@ -103,6 +103,7 @@ public class MongoPostDataAccessObject {
         return posts;
     }
 
+
         private Post documentToPost(Document doc) {
             String title = doc.getString("title");
             String content = doc.getString("content");
@@ -117,6 +118,7 @@ public class MongoPostDataAccessObject {
             post.setLikes(doc.getInteger("likes", 0));
             return post;
         }
+
 
 
         public void createIndexes() {

@@ -30,5 +30,9 @@ public class LoginController {
         loginUseCaseInteractor.switchToSignUpView();
     }
 
+    public void switchToMainView (){
+        loginUseCaseInteractor.switchToMainView();
+    }
+
 
 }

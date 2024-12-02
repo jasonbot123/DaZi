@@ -6,6 +6,7 @@ import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.signup.SignupViewModel;
 import use_case.login.LoginOutputBoundary;
 import use_case.login.LoginOutputData;
+import view.HomePageUI.HomePage1;
 
 /**
  * The Presenter for the Login Use Case.
@@ -47,8 +48,17 @@ public class LoginPresenter implements LoginOutputBoundary {
 
     @Override
     public void switchToSignUpView() {
-        System.out.println("AKSJHASKJDH");
         viewManagerModel.setState(signUpViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
+    }
+
+    @Override
+    public void switchToMainView() {
+        viewManagerModel.setState(viewManagerModel.getState());
+        final LoginState loginState = loginViewModel.getState();
+        String user = loginState.getUsername();
+        HomePage1 homePage = new HomePage1(user);
+        viewManagerModel.firePropertyChanged();
+        loginState.setLoggedIn(true);
     }
 }
