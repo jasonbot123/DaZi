@@ -1,14 +1,11 @@
 package view.HomePageUI;
 
 import view.ChatPageUI.ChatPage;
-import view.ChatPageUI.ChatWindow;
 import view.CreatePostUI.CreatePostPage;
-import view.ProfilePageUI.ProfilePage;
+import view.ProfilePageUI.CreateProfilePage;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class TopRightIconsPanel extends JPanel {
 
@@ -31,7 +28,10 @@ public class TopRightIconsPanel extends JPanel {
                 iconButton.addActionListener(e -> new ChatPage(parentFrame));
             }
             if ("👤".equals(icon)) {
-              iconButton.addActionListener(e -> new ProfilePage(parentFrame));
+              iconButton.addActionListener(e -> {
+                  CreateProfilePage createProfilepage = new CreateProfilePage();
+                  createProfilepage.launchSaveProfilePage("Jason");
+                  });
             }
         }
     }
