@@ -54,7 +54,7 @@ public class ChatPage extends JFrame {
             if (!e.getValueIsAdjusting()) {
                 String selectedUser = contactsList.getSelectedValue();
                 if (selectedUser != null) {
-                    ChatWindow chatWindow = new ChatWindow(selectedUser);
+                    ChatWindow chatWindow = new ChatWindow(selectedUser, username);
                     chatWindow.setVisible(true);
                 }
             }

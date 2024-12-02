@@ -17,6 +17,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TopRightIconsPanel extends JPanel {
+
     public TopRightIconsPanel(JFrame parentFrame, String currentuser) {
         setLayout(new FlowLayout(FlowLayout.RIGHT));
 
@@ -50,32 +51,27 @@ public class TopRightIconsPanel extends JPanel {
                         );
                     }
                 });
-
+            }
             if ("📩".equals(icon)) {
                 iconButton.addActionListener(e -> {
                     String sectionFilter = resolveSectionFilter(parentFrame);
                     if (sectionFilter != null) {
-                        new ChatPage(parentFrame, currentuser);
+                        ChatPage chatpage = new ChatPage(parentFrame, currentuser);
+                    } else {
+                        JOptionPane.showMessageDialog(
+                                parentFrame,
+                                "Unable to determine section filter.",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE
+                        );
                     }
                 });
             }
-//             // actionListener for the create post button
-//             if ("➕".equals(icon)) {
-//                 iconButton.addActionListener(e -> new CreatePostPage(parentFrame));
-//             }
-//             if ("💬".equals(icon)) {
-//                 iconButton.addActionListener(e -> new ChatPage(parentFrame));
-//             }
-//             if ("👤".equals(icon)) {
-//               iconButton.addActionListener(e -> {
-//                   CreateProfilePage createProfilepage = new CreateProfilePage();
-//                   createProfilepage.launchSaveProfilePage("Jason");
-//                   });
+
 
             }
 
         }
-    }
 
     /**
      * Resolves the section filter from the parent frame.
