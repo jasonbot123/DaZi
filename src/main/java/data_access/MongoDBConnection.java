@@ -12,7 +12,8 @@ import org.bson.Document;
 
 public class MongoDBConnection {
 
-    private static final String CONNECTION_STRING = "mongodb+srv://celine:rwz5enxy9LAy6Tf7@cluster0.u46mh.mongodb.net/myDatabase?retryWrites=true&w=majority";
+
+    private static final String CONNECTION_STRING = "mongodb+srv://jeremyc:68274@cluster0.u46mh.mongodb.net/myDatabase?retryWrites=true&w=majority";
   
     private static MongoClient mongoClient;
 

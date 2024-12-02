@@ -1,6 +1,7 @@
 package view.HomePageUI;
 
 import entity.Post;
+import view.ProfilePageUI.CreateProfilePage;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -9,7 +10,7 @@ import java.awt.*;
 public class PostCellRenderer extends JPanel implements ListCellRenderer<Post> {
     private final JLabel titleLabel;
     private final JLabel contentLabel;
-    private final JLabel userLabel;
+    private final JButton userLabel;
     private final JLabel likeLabel;
     private final JLabel commentLabel;
 
@@ -31,9 +32,16 @@ public class PostCellRenderer extends JPanel implements ListCellRenderer<Post> {
         contentLabel.setVerticalAlignment(JLabel.TOP);
         contentLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
 
-        userLabel = new JLabel();
+        userLabel = new JButton();
+        userLabel.addActionListener(e -> {
+            CreateProfilePage createProfilePage = new CreateProfilePage();
+            createProfilePage.launchSelfProfilePage("Jason");
+        });
         userLabel.setFont(new Font("SansSerif", Font.ITALIC, 12));
         userLabel.setForeground(new Color(100, 100, 100));
+//        userLabel.setContentAreaFilled(false);
+//        userLabel.setBorderPainted(false);
+//        userLabel.setFocusPainted(false);
 
         likeLabel = new JLabel();
         likeLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -84,6 +92,10 @@ public class PostCellRenderer extends JPanel implements ListCellRenderer<Post> {
         contentLabel.setText("<html><body style='width: 300px'>" +
                 post.getTruncatedContent(200) + "</html>");
         userLabel.setText("Posted by: " + post.getUsername());
+//        userLabel.addActionListener(e -> {
+//            CreateProfilePage createProfilePage = new CreateProfilePage();
+//            createProfilePage.launchSelfProfilePage(post.getUsername());
+//        });
 
         likeLabel.setText("❤ " + post.getLikes());
         likeLabel.setForeground(new Color(128, 128, 128));
