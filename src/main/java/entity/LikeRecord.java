@@ -2,18 +2,18 @@ package entity;
 
 public class LikeRecord {
     private String username;
-    private String postTitle;
+    private String postId;
 
-    public LikeRecord(String username, String postTitle) {
+    public LikeRecord(String username, String postId) {
         this.username = username;
-        this.postTitle = postTitle;
+        this.postId = postId;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public String getPostTitle() {
-        return postTitle;
+    public String getPostId() {
+        return postId;
     }
 }
