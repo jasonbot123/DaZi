@@ -6,6 +6,7 @@
 - **jasonbot123**
 - **CelineChien81777**
 - **JqrqmyChqn**
+- **JanosRenAI**
 
 ---
 
