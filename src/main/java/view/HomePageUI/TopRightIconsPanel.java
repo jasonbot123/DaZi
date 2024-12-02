@@ -41,7 +41,7 @@ public class TopRightIconsPanel extends JPanel {
 
 
                         // pass them along with sectionFilter to CreatePostPage
-                        new CreatePostPage(parentFrame, interactor, viewModel, sectionFilter);
+                        new CreatePostPage(parentFrame, interactor, viewModel, sectionFilter, currentuser);
                     } else {
                         JOptionPane.showMessageDialog(
                                 parentFrame,

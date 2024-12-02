@@ -57,7 +57,7 @@ public class SelfProfilePage extends JFrame {
         add(infoPanel, BorderLayout.NORTH);
 
         // User Posts Panel
-        postsPanel = new ProfilePostsPanel("currentUsername");
+        postsPanel = new ProfilePostsPanel(username);
         add(postsPanel, BorderLayout.CENTER);
 
         // Edit Profile Button
