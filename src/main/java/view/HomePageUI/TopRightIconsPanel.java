@@ -9,7 +9,7 @@ import view.CreatePostUI.CreatePostPage;
 import view.SectionPageUI.*;
 import view.ChatPageUI.ChatPage;
 import view.ChatPageUI.ChatWindow;
-import view.ProfilePageUI.ProfilePage;
+// import view.ProfilePageUI.ProfilePage;
 
 
 
@@ -50,20 +50,6 @@ public class TopRightIconsPanel extends JPanel {
                         );
                     }
                 });
-
-//             // actionListener for the create post button
-//             if ("➕".equals(icon)) {
-//                 iconButton.addActionListener(e -> new CreatePostPage(parentFrame));
-//             }
-//             if ("💬".equals(icon)) {
-//                 iconButton.addActionListener(e -> new ChatPage(parentFrame));
-//             }
-//             if ("👤".equals(icon)) {
-//               iconButton.addActionListener(e -> {
-//                   CreateProfilePage createProfilepage = new CreateProfilePage();
-//                   createProfilepage.launchSaveProfilePage("Jason");
-//                   });
-
             }
 
         }
