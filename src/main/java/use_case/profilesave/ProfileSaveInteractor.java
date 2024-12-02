@@ -16,14 +16,5 @@ public class ProfileSaveInteractor implements ProfileSaveInputBoundary {
         dataAccess.saveProfile(inputData);
         ProfileSaveOutputData outputData = new ProfileSaveOutputData(inputData.getProfileDocument());
         presenter.presentProfile(outputData);
-//        try {
-//            dataAccess.saveProfile(inputData);
-//            ProfileSaveOutputData outputData = new ProfileSaveOutputData(inputData.getProfileDocument());
-//            presenter.presentProfile(outputData);
-//        } catch (Exception e) {
-//            ProfileSaveOutputData outputData = new ProfileSaveOutputData();
-//            outputData.setSuccess(false);
-//            presenter.saveResult(outputData);
-//        }
     }
 }

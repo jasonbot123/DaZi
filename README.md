@@ -54,7 +54,21 @@ Dazi addresses inefficiency, mistrust, and visibility issues in traditional netw
     - Academic survey participation
     - Social events such as game nights or study sessions
   ```text
-  Example Post: "Looking for two teammates for CSC148 final project. DM if interested!"
+
+- **Profile viewing**:  
+  Using different icons, users can view their own and others' profile
+    - Username, email, year of study, program, college, bio
+    - List of posts by that user
+  ```text
+  Using the profile icon (👤) a user can access their own profile
+  Using the author icon on posts, a user can access the profile of the author of the post
+
+- **Profile editing**:  
+  Make changes to profile information and save them
+    - Edit year of study, program, college, bio
+  ```text
+  Using the profile icon (👤), access your profile, then press the edit button.
+  After making the desired changes to fields, press the save button.
 
 ## **Installation Instructions**
 To get started with this project, follow these steps:
