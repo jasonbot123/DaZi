@@ -79,13 +79,17 @@ public class PostsPanel extends JPanel {
                             evt.getPoint().y - cellBounds.y);
 
                     int bottomPanelY = cellBounds.height - 65;
-                    int likeX = cellBounds.width - 270;
+                    int likeX = cellBounds.width - 390;
+                    int messageX = cellBounds.width - 270;
                     int commentX = cellBounds.width - 150;
                     int buttonHeight = 60;
 
                     if (clickPoint.y >= bottomPanelY && clickPoint.y <= bottomPanelY + buttonHeight) {
-                        if (clickPoint.x >= likeX && clickPoint.x < commentX - 10) {
+                        if (clickPoint.x >= likeX && clickPoint.x < messageX - 10) {
                             handleLikeClick(post);
+                        }
+                        else if (clickPoint.x >= messageX && clickPoint.x < commentX - 10) {
+                            System.out.println("Message clicked for post: " + post.getTitle());
                         }
                         else if (clickPoint.x >= commentX) {
                             CommentPage commentPage = new CommentPage(post, currentuser);

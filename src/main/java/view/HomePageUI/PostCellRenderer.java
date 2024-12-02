@@ -12,6 +12,7 @@ public class PostCellRenderer extends JPanel implements ListCellRenderer<Post> {
     private final JLabel contentLabel;
     private final JButton userLabel;
     private final JLabel likeLabel;
+    private final JLabel messageLabel;
     private final JLabel commentLabel;
 
     public PostCellRenderer() {
@@ -54,6 +55,17 @@ public class PostCellRenderer extends JPanel implements ListCellRenderer<Post> {
         likeLabel.setBackground(new Color(245, 245, 245));
         likeLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
+        messageLabel = new JLabel("Message");
+        messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        messageLabel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
+                BorderFactory.createEmptyBorder(8, 25, 8, 25)
+        ));
+        messageLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        messageLabel.setOpaque(true);
+        messageLabel.setBackground(new Color(245, 245, 245));
+        messageLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
         commentLabel = new JLabel("Comments");
         commentLabel.setHorizontalAlignment(SwingConstants.CENTER);
         commentLabel.setBorder(BorderFactory.createCompoundBorder(
@@ -69,6 +81,7 @@ public class PostCellRenderer extends JPanel implements ListCellRenderer<Post> {
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         buttonsPanel.setOpaque(false);
         buttonsPanel.add(likeLabel);
+        buttonsPanel.add(messageLabel);
         buttonsPanel.add(commentLabel);
 
         bottomPanel.setOpaque(false);
@@ -105,10 +118,12 @@ public class PostCellRenderer extends JPanel implements ListCellRenderer<Post> {
         if (isSelected) {
             setBackground(new Color(240, 240, 240));
             likeLabel.setBackground(new Color(245, 245, 245));
+            messageLabel.setBackground(new Color(245, 245, 245));
             commentLabel.setBackground(new Color(245, 245, 245));
         } else {
             setBackground(Color.WHITE);
             likeLabel.setBackground(new Color(250, 250, 250));
+            messageLabel.setBackground(new Color(250, 250, 250));
             commentLabel.setBackground(Color.WHITE);
         }
 
