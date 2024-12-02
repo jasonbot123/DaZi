@@ -26,7 +26,7 @@ public class CreateProfilePage {
         this.controller =  new ProfileViewController(viewInteractor);
     }
 
-    public void launchSaveProfilePage(String username) {
+    public void launchSelfProfilePage(String username) {
         //Call loadProfile with username
         controller.loadProfile(username);
 
@@ -34,7 +34,7 @@ public class CreateProfilePage {
         SwingUtilities.invokeLater(() -> new SelfProfilePage(model, username));
     }
 
-    public void launchEditProfilePage(String username) {
+    public void launchOthersProfilePage(String username) {
         //Call loadProfile with username
         controller.loadProfile(username);
 

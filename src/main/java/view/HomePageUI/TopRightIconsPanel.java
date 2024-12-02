@@ -7,8 +7,6 @@ import interface_adapter.posts.PostsViewModel;
 import use_case.post.PostsInteractor;
 import view.CreatePostUI.CreatePostPage;
 import view.SectionPageUI.*;
-import view.ChatPageUI.ChatPage;
-import view.ChatPageUI.ChatWindow;
 import view.ProfilePageUI.*;
 
 
@@ -54,7 +52,7 @@ public class TopRightIconsPanel extends JPanel {
             if ("👤".equals(icon)) {
                 iconButton.addActionListener(e -> {
                     CreateProfilePage createProfilepage = new CreateProfilePage();
-                    createProfilepage.launchSaveProfilePage("Jason");
+                    createProfilepage.launchSelfProfilePage("Jason");
                 });
 
             }
