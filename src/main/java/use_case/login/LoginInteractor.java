@@ -1,6 +1,17 @@
 package use_case.login;
 
+import entity.CommonUserFactory;
 import entity.User;
+import entity.UserFactory;
+import interface_adapter.ViewManagerModel;
+import interface_adapter.login.LoginViewModel;
+import view.HomePageUI.HomePage1;
+import view.LoginView;
+import view.ViewManager;
+
+import javax.swing.*;
+import java.awt.*;
+
 
 /**
  * The Login Interactor.
@@ -8,7 +19,6 @@ import entity.User;
 public class LoginInteractor implements LoginInputBoundary {
     private final LoginUserDataAccessInterface userDataAccessObject;
     private final LoginOutputBoundary loginPresenter;
-
     public LoginInteractor(LoginUserDataAccessInterface userDataAccessInterface,
                            LoginOutputBoundary loginOutputBoundary) {
         this.userDataAccessObject = userDataAccessInterface;
@@ -33,8 +43,21 @@ public class LoginInteractor implements LoginInputBoundary {
 
                 userDataAccessObject.setCurrentUsername(user.getName());
                 final LoginOutputData loginOutputData = new LoginOutputData(user.getName(), false);
-                loginPresenter.prepareSuccessView(loginOutputData);
+                //loginPresenter.prepareSuccessView(loginOutputData);
+                loginPresenter.switchToMainView();
             }
+
         }
+    }
+
+    @Override
+    public void switchToSignUpView() {
+        loginPresenter.switchToSignUpView();
+
+    }
+
+    @Override
+    public void switchToMainView() {
+        loginPresenter.switchToMainView();
     }
 }
