@@ -13,6 +13,7 @@ import data_access.MongoLikeRecordDataAccessObject;
 import data_access.MongoDBConnection;
 import entity.LikeRecord;
 import data_access.MongoPostDataAccessObject;
+import view.ProfilePageUI.CreateProfilePage;
 import view.ChatPageUI.ChatWindow;
 
 public class PostsPanel extends JPanel {
@@ -85,9 +86,14 @@ public class PostsPanel extends JPanel {
                     int messageX = cellBounds.width - 270;
                     int commentX = cellBounds.width - 150;
                     int buttonHeight = 60;
+                    int profileX = cellBounds.width - 150;
 
                     if (clickPoint.y >= bottomPanelY && clickPoint.y <= bottomPanelY + buttonHeight) {
-                        if (clickPoint.x >= likeX && clickPoint.x < messageX - 10) {
+                        if (clickPoint.x >= 10 && clickPoint.x < 200){
+                            CreateProfilePage createProfilePage = new CreateProfilePage();
+                            createProfilePage.launchOthersProfilePage(post.getUsername());
+                        }
+                        else if(clickPoint.x >= likeX && clickPoint.x < messageX - 10) {
                             handleLikeClick(post);
                         }
                         else if (clickPoint.x >= messageX && clickPoint.x < commentX - 10) {
@@ -102,6 +108,7 @@ public class PostsPanel extends JPanel {
                 }
             }
         });
+
     }
 
     public void updatePosts(List<Post> posts) {

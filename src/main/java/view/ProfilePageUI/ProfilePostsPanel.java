@@ -15,7 +15,7 @@ public class ProfilePostsPanel extends JPanel {
     public ProfilePostsPanel(String username) {
         setLayout(new BorderLayout());
 
-        postDAO = new MongoPostDataAccessObject(MongoDBConnection.getDatabase("posts"));
+        postDAO = new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase"));
 
         postsContainer = new JPanel();
         postsContainer.setLayout(new BoxLayout(postsContainer, BoxLayout.Y_AXIS));
