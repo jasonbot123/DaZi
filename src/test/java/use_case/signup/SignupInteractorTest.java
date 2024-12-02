@@ -14,7 +14,8 @@ class SignupInteractorTest {
 
     @Test
     void successTest() {
-        SignupInputData inputData = new SignupInputData("Paul", "password", "password", "paul@mail.com");
+        SignupInputData inputData = new SignupInputData("Paul", "bio", "college", "paul@mail.com", "password",
+                "program", "year", "password");
         SignupUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
         // This creates a successPresenter that tests whether the test case is as we expect.
@@ -43,7 +44,8 @@ class SignupInteractorTest {
 
     @Test
     void failurePasswordMismatchTest() {
-        SignupInputData inputData = new SignupInputData("Paul", "password", "wrong", "paul@mail.com");
+        SignupInputData inputData = new SignupInputData("Paul", "bio", "college", "paul@mail.com", "password",
+                "program", "year", "password");
         SignupUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
         // This creates a presenter that tests whether the test case is as we expect.
@@ -71,12 +73,14 @@ class SignupInteractorTest {
 
     @Test
     void failureUserExistsTest() {
-        SignupInputData inputData = new SignupInputData("Paul", "password", "wrong", "paul@mail.com");
+        SignupInputData inputData = new SignupInputData("Paul", "bio", "college", "paul@mail.com", "password",
+                "program", "year", "password");
         SignupUserDataAccessInterface userRepository = new InMemoryUserDataAccessObject();
 
         // Add Paul to the repo so that when we check later they already exist
         UserFactory factory = new CommonUserFactory();
-        User user = factory.create("Paul", "pwd", "paul@mail.com");
+        User user = factory.create("Paul", "bio", "college", "paul@mail.com", "password",
+                "program", "year");
         userRepository.save(user);
 
         // This creates a presenter that tests whether the test case is as we expect.

@@ -21,7 +21,8 @@ public class MongoLoginUserDataAccessObject implements LoginUserDataAccessInterf
 
     @Override
     public void save(User user) {
-        userDataAccessObject.addUser(user.getName(), user.getEmail(), user.getPassword());
+        userDataAccessObject.addUser(user.getName(), user.getBio(), user.getCollege(),
+                user.getEmail(), user.getPassword(), user.getProgram(), user.getYear());
     }
 
     @Override
@@ -29,9 +30,13 @@ public class MongoLoginUserDataAccessObject implements LoginUserDataAccessInterf
         var userDocument = userDataAccessObject.getUser(username);
         if (userDocument != null) {
             String name = userDocument.getString("username");
+            String bio = userDocument.getString("bio");
+            String college = userDocument.getString("college");
             String email = userDocument.getString("email");
             String password = userDocument.getString("password");
-            return new CommonUser(name, email, password);
+            String program = userDocument.getString("program");
+            String year = userDocument.getString("yearofstudy");
+            return new CommonUser(name, bio, college, email, password, program, year);
         }
         return null;
     }
