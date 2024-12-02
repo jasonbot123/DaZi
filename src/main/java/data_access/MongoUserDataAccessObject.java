@@ -19,10 +19,15 @@ public class MongoUserDataAccessObject {
     }
 
     // add a user document with username, email, and password
-    public void addUser(String username, String email, String password) {
+    public void addUser(String username, String bio, String college, String email, String password
+            , String program, String year) {
         Document user = new Document("username", username)
+                .append("bio", bio)
+                .append("college", college)
                 .append("email", email)
-                .append("password", password);
+                .append("password", password)
+                .append("program", program)
+                .append("year", year);
         userCollection.insertOne(user);
     }
 

@@ -38,9 +38,13 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String STATUS_CODE_LABEL = "status_code";
     private static final String USERNAME = "username";
-    private static final String PASSWORD = "password";
-    private static final String MESSAGE = "message";
+    private static final String BIO = "bio";
+    private static final String COLLEGE = "college";
     private static final String EMAIL = "email";
+    private static final String PASSWORD = "password";
+    private static final String PROGRAM = "program";
+    private static final String YEAR = "year";
+    private static final String MESSAGE = "message";
     private final UserFactory userFactory;
 
     public DBUserDataAccessObject(UserFactory userFactory) {
@@ -63,10 +67,14 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
             if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
                 final JSONObject userJSONObject = responseBody.getJSONObject("user");
                 final String name = userJSONObject.getString(USERNAME);
+                final String bio = userJSONObject.getString(BIO);
+                final String college = userJSONObject.getString(COLLEGE);
                 final String password = userJSONObject.getString(PASSWORD);
+                final String program = userJSONObject.getString(PROGRAM);
+                final String year = userJSONObject.getString(YEAR);
                 final String email = userJSONObject.getString(EMAIL);
 
-                return userFactory.create(name, password, email);
+                return userFactory.create(name, bio, college, email, password, program, year);
             }
             else {
                 throw new RuntimeException(responseBody.getString(MESSAGE));

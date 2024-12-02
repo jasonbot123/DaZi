@@ -25,10 +25,10 @@ public class MockProfileViewApp {
         ProfileViewController controller = new ProfileViewController(interactor);
 
         // Step 3: Simulate User Clicking Profile Icon
-        String currentUserId = "Jason"; // This ID must match the `userId` in MongoDB
-        controller.loadProfile(currentUserId);
+        String currentUsername = "Jason"; // This ID must match the `userId` in MongoDB
+        controller.loadProfile(currentUsername);
 
         // Step 4: Launch the Profile Page with Retrieved Data
-        SwingUtilities.invokeLater(() -> new view.ProfilePageUI.ProfilePage(viewModel));
+        SwingUtilities.invokeLater(() -> new SelfProfilePage(viewModel, currentUsername));
     }
 }

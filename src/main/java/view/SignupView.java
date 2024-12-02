@@ -127,9 +127,13 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
             SignupState currentState = signupViewModel.getState();
             signupController.execute(
                     currentState.getUsername(),
+                    currentState.getBio(),
+                    currentState.getCollege(),
+                    currentState.getEmail(),
                     currentState.getPassword(),
-                    currentState.getRepeatPassword(),
-                    currentState.getEmail()
+                    currentState.getProgram(),
+                    currentState.getYear(),
+                    currentState.getRepeatPassword()
             );
         });
 

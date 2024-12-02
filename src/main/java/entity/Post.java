@@ -1,7 +1,10 @@
 package entity;
 
+import org.bson.Document;
 import org.bson.types.ObjectId;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Objects;
 
 public class Post {
     private ObjectId id;
@@ -68,7 +71,56 @@ public class Post {
         this.likes = likes;
     }
 
-    // TODO: for displaying limited content on the homepage, not implemented to Homepage
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return id.equals(post.id);
+    }
+
+    /**
+     * Generate a unique integer (hash code) for each Post object based on its id.
+     * @return intergers of unique id.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    /**
+     * Convert the MongoDB document object into Post object.
+     * @param doc the MongoDB document object (json)
+     * @return post
+     */
+    public static Post fromDocument(Document doc) {
+        String title = doc.getString("title");
+        String content = doc.getString("content");
+        String sectionString = doc.getString("section");
+        Section section;
+
+        try {
+            section = Section.valueOf(sectionString.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            System.err.println("Invalid section: " + sectionString);
+            return null; // Return null for invalid sections
+        }
+
+        String username = doc.getString("username");
+        LocalDateTime timestamp = doc.getDate("timestamp").toInstant().atZone(ZoneOffset.UTC).toLocalDateTime();
+        int likes = doc.getInteger("likes", 0);
+
+        Post post = new Post(title, content, section, username, timestamp);
+        post.setLikes(likes);
+
+        Object idField = doc.get("_id");
+        if (idField instanceof ObjectId) {
+            post.setId((ObjectId) idField);
+        }
+
+        return post;
+    }
+
     public String getTruncatedContent(int maxLength) {
         return content.length() > maxLength ? content.substring(0, maxLength) + "..." : content;
     }

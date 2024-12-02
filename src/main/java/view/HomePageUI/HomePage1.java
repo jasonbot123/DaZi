@@ -3,18 +3,31 @@ package view.HomePageUI;
 import com.mongodb.client.MongoDatabase;
 import data_access.MongoDBConnection;
 import data_access.MongoPostDataAccessObject;
-import entity.Post;
+import interface_adapter.posts.PostsViewModel;
+import interface_adapter.search.SearchPresenter;
+import interface_adapter.search.SearchViewModel;
+import use_case.post.PostsInteractor;
+import use_case.search.SearchInteractor;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 public class HomePage1 extends JFrame {
-    private PostsPanel postsPanel;
     private String currentUsername;
+    private final SearchInteractor searchInteractor;
+    private final SearchViewModel searchViewModel;
+    private final PostsViewModel postsViewModel;
 
     public HomePage1(String username) {
         this.currentUsername = username;
+        this.searchViewModel = new SearchViewModel();
+        this.postsViewModel = new PostsViewModel();
+        SearchPresenter searchPresenter = new SearchPresenter(searchViewModel);
+        this.searchInteractor = new SearchInteractor(
+                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
+                searchPresenter
+        );
+
         setTitle("Home Page - " + username);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -30,14 +43,25 @@ public class HomePage1 extends JFrame {
         logoPanel.setBackground(new Color(0, 51, 102));
         leftPanel.add(logoPanel, BorderLayout.NORTH);
 
-        JPanel sideBar = new SideBar();
-        leftPanel.add(sideBar, BorderLayout.CENTER);
+        // posts panel setup
+        PostsViewModel viewModel = new PostsViewModel();
+        PostsPanel postsPanel = new PostsPanel(username, null, viewModel);
+        viewModel.clearPosts();
+        PostsInteractor interactor = new PostsInteractor(
+                new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
+                viewModel,
+                postsPanel
+        );
+        postsPanel.setInteractor(interactor);
 
+        // sidebar
+        JPanel sideBar = new SideBar(currentUsername, postsPanel, viewModel);
+        leftPanel.add(sideBar, BorderLayout.CENTER);
         add(leftPanel, BorderLayout.WEST);
 
-        // search bar
+        // searchInteractor, searchBar
         JPanel topPanel = new JPanel(new BorderLayout());
-        JPanel searchBar = new SearchBar();
+        JPanel searchBar = new SearchBar(this, searchInteractor, searchViewModel);
         topPanel.add(searchBar, BorderLayout.CENTER);
 
         // upper right, icon buttons
@@ -47,14 +71,10 @@ public class HomePage1 extends JFrame {
         add(topPanel, BorderLayout.NORTH);
 
         // posts
-        postsPanel = new PostsPanel(currentUsername);
         add(postsPanel, BorderLayout.CENTER);
+        interactor.getThePosts(10);
 
         setVisible(true);
-    }
-
-    public PostsPanel getPostsPanel() {
-        return postsPanel;
     }
 
     public static void main(String[] args) {
@@ -67,4 +87,9 @@ public class HomePage1 extends JFrame {
             new HomePage1("testUser");
         });
     }
+
+    public Object getCurrentUsername() {
+        return currentUsername.toString();
+    }
 }
+

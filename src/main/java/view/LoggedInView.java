@@ -88,8 +88,12 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
             LoggedInState state = loggedInViewModel.getState();
             changePasswordController.execute(
                     state.getUsername(),
+                    state.getBio(),
+                    state.getCollege(),
+                    state.getEmail(),
                     state.getPassword(),
-                    state.getEmail()
+                    state.getProgram(),
+                    state.getYear()
             );
         });
 
