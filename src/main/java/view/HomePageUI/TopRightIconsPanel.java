@@ -1,11 +1,16 @@
 package view.HomePageUI;
 
+
 import data_access.MongoDBConnection;
 import data_access.MongoPostDataAccessObject;
 import interface_adapter.posts.PostsViewModel;
 import use_case.post.PostsInteractor;
 import view.CreatePostUI.CreatePostPage;
 import view.SectionPageUI.*;
+import view.ChatPageUI.ChatPage;
+import view.ChatPageUI.ChatWindow;
+import view.ProfilePageUI.ProfilePage;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +20,7 @@ import java.awt.event.ActionListener;
 public class TopRightIconsPanel extends JPanel {
     public TopRightIconsPanel(JFrame parentFrame) {
         setLayout(new FlowLayout(FlowLayout.RIGHT));
+
 
         String[] icons = {"📩", "➕", "👤", "🔔", "🚪"};
         for (String icon : icons) {
@@ -45,6 +51,14 @@ public class TopRightIconsPanel extends JPanel {
                     }
                 });
             }
+
+//             if ("💬".equals(icon)) {
+//                 iconButton.addActionListener(e -> new ChatPage(parentFrame));
+//             }
+//             if ("👤".equals(icon)) {
+//               iconButton.addActionListener(e -> new ProfilePage(parentFrame));
+//             }
+
         }
     }
 

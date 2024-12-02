@@ -140,25 +140,48 @@ public class MongoPostDataAccessObject implements PostDataAccessInterface {
         return posts;
     }
 
-    private Post documentToPost(Document doc) {
-        String title = doc.getString("title");
-        String content = doc.getString("content");
-        String section = doc.getString("section");
-        String username = doc.getString("username");
-        LocalDateTime timestamp = LocalDateTime.ofInstant(
-                doc.getDate("timestamp").toInstant(),
-                ZoneOffset.UTC
-        );
-        Post post = new Post(title, content, Section.valueOf(section), username, timestamp);
-        post.setId(doc.getObjectId("_id"));
-        post.setLikes(doc.getInteger("likes", 0));
-        return post;
+
+    public List<Post> getAllPostsByUsername(String username) {
+        List<Post> posts = new ArrayList<>();
+        try (MongoCursor<Document> cursor = postCollection.find().iterator()) {
+            while (cursor.hasNext()) {
+                Document doc = cursor.next();
+                if (username.equals(doc.getString("username"))) {
+                    String title = doc.getString("title");
+                    String content = doc.getString("content");
+                    String section = doc.getString("section");
+                    LocalDateTime timestamp = LocalDateTime.ofInstant(doc.getDate("timestamp").toInstant(), ZoneOffset.UTC);
+
+                    posts.add(new Post(title, content, Section.valueOf(section), username, timestamp));
+                }
+            }
+        }
+        return posts;
     }
 
-    public void createIndexes() {
-        postCollection.createIndex(new Document("timestamp", -1));
-        postCollection.createIndex(new Document("_id", 1));
+
+        private Post documentToPost(Document doc) {
+            String title = doc.getString("title");
+            String content = doc.getString("content");
+            String section = doc.getString("section");
+            String username = doc.getString("username");
+            LocalDateTime timestamp = LocalDateTime.ofInstant(
+                    doc.getDate("timestamp").toInstant(),
+                    ZoneOffset.UTC
+            );
+            Post post = new Post(title, content, Section.valueOf(section), username, timestamp);
+            post.setId(doc.getObjectId("_id"));
+            post.setLikes(doc.getInteger("likes", 0));
+            return post;
+        }
+
+
+
+        public void createIndexes() {
+            postCollection.createIndex(new Document("timestamp", -1));
+            postCollection.createIndex(new Document("_id", 1));
+
+        }
     }
-}
 
 

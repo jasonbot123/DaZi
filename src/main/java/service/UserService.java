@@ -10,13 +10,14 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public boolean signUp(String username, String email, String password) {
+    public boolean signUp(String username, String bio, String college, String email, String password,
+                          String program, String year) {
         if (userDao.userExists(username)) {
             System.out.println("User already exists!");
             return false;
         }
 
-        userDao.addUser(username, email, password);
+        userDao.addUser(username, bio, college, email, password, program, year);
         System.out.println("User created successfully!");
         return true;
     }

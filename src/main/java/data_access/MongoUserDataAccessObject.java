@@ -19,16 +19,25 @@ public class MongoUserDataAccessObject {
     }
 
     // add a user document with username, email, and password
-    public void addUser(String username, String email, String password) {
+    public void addUser(String username, String bio, String college, String email, String password
+            , String program, String year) {
         Document user = new Document("username", username)
+                .append("bio", bio)
+                .append("college", college)
                 .append("email", email)
-                .append("password", password);
+                .append("password", password)
+                .append("program", program)
+                .append("year", year);
         userCollection.insertOne(user);
     }
 
     // get user
     public Document getUser(String username) {
         return userCollection.find(eq("username", username)).first();
+    }
+
+    public Document getPassword(String password) {
+        return userCollection.find(eq("password", password)).first();
     }
 
     // check if a user exists by username
