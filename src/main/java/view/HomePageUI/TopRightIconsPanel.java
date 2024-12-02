@@ -12,10 +12,9 @@ import view.ChatPageUI.ChatWindow;
 import view.ProfilePageUI.ProfilePage;
 
 
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class TopRightIconsPanel extends JPanel {
     public TopRightIconsPanel(JFrame parentFrame) {
@@ -39,6 +38,7 @@ public class TopRightIconsPanel extends JPanel {
                                 viewModel,
                                 postsPanel);
 
+
                         // pass them along with sectionFilter to CreatePostPage
                         new CreatePostPage(parentFrame, interactor, viewModel, sectionFilter);
                     } else {
@@ -50,14 +50,21 @@ public class TopRightIconsPanel extends JPanel {
                         );
                     }
                 });
-            }
 
+//             // actionListener for the create post button
+//             if ("➕".equals(icon)) {
+//                 iconButton.addActionListener(e -> new CreatePostPage(parentFrame));
+//             }
 //             if ("💬".equals(icon)) {
 //                 iconButton.addActionListener(e -> new ChatPage(parentFrame));
 //             }
 //             if ("👤".equals(icon)) {
-//               iconButton.addActionListener(e -> new ProfilePage(parentFrame));
-//             }
+//               iconButton.addActionListener(e -> {
+//                   CreateProfilePage createProfilepage = new CreateProfilePage();
+//                   createProfilepage.launchSaveProfilePage("Jason");
+//                   });
+
+            }
 
         }
     }
