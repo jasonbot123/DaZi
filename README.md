@@ -8,7 +8,7 @@
 - **JqrqmyChqn**
 - **JanosRenAI**
 
----
+----
 
 ## **Project Summary**
 Dazi is a **community-centric app** designed exclusively for students at the **University of Toronto (U of T)**. Its purpose is to simplify and enhance social interactions and collaborations by providing a unique platform for connecting like-minded peers. With Dazi, students can efficiently find partners for various activities—academic, social, or recreational.
