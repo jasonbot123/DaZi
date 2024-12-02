@@ -9,7 +9,7 @@ import view.CreatePostUI.CreatePostPage;
 import view.SectionPageUI.*;
 import view.ChatPageUI.ChatPage;
 import view.ChatPageUI.ChatWindow;
-import view.ProfilePageUI.ProfilePage;
+
 
 
 
@@ -17,7 +17,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TopRightIconsPanel extends JPanel {
-    public TopRightIconsPanel(JFrame parentFrame) {
+    public TopRightIconsPanel(JFrame parentFrame, String currentuser) {
         setLayout(new FlowLayout(FlowLayout.RIGHT));
 
 
@@ -32,7 +32,7 @@ public class TopRightIconsPanel extends JPanel {
                     String sectionFilter = resolveSectionFilter(parentFrame);
                     if (sectionFilter != null) {
                         PostsViewModel viewModel = new PostsViewModel();
-                        PostsPanel postsPanel = new PostsPanel("currentUsername", sectionFilter, viewModel);
+                        PostsPanel postsPanel = new PostsPanel(currentuser, sectionFilter, viewModel);
                         PostsInteractor interactor = new PostsInteractor(
                                 new MongoPostDataAccessObject(MongoDBConnection.getDatabase("PostDataBase")),
                                 viewModel,
@@ -51,6 +51,14 @@ public class TopRightIconsPanel extends JPanel {
                     }
                 });
 
+            if ( "".equals(icon)) {
+                iconButton.addActionListener(e -> {
+                    String sectionFilter = resolveSectionFilter(parentFrame);
+                    if (sectionFilter != null) {
+                        new ChatPage(parentFrame, currentuser);
+                    }
+                });
+            }
 //             // actionListener for the create post button
 //             if ("➕".equals(icon)) {
 //                 iconButton.addActionListener(e -> new CreatePostPage(parentFrame));
