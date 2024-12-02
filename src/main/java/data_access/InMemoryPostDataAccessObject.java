@@ -12,6 +12,16 @@ public class InMemoryPostDataAccessObject implements PostDataAccessInterface {
     private List<Post> posts = new ArrayList<>();
 
     public void addPost(Post post) {
+        if (post.getTitle() == null || post.getTitle().trim().isEmpty()) {
+            throw new IllegalArgumentException("Post title cannot be null or empty.");
+        }
+        if (post.getContent() == null || post.getContent().trim().isEmpty()) {
+            throw new IllegalArgumentException("Post content cannot be null or empty.");
+        }
+        if (post.getSection() == null) {
+            throw new IllegalArgumentException("Post section cannot be null.");
+        }
+
         posts.add(post);
     }
 
