@@ -51,7 +51,7 @@ public class TopRightIconsPanel extends JPanel {
                     }
                 });
 
-            if ( "".equals(icon)) {
+            if ("📩".equals(icon)) {
                 iconButton.addActionListener(e -> {
                     String sectionFilter = resolveSectionFilter(parentFrame);
                     if (sectionFilter != null) {
