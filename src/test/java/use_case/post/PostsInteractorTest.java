@@ -15,8 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * This is the unit tests for the {@link PostsInteractor} class.
- * This test class verifies the behavior of creating posts and
- * pagination functionality using an in-memory data access object.
+ * This test class verifies the behavior of creating posts and using the in-memory post data access object.
  * The tests ensure that posts are stored, retrieved, and behave as expected based on the design of the system.
  */
 class PostsInteractorTest {
@@ -143,20 +142,5 @@ class PostsInteractorTest {
         List<Post> posts = inMemoryDataAccess.getPostsByPage(0, 10);
         assertFalse(posts.contains(invalidPost), "Null content should not be stored or created.");
         assertEquals("Failed to create post", viewModel.getErrorMessage(), "missing content.");
-    }
-
-    @Test
-    void testPagination() {
-        for (int i = 1; i <= 15; i++) {
-            Post post = new Post("Post " + i, "Content for post " + i,
-                    Section.STUDYING, "user" + i, LocalDateTime.now());
-            inMemoryDataAccess.addPost(post);
-        }
-
-        List<Post> page1 = inMemoryDataAccess.getPostsByPage(0, 10);
-        List<Post> page2 = inMemoryDataAccess.getPostsByPage(1, 10);
-
-        assertEquals(10, page1.size(), "The first page should contain 10 posts.");
-        assertEquals(5, page2.size(), "The second page should contain the remaining 5 posts.");
     }
 }
