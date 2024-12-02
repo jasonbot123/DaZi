@@ -71,7 +71,7 @@ public class TopRightIconsPanel extends JPanel {
             } else if ("👤".equals(icon)) {
                 iconButton.addActionListener(e -> {
                     CreateProfilePage createProfilepage = new CreateProfilePage();
-                    createProfilepage.launchSelfProfilePage("Jason");
+                    createProfilepage.launchSelfProfilePage(currentuser);
                 });
             }
         }
