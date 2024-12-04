@@ -3,6 +3,7 @@ package data_access;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import service.ProfileService;
 import use_case.profileview.ProfileViewDataAccessInterface;
 import use_case.profileview.ProfileViewInputData;
 

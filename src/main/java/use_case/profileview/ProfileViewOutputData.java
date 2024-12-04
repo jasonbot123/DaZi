@@ -7,7 +7,6 @@ public class ProfileViewOutputData {
     private String program;
     private String bio;
     private String college;
-//    private List<String> posts;
 
     // Constructor
     public ProfileViewOutputData(ProfileViewInputData doc) {

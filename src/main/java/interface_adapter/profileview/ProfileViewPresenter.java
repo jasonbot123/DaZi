@@ -19,7 +19,6 @@ public class ProfileViewPresenter implements ProfileViewOutputBoundary {
         viewModel.setProgram(outputData.getProgram());
         viewModel.setBio(outputData.getBio());
         viewModel.setCollege(outputData.getCollege());
-//        viewModel.setPosts(outputData.getPosts());
     }
 }
 
