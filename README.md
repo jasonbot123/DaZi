@@ -49,6 +49,12 @@ Dazi addresses inefficiency, mistrust, and visibility issues in traditional netw
 ---
 
 ## **Features**
+- **Browse All Posts**
+  Browse all posts that our users have posted only for students from UofT on the Homepage.
+    - The latest posts will appear at the top of the page, scroll down to view previous posts
+    - Hit the "Lastest Posts" button on the sidebar to navigate back to the Homepage
+  ```text
+
 - **Post Creation**:  
   Create detailed posts for activities or collaborations like:
     - Group project recruitment
@@ -77,7 +83,15 @@ Dazi addresses inefficiency, mistrust, and visibility issues in traditional netw
     - Plan a meetup day
   ```text
   Using the chat icon (📩), access the users you have contacted. 
-  Click on the user to load the previous messages of you and the user selected. 
+  Click on the user to load the previous messages of you and the user selected.
+  
+- **Searching and Filtering Posts**
+  Look for specific posts:
+    - Search posts by keyword
+    - Browse posts by section filter
+  ```text
+  Enter the search bar and hit the search icon to search for a post with your interested keyword.
+  View different section posts by using the sidebar section filter.
 
 ## **Installation Instructions**
 To get started with this project, follow these steps:
