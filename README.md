@@ -7,6 +7,7 @@
 - **CelineChien81777**
 - **JqrqmyChqn**
 - **JanosRenAI**
+- **Ravalence**
 
 ---
 
@@ -49,6 +50,15 @@ Dazi addresses inefficiency, mistrust, and visibility issues in traditional netw
 ---
 
 ## **Features**
+
+- **Sign up and Login**:
+
+  Account creation and logging into user account.
+    - Users can sign up using a University of Toronto email
+    - Users can select username and password upon account creation
+    - Users can then log in using said username and password
+  ```text
+
 - **Browse All Posts**
   Browse all posts that our users have posted only for students from UofT on the Homepage.
     - The latest posts will appear at the top of the page, scroll down to view previous posts
