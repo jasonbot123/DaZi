@@ -90,7 +90,7 @@ Dazi addresses inefficiency, mistrust, and visibility issues in traditional netw
     - Search posts by keyword
     - Browse posts by section filter
   ```text
-  Enter the search bar and hit the search icon to search for a post with your interested keyword.
+  Use the search bar and hit the search icon to search for a post with your interested keyword.
   View different section posts by using the sidebar section filter.
 
 ## **Installation Instructions**
