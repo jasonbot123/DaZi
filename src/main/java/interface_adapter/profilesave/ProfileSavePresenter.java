@@ -4,8 +4,6 @@ import interface_adapter.profileview.ProfileViewModel;
 import use_case.profilesave.ProfileSaveOutputBoundary;
 import use_case.profilesave.ProfileSaveOutputData;
 
-import javax.swing.*;
-
 public class ProfileSavePresenter implements ProfileSaveOutputBoundary {
     private final ProfileViewModel viewModel;
 

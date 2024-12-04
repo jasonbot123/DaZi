@@ -16,7 +16,6 @@ public class CreateProfilePage {
     private final ProfileViewModel model;
 
     public CreateProfilePage() {
-//        MongoDBConnection connection = new MongoDBConnection();
         MongoDatabase database = MongoDBConnection.getDatabase("UserDataBase");
         MongoUserProfileViewDataAccessObject viewDAO = new MongoUserProfileViewDataAccessObject(database);
         this.model = new ProfileViewModel();

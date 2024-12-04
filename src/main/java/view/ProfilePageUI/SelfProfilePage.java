@@ -1,10 +1,6 @@
 package view.ProfilePageUI;
 
-import com.mongodb.client.MongoDatabase;
 import data_access.MongoDBConnection;
-import data_access.MongoPostDataAccessObject;
-import entity.Post;
-import service.ProfileService;
 import data_access.MongoUserProfileSaveDataAccessObject;
 import interface_adapter.profilesave.*;
 import interface_adapter.profileview.*;
@@ -12,7 +8,6 @@ import use_case.profilesave.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 public class SelfProfilePage extends JFrame {
     private final ProfilePostsPanel postsPanel;

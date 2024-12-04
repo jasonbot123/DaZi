@@ -7,7 +7,6 @@ public class ProfileViewInputData {
     private String program;
     private String bio;
     private String college;
-//    private List<String> posts;
 
     public ProfileViewInputData(String username) {
         this.username = username;

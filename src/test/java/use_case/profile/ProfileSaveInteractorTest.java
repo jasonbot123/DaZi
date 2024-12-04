@@ -29,16 +29,12 @@ public class ProfileSaveInteractorTest {
         ProfileService service = new ProfileService();
         ProfileViewInteractor viewInteractor = new ProfileViewInteractor(viewDao, viewPresenter, service);
 
-        // Add a mock profile to the DAO
         ProfileSaveInputData saveInputData = new ProfileSaveInputData("Jeremy","3rd Year", "CS", "Loves coding!", "University College");
         saveInteractor.saveProfile(saveInputData);
-
-        // Act
 
         ProfileViewInputData viewInputData = new ProfileViewInputData("Jeremy");
         viewInteractor.loadProfile(viewInputData);
 
-        // Assert
         Assertions.assertEquals("3rd Year", viewModel.getYearOfStudy());
         Assertions.assertEquals("CS", viewModel.getProgram());
         Assertions.assertEquals("Loves coding!", viewModel.getBio());

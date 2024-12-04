@@ -3,11 +3,7 @@ package use_case.profilesave;
 import org.bson.Document;
 
 public class ProfileSaveInputData {
-//    private final String username;
-//    private String yearOfStudy;
-//    private String program;
-//    private String bio;
-//    private String college;
+
     private final Document profileDoc;
 
     public ProfileSaveInputData(String username, String yearOfStudy, String program, String bio, String college) {
@@ -60,7 +56,6 @@ public class ProfileSaveInputData {
             profileDoc.put("college", college);
         }
 
-        // Getter for the complete Document
         public Document getProfileDocument() {
             return profileDoc;
         }

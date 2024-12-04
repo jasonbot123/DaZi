@@ -130,5 +130,5 @@ We welcome contributions to this project!
 3. **Create a branch**:
    ```shell
    git checkout -b feature/your-feature-name
-4. Push you changes and send us an email so we can check out your contribution!
+4. Push you changes and contact us so we can check out your contribution!
    
