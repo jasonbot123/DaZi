@@ -103,17 +103,14 @@ Dazi addresses inefficiency, mistrust, and visibility issues in traditional netw
   Use the search bar and hit the search icon to search for a post with your interested keyword.
   View different section posts by using the sidebar section filter.
 
-### **Like and Comment on Posts**
-
-Engage with posts by liking or leaving comments:
-
-- Show appreciation for posts by clicking the **heart icon (❤️)**  
-- Participate in discussions by adding comments using the **comment button**  
-
-```text
-Click the heart icon (❤️) on a post to show your support and appreciation. 
-Use the comment button under the post to add your thoughts or join the discussion. 
-Both likes and comments will be visible to all users in real-time, fostering a lively and engaging community.
+- **Like and Comment on Posts**
+  Engage with posts by liking or leaving comments:
+    - Show appreciation for posts by clicking the **heart icon (❤️)**  
+    - Participate in discussions by adding comments using the **comment button**  
+  ```text
+  Click the heart icon (❤️) on a post to show your support and appreciation. 
+  Use the comment button under the post to add your thoughts or join the discussion. 
+  Both likes and comments will be visible to all users in real-time, fostering a lively and engaging community.
 
 
 ## **Installation Instructions**
