@@ -1,5 +1,6 @@
 package view.HomePageUI;
 
+import entity.ChatMessage;
 import entity.Post;
 
 import javax.swing.*;
@@ -13,6 +14,7 @@ import data_access.MongoDBConnection;
 import entity.LikeRecord;
 import data_access.MongoPostDataAccessObject;
 import view.ProfilePageUI.CreateProfilePage;
+import view.ChatPageUI.ChatWindow;
 
 public class PostsPanel extends JPanel {
     private static final int PAGE_SIZE = 10;
@@ -95,7 +97,8 @@ public class PostsPanel extends JPanel {
                             handleLikeClick(post);
                         }
                         else if (clickPoint.x >= messageX && clickPoint.x < commentX - 10) {
-                            System.out.println("Message clicked for post: " + post.getTitle());
+                            ChatWindow chatWindow = new ChatWindow(post.getUsername(), currentuser);
+                            chatWindow.setVisible(true);
                         }
                         else if (clickPoint.x >= commentX) {
                             CommentPage commentPage = new CommentPage(post, currentuser);

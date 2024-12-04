@@ -68,7 +68,6 @@ public class ChatWindow extends JFrame {
     public void displayMessages(List<ChatSaveOutputData> messages) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-        chatArea.setText("");
         for (ChatSaveOutputData message : messages) {
             String formattedTimestamp = message.getTimestamp().format(formatter);
             chatArea.append(formattedTimestamp
