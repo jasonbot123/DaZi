@@ -71,6 +71,14 @@ Dazi addresses inefficiency, mistrust, and visibility issues in traditional netw
   Using the profile icon (👤), access your profile, then press the edit button.
   After making the desired changes to fields, press the save button.
 
+- **User Chatting**
+  Finds a post interesting and wishes to connect with post creator:
+    - Sends messages through the post
+    - Plan a meetup day
+  ```text
+  Using the chat icon (📩), access the users you have contacted. 
+  Click on the user to load the previous messages of you and the user selected. 
+
 ## **Installation Instructions**
 To get started with this project, follow these steps:
 
