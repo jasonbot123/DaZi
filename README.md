@@ -75,44 +75,24 @@ To get started with this project, follow these steps:
 
 1. **Pre-requisites**:
     - Operating System: [Windows/Mac/Linux]
-    - Software: [List required software]
-    - Versions: [Mention required versions]
+    - Software: MongoDB, Java
 
 2. **Installation Steps**:
-    - Step 1: [Instructions to install]
-    - Step 2: [More detailed steps]
-    - Step 3: [Final steps]
-
-3. **Additional Resources**:
-    - Required Packages:
-        - [Package Name 1](link-to-package)
-        - [Package Name 2](link-to-package)
-
-4. **Common Issues and Fixes**:
-    - Issue 1: [Brief description and solution]
-    - Issue 2: [Brief description and solution]
-
-[Include tutorials, code snippets, or videos if necessary.]
-
+    - Step 1: Go [**`here`**](https://github.com/jasonbot123/DaZi) and click the big green ➞ **`Code`** button
+    - Step 2: Copy the web URL
+    - Step 3: Clone repo using the web URL in your own IDE
 ---
 
 ## **Usage Guide**
 Once the software is installed, follow these steps to use it:
 
 1. **Getting Started**:
-    - Run the software:
+    - Run Main.java
       ```shell
-      command to run
+      javac Main.java
+      java Main
       ```
-    - Access features through [describe access method].
-
-2. **Feature-Specific Usage**:
-    - Example for Feature 1:  
-      ```code snippet here```
-    - Example for Feature 2:  
-      [Include screenshot or video tutorial].
-
-[Add more examples as needed.]
+    - Access features through the UI
 
 ---
 
@@ -125,15 +105,18 @@ For more details, read the [LICENSE](link-to-license-file).
 ## **Feedback**
 We value your feedback!  
 Submit your thoughts via:
-- [Google Form Link](link-to-google-form)
-- [Discussion Board](link-to-discussion-board)
+- [Google Form Link](https://forms.gle/bok6g4wj6Qv9HKvGA)
 
 ### Guidelines for Feedback
 - **What counts as valid feedback?**
-    - Bug reports, feature requests, or improvement suggestions.
+    - All opinions are welcomed
+    - Valid feedback should try to be constructive!
+    - Bug reports, feature improvements, future extension suggestions and more are very valid and very appreciated
 - **Expectations when submitting feedback**:
-    - A response within [timeframe] for valid submissions.
-
+    - Submissions are anonymous
+    - Emails will not be required
+    - Multiple responses are welcomed
+    - We will check withing a weeks time
 ---
 
 ## **Contributions**
@@ -141,7 +124,11 @@ We welcome contributions to this project!
 
 ### How to Contribute
 1. **Fork this repository**:
-    - Go to the project’s GitHub page and click “Fork”.
-2. **Create a branch**:
+    - Go to our project’s GitHub page and click “Fork”.
+2. **Clone the forked repository**:
+    - Use URL from your fork to clone the repository.
+3. **Create a branch**:
    ```shell
    git checkout -b feature/your-feature-name
+4. Push you changes and send us an email so we can check out your contribution!
+   

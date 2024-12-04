@@ -1,8 +1,5 @@
 package use_case.profilesave;
 
-import org.bson.Document;
-import use_case.profileview.ProfileViewOutputData;
-
 public class ProfileSaveInteractor implements ProfileSaveInputBoundary {
     private final ProfileSaveDataAccessInterface dataAccess;
     private final ProfileSaveOutputBoundary presenter;
@@ -18,3 +15,10 @@ public class ProfileSaveInteractor implements ProfileSaveInputBoundary {
         presenter.presentProfile(outputData);
     }
 }
+
+
+
+
+
+
+

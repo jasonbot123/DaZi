@@ -1,5 +1,6 @@
 package use_case.profileview;
 
+import data_access.MongoUserProfileViewDataAccessObject;
 import service.ProfileService;
 
 public class ProfileViewInteractor implements ProfileViewInputBoundary {
